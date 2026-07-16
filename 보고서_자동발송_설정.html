@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>보고서 자동 발송 설정</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#f7f8fc;min-height:100vh;font-size:14px}
+.app-bar{height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:0 24px;gap:16px;box-shadow:0 1px 3px rgba(0,0,0,.05);position:sticky;top:0;z-index:10}
+.app-logo{font-weight:900;font-size:17px;color:#1a3a8f}
+.app-nav{display:flex;gap:24px;margin-left:20px}
+.nav-item{font-size:13px;color:#6b7280;cursor:pointer;padding:4px 0}
+.nav-item.act{color:#1a3a8f;font-weight:700;border-bottom:2px solid #1a3a8f}
+.ver-toggle-bar{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12px;color:#6b7280}
+.ver-switch{display:flex;border:1.5px solid #e5e7eb;border-radius:20px;overflow:hidden}
+.vs-btn{padding:4px 14px;font-size:12px;font-weight:600;cursor:pointer;border:none;background:none;color:#6b7280;transition:all .1s}
+.vs-btn.on{background:#1a3a8f;color:white}
+
+/* Pages */
+.page{display:none}
+.page.on{display:block}
+
+/* ─── Page: Main (보고서 목록) ─── */
+.main-content{padding:32px 36px;max-width:1100px}
+.page-header{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+.page-header h2{font-size:22px;font-weight:800;color:#111827;flex:1}
+.btn{padding:9px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .1s}
+.btn-primary{background:#1a3a8f;color:white}
+.btn-primary:hover{background:#153379}
+.btn-ghost{background:white;color:#374151;border:1.5px solid #e5e7eb}
+.btn-ghost:hover{background:#f9fafb}
+.btn-outline-blue{background:white;color:#1a3a8f;border:1.5px solid #1a3a8f;font-size:13px;padding:7px 14px}
+.btn-outline-blue:hover{background:#eff6ff}
+.btn-sm{padding:5px 12px;font-size:12px}
+.hidden{display:none!important}
+.badge{display:inline-block;padding:2px 9px;border-radius:10px;font-size:11px;font-weight:700}
+.badge-blue{background:#dbeafe;color:#1d4ed8}
+.badge-green{background:#dcfce7;color:#16a34a}
+.badge-orange{background:#ffedd5;color:#ea580c}
+.badge-purple{background:#f3e8ff;color:#9333ea}
+.badge-red{background:#fee2e2;color:#dc2626}
+.prem-tag{background:#fef3c7;color:#d97706;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px}
+
+/* report table (main page) */
+.fake-table{background:white;border-radius:12px;border:1px solid #e5e7eb;overflow:hidden;margin-bottom:20px}
+.fake-thead{display:grid;grid-template-columns:2fr 1.5fr 2.5fr 1fr 1.2fr;padding:10px 20px;background:#f9fafb;border-bottom:1px solid #e5e7eb;font-size:12px;color:#9ca3af;font-weight:600}
+.fake-row{display:grid;grid-template-columns:2fr 1.5fr 2.5fr 1fr 1.2fr;padding:14px 20px;border-bottom:1px solid #f3f4f6;align-items:center}
+.fake-row:last-child{border:none}
+.fake-name{font-weight:700;color:#111827}
+.fake-sub{font-size:11px;color:#9ca3af;margin-top:2px}
+.fake-actions{display:flex;gap:6px}
+.fake-act-btn{padding:4px 10px;border-radius:6px;font-size:12px;font-weight:600;border:1.5px solid #e5e7eb;color:#374151;background:white;cursor:not-allowed}
+.auto-send-banner{background:white;border:1.5px solid #e5e7eb;border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:14px;margin-bottom:20px;cursor:pointer;transition:all .1s}
+.auto-send-banner:hover{border-color:#93c5fd;background:#f8faff}
+.asb-icon{font-size:28px}
+.asb-text h4{font-size:14px;font-weight:700;color:#111827;margin-bottom:3px}
+.asb-text p{font-size:12px;color:#6b7280}
+.asb-arrow{margin-left:auto;color:#9ca3af;font-size:18px}
+
+/* ─── Page: 자동 발송 설정 목록 ─── */
+.auto-content{padding:32px 36px;max-width:1100px}
+.auto-tabs{display:flex;border-bottom:1px solid #e5e7eb;margin-bottom:24px;gap:0}
+.auto-tab{padding:10px 20px;font-size:14px;font-weight:600;color:#9ca3af;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.auto-tab.on{color:#1a3a8f;border-bottom-color:#1a3a8f}
+
+/* Rule cards */
+.rule-cards{display:flex;flex-direction:column;gap:12px}
+.rule-card{background:white;border:1.5px solid #e5e7eb;border-radius:12px;padding:18px 20px;display:flex;align-items:flex-start;gap:16px;transition:box-shadow .1s}
+.rule-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.rc-body{flex:1}
+.rc-title-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.rc-name{font-size:15px;font-weight:800;color:#111827}
+.rc-meta{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:#6b7280;margin-bottom:8px}
+.rc-meta span{display:flex;align-items:center;gap:4px}
+.rc-tags{display:flex;flex-wrap:wrap;gap:6px}
+.rc-actions{display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex-shrink:0}
+.icon-btn{width:30px;height:30px;border:1.5px solid #e5e7eb;border-radius:7px;background:white;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;color:#6b7280}
+.icon-btn:hover{background:#f9fafb;color:#374151}
+.icon-btn.danger:hover{background:#fef2f2;border-color:#fca5a5;color:#dc2626}
+.empty-state{text-align:center;padding:60px 20px;color:#9ca3af}
+.empty-state .es-icon{font-size:48px;margin-bottom:16px}
+.empty-state h3{font-size:16px;font-weight:700;color:#6b7280;margin-bottom:8px}
+.empty-state p{font-size:13px;line-height:1.7}
+
+/* 발송 대기 관리 */
+.pending-group{background:white;border:1.5px solid #e5e7eb;border-radius:12px;overflow:hidden;margin-bottom:14px}
+.pg-hdr{padding:14px 18px;background:#f9fafb;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pg-title{font-size:14px;font-weight:800;color:#111827;flex:1}
+.pg-schedule{font-size:12px;color:#6b7280}
+.pg-counts{display:flex;gap:10px;font-size:12px;color:#6b7280;margin-left:auto}
+.pg-count-ok{color:#16a34a;font-weight:700}
+.pg-count-warn{color:#dc2626;font-weight:700}
+.pg-row{display:grid;grid-template-columns:1.5fr 1.5fr 1fr auto;padding:12px 18px;border-bottom:1px solid #f3f4f6;align-items:center;gap:12px}
+.pg-row:last-child{border:none}
+.pg-stu-name{font-weight:700;color:#111827;font-size:13px}
+.pg-stu-sub{font-size:11px;color:#9ca3af;margin-top:2px}
+.pg-date{font-size:13px;color:#374151}
+.pg-warn{color:#dc2626;font-size:12px;font-weight:700;display:flex;align-items:center;gap:4px}
+.pg-badge{background:#fffbeb;border:1px solid #fde68a;color:#d97706;font-size:11px;font-weight:700;padding:2px 7px;border-radius:10px}
+.pg-acts{display:flex;gap:5px}
+.pg-act{width:28px;height:28px;border:1.5px solid #e5e7eb;border-radius:6px;background:white;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;color:#6b7280;position:relative}
+.pg-act:hover{background:#f0f7ff;border-color:#93c5fd;color:#1a3a8f}
+.pg-act[title]:hover::after{content:attr(title);position:absolute;bottom:calc(100% + 5px);left:50%;transform:translateX(-50%);background:#1f2937;color:white;font-size:11px;padding:3px 7px;border-radius:5px;white-space:nowrap;pointer-events:none;z-index:100}
+.pg-act.danger:hover{background:#fef2f2;border-color:#fca5a5;color:#dc2626}
+
+/* 과거 발송 이력 */
+.history-row{display:grid;grid-template-columns:1.5fr 1.5fr 1fr 1fr 1fr;padding:13px 20px;border-bottom:1px solid #f3f4f6;align-items:center;font-size:13px;color:#374151}
+.history-thead{background:#f9fafb;font-size:12px;font-weight:600;color:#9ca3af}
+.history-row:last-child{border:none}
+
+/* ─── Overlays / Modals ─── */
+.backdrop{position:fixed;inset:0;background:rgba(17,24,39,.55);z-index:100;display:flex;align-items:center;justify-content:center}
+.close-x{width:30px;height:30px;border:none;background:none;cursor:pointer;font-size:20px;color:#9ca3af;display:flex;align-items:center;justify-content:center;border-radius:6px}
+.close-x:hover{background:#f3f4f6;color:#374151}
+
+/* Student select modal */
+.stu-dialog{background:white;border-radius:14px;width:900px;max-width:96vw;max-height:88vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.25)}
+.stu-hdr{padding:18px 22px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.stu-hdr h3{font-size:16px;font-weight:800;color:#111827}
+.stu-body{display:grid;grid-template-columns:1fr 240px;flex:1;overflow:hidden;min-height:0}
+.stu-left{display:flex;flex-direction:column;overflow:hidden;border-right:1px solid #e5e7eb}
+.stu-tabs{display:flex;border-bottom:1px solid #e5e7eb;flex-shrink:0}
+.stu-tab{padding:10px 18px;font-size:13px;font-weight:600;color:#9ca3af;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.stu-tab.on{color:#1a3a8f;border-bottom-color:#1a3a8f}
+.stu-filter{padding:10px 14px;display:flex;gap:8px;border-bottom:1px solid #f3f4f6;flex-shrink:0}
+.stu-search{flex:1;border:1.5px solid #e5e7eb;border-radius:7px;padding:6px 12px;font-size:13px;color:#374151;outline:none}
+.stu-search:focus{border-color:#93c5fd}
+.stu-groups{flex:1;overflow-y:auto;padding:4px 0}
+.stu-group{padding:12px 14px 10px}
+.stu-group-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.stu-grade{font-size:13px;font-weight:700;color:#374151}
+.stu-all-btn{font-size:12px;color:#1d4ed8;background:none;border:none;cursor:pointer;font-weight:600}
+.stu-grid{display:flex;flex-wrap:wrap;gap:7px}
+.stu-btn{border:1.5px solid #e5e7eb;border-radius:20px;padding:5px 12px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:5px;color:#374151;background:white;transition:all .1s;white-space:nowrap}
+.stu-btn:hover{border-color:#93c5fd;background:#f0f7ff}
+.stu-btn.checked{background:#eff6ff;border-color:#1a3a8f;color:#1a3a8f;font-weight:600}
+.stu-right{display:flex;flex-direction:column;overflow:hidden}
+.stu-right-hdr{padding:12px 14px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:#f9fafb}
+.stu-count{font-size:13px;font-weight:700;color:#374151}
+.stu-reset{font-size:12px;color:#6b7280;background:none;border:none;cursor:pointer}
+.stu-selected{flex:1;overflow-y:auto;padding:10px 12px}
+.sel-chips{display:flex;flex-wrap:wrap;gap:7px}
+.sel-chip{background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:20px;padding:4px 10px;font-size:12px;font-weight:600;color:#1d4ed8;display:flex;align-items:center;gap:5px;cursor:pointer}
+.sel-chip:hover{background:#dbeafe}
+.sel-empty{font-size:12px;color:#9ca3af;text-align:center;margin-top:20px;line-height:1.7}
+.stu-footer{padding:14px 20px;border-top:1px solid #e5e7eb;display:flex;justify-content:space-between;flex-shrink:0}
+
+/* Overlap alert */
+.alert-dialog{background:white;border-radius:14px;width:440px;max-width:96vw;padding:28px;box-shadow:0 24px 64px rgba(0,0,0,.25)}
+.alert-dialog h3{font-size:16px;font-weight:800;color:#111827;margin-bottom:10px}
+.alert-dialog p{font-size:13px;color:#6b7280;line-height:1.7;margin-bottom:20px}
+.alert-btns{display:flex;flex-direction:column;gap:8px}
+
+/* ─── Wizard pages ─── */
+.wizard-shell{min-height:100vh;display:flex;flex-direction:column}
+.wizard-hdr{background:white;border-bottom:1px solid #e5e7eb;padding:0 36px;flex-shrink:0}
+.wizard-hdr-row{display:flex;align-items:center;height:56px;gap:14px}
+.wizard-hdr-row h2{font-size:16px;font-weight:800;color:#111827}
+.back-btn{background:none;border:none;cursor:pointer;color:#6b7280;font-size:22px;line-height:1;padding:2px 6px}
+.back-btn:hover{color:#374151}
+.wiz-stepper{display:flex;align-items:center;padding:12px 0 0}
+.wst{display:flex;align-items:center;gap:6px;padding:8px 12px 10px;font-size:12px;color:#9ca3af;white-space:nowrap;cursor:default}
+.wst.active{color:#1a3a8f;font-weight:700;border-bottom:2px solid #1a3a8f}
+.wst.done{color:#6b7280}
+.wst-n{width:20px;height:20px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.wst.active .wst-n{background:#1a3a8f;color:white;border-color:#1a3a8f}
+.wst.done .wst-n{background:#6b7280;color:white;border-color:#6b7280}
+.wst-sep{color:#d1d5db;font-size:12px;margin-bottom:6px;flex-shrink:0}
+.wizard-body{flex:1;overflow-y:auto;padding:32px 36px;max-width:900px;margin:0 auto;width:100%}
+.wizard-ftr{background:white;border-top:1px solid #e5e7eb;padding:14px 36px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;position:sticky;bottom:0}
+
+/* Step 1: 학습 선택 */
+.step1-layout{display:grid;grid-template-columns:260px 1fr;gap:20px;min-height:400px}
+.s1-left{background:white;border:1.5px solid #e5e7eb;border-radius:12px;overflow:hidden}
+.s1-left-hdr{padding:12px 14px;background:#f9fafb;border-bottom:1px solid #e5e7eb;font-size:13px;font-weight:700;color:#374151;display:flex;align-items:center;justify-content:space-between}
+.s1-stu-row{padding:10px 14px;border-bottom:1px solid #f3f4f6;cursor:pointer;display:flex;align-items:center;gap:10px;transition:background .1s}
+.s1-stu-row:last-child{border:none}
+.s1-stu-row:hover{background:#f9fafb}
+.s1-stu-row.sel{background:#eff6ff}
+.s1-stu-name{font-size:13px;font-weight:700;color:#111827}
+.s1-stu-meta{font-size:11px;color:#9ca3af;margin-top:2px}
+.s1-right{background:white;border:1.5px solid #e5e7eb;border-radius:12px;padding:18px}
+.s1-right-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.s1-right-hdr h4{font-size:14px;font-weight:800;color:#111827}
+.toggle-all{display:flex;gap:8px}
+.toggle-btn{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid #e5e7eb;color:#6b7280;background:white}
+.toggle-btn.on{background:#1a3a8f;color:white;border-color:#1a3a8f}
+.learn-type-list{display:flex;flex-direction:column;gap:8px}
+.lt-item{border:1.5px solid #e5e7eb;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all .1s}
+.lt-item:hover:not(.locked){border-color:#93c5fd;background:#f8faff}
+.lt-item.checked{border-color:#1a3a8f;background:#eff6ff}
+.lt-item.locked{opacity:.55;cursor:not-allowed;background:#f9fafb}
+.lt-icon{font-size:18px;flex-shrink:0}
+.lt-info{flex:1}
+.lt-name{font-size:13px;font-weight:700;color:#111827}
+.lt-desc{font-size:11px;color:#9ca3af;margin-top:2px}
+.lt-stu-same{display:flex;align-items:center;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid #f3f4f6;font-size:13px;color:#374151}
+
+/* Step 2: 보고서 구성 */
+.sec{margin-bottom:22px}
+.lbl{font-size:13px;font-weight:700;color:#374151;display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.req{color:#ef4444}
+input[type=text],input[type=time],select{border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 14px;font-size:14px;color:#374151;outline:none;background:white;width:100%}
+input[type=text]:focus,input[type=time]:focus,select:focus{border-color:#93c5fd}
+input[type=checkbox],input[type=radio]{accent-color:#1a3a8f;cursor:pointer;flex-shrink:0}
+.row-group{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.radio-row{display:flex;gap:14px;flex-wrap:wrap}
+.radio-item{display:flex;align-items:center;gap:6px;font-size:13px;color:#374151;cursor:pointer}
+.schedule-box{background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:12px}
+.locked-section{opacity:.5;pointer-events:none;user-select:none;position:relative}
+.lock-overlay{position:absolute;inset:0;z-index:2;cursor:not-allowed;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(249,250,251,.6)}
+.prem-block{background:#fef9f0;border:1.5px dashed #fcd34d;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.prem-block p{font-size:12px;color:#92400e}
+.channel-btns{display:flex;gap:8px;flex-wrap:wrap}
+.ch-btn{border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;color:#374151;background:white;display:flex;align-items:center;gap:6px;transition:all .1s}
+.ch-btn.on{border-color:#1a3a8f;background:#eff6ff;color:#1a3a8f}
+.ch-btn:hover{border-color:#93c5fd;background:#f8faff}
+.version-btns{display:flex;gap:8px}
+.ver-btn{border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 20px;font-size:13px;font-weight:600;cursor:pointer;color:#374151;background:white;transition:all .1s}
+.ver-btn.on{border-color:#1a3a8f;background:#eff6ff;color:#1a3a8f}
+.ver-btn:hover{border-color:#93c5fd}
+.tone-btns{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.tone-btn{border:1.5px solid #e5e7eb;border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600;cursor:pointer;color:#374151;background:white;transition:all .1s}
+.tone-btn.on{border-color:#1a3a8f;background:#eff6ff;color:#1a3a8f}
+.logo-upload{border:1.5px dashed #d1d5db;border-radius:8px;padding:14px;text-align:center;font-size:12px;color:#9ca3af;cursor:pointer;transition:all .1s}
+.logo-upload:hover{border-color:#93c5fd;background:#f8faff}
+.type-select-btns{display:flex;gap:8px}
+.type-sel-btn{border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 20px;font-size:13px;font-weight:600;cursor:pointer;color:#374151;background:white;transition:all .1s}
+.type-sel-btn.on{border-color:#1a3a8f;background:#eff6ff;color:#1a3a8f}
+.type-sel-btn:hover{border-color:#93c5fd}
+.textarea-el{border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 14px;font-size:13px;color:#374151;outline:none;background:white;width:100%;resize:vertical;min-height:60px;font-family:inherit}
+.textarea-el:focus{border-color:#93c5fd}
+
+/* Save alert / success */
+.success-alert{background:white;border-radius:14px;width:500px;max-width:96vw;padding:28px;box-shadow:0 24px 64px rgba(0,0,0,.25)}
+.sa-icon{font-size:44px;margin-bottom:14px;text-align:center}
+.sa-title{font-size:17px;font-weight:800;color:#111827;text-align:center;margin-bottom:8px}
+.sa-msg{font-size:13px;color:#6b7280;text-align:center;line-height:1.7;margin-bottom:20px}
+.sa-info{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px 14px;font-size:12px;color:#1e40af;line-height:1.7;margin-bottom:20px}
+
+/* Preview (미리보기) */
+.preview-overlay{position:fixed;inset:0;background:white;z-index:200;display:flex;flex-direction:column}
+.pv-hdr{height:52px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:0 20px;gap:12px;flex-shrink:0}
+.pv-hdr-title{flex:1;font-size:14px;font-weight:700;color:#374151}
+.pv-date{font-size:12px;color:#9ca3af}
+.pv-zoom{display:flex;gap:4px}
+.pv-z-btn{width:28px;height:28px;border:1.5px solid #e5e7eb;border-radius:6px;background:white;cursor:pointer;font-size:13px;font-weight:700;color:#374151;display:flex;align-items:center;justify-content:center}
+.pv-z-btn:hover{background:#f3f4f6}
+.pv-body{flex:1;display:grid;grid-template-columns:220px 1fr;overflow:hidden}
+.pv-left{border-right:1px solid #e5e7eb;overflow-y:auto;padding:10px}
+.pv-stu-item{padding:10px 12px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all .1s}
+.pv-stu-item:hover{background:#f9fafb}
+.pv-stu-item.active{background:#eff6ff}
+.pv-stu-name{font-size:13px;font-weight:700;color:#111827}
+.pv-stu-meta{font-size:11px;color:#9ca3af;margin-top:2px}
+.pv-center{flex:1;overflow-y:auto;padding:24px;display:flex;justify-content:center;background:#f0f2f7}
+.pv-card{background:white;border-radius:14px;width:380px;box-shadow:0 4px 20px rgba(0,0,0,.1);overflow:hidden}
+.pvc-top{background:linear-gradient(135deg,#1a3a8f,#3b5fc0);padding:20px;color:white}
+.pvc-logo{font-size:18px;font-weight:900;margin-bottom:4px;letter-spacing:-0.5px}
+.pvc-subtitle{font-size:11px;opacity:.75;margin-bottom:14px}
+.pvc-stu{font-size:20px;font-weight:800;margin-bottom:2px}
+.pvc-stu-meta{font-size:12px;opacity:.8}
+.pvc-period{background:rgba(255,255,255,.15);border-radius:8px;padding:6px 10px;font-size:11px;margin-top:12px;display:inline-block}
+.pvc-section{padding:16px 18px;border-bottom:1px solid #f3f4f6}
+.pvc-section:last-child{border:none}
+.pvc-sec-title{font-size:11px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+.pvc-book{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.pvc-book-icon{width:36px;height:44px;border-radius:4px;background:linear-gradient(145deg,#3b5fc0,#1a3a8f);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.pvc-book-name{font-size:13px;font-weight:700;color:#111827}
+.pvc-book-sub{font-size:11px;color:#9ca3af;margin-top:2px}
+.pvc-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.pvc-stat{background:#f9fafb;border-radius:8px;padding:8px;text-align:center}
+.pvc-stat-val{font-size:16px;font-weight:800;color:#1a3a8f}
+.pvc-stat-lbl{font-size:10px;color:#9ca3af;margin-top:2px}
+.pvc-comment{font-size:12px;color:#374151;line-height:1.7;background:#f9fafb;border-radius:8px;padding:10px;border-left:3px solid #1a3a8f}
+.pvc-footer{padding:12px 18px;background:#f9fafb;display:flex;justify-content:space-between;align-items:center}
+.pvc-footer-logo{font-size:13px;font-weight:900;color:#1a3a8f}
+.pvc-footer-date{font-size:11px;color:#9ca3af}
+.pv-info-banner{background:#fffbeb;border-top:1px solid #fde68a;padding:10px 20px;font-size:12px;color:#92400e;display:flex;align-items:center;gap:8px;flex-shrink:0}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     PAGE: 보고서 목록 (메인)
+════════════════════════════════════════════ -->
+<div id="pg-main" class="page on">
+  <div class="app-bar">
+    <div class="app-logo">matholic</div>
+    <nav class="app-nav">
+      <span class="nav-item">홈</span>
+      <span class="nav-item act">보고서</span>
+      <span class="nav-item">학생 관리</span>
+      <span class="nav-item">수업 관리</span>
+    </nav>
+    <div class="ver-toggle-bar">
+      <span>버전:</span>
+      <div class="ver-switch">
+        <button class="vs-btn on" id="vb-light" onclick="setVer(true)">라이트</button>
+        <button class="vs-btn" id="vb-prem" onclick="setVer(false)">프리미엄</button>
+      </div>
+    </div>
+  </div>
+  <div class="main-content">
+    <div class="page-header">
+      <h2>보고서</h2>
+      <button class="btn btn-outline-blue" onclick="showPage('pg-auto')">⚡ 보고서 자동 발송 설정</button>
+      <button class="btn btn-primary" onclick="alert('보고서 생성 모듈 열기')">+ 새 보고서 만들기</button>
+    </div>
+    <!-- Report table -->
+    <div class="fake-table">
+      <div class="fake-thead">
+        <div>학생</div><div>기간</div><div>과정</div><div>상태</div><div>작업</div>
+      </div>
+      <div class="fake-row">
+        <div><div class="fake-name">홍길동</div><div class="fake-sub">중1 · 1반</div></div>
+        <div style="font-size:13px;color:#374151">2025.06.01 ~ 06.30</div>
+        <div style="font-size:13px;color:#6b7280">수학 / 중등 기본</div>
+        <div><span class="badge badge-green">완료</span></div>
+        <div class="fake-actions"><button class="fake-act-btn">보기</button><button class="fake-act-btn">공유</button></div>
+      </div>
+      <div class="fake-row">
+        <div><div class="fake-name">김민준</div><div class="fake-sub">초1</div></div>
+        <div style="font-size:13px;color:#374151">2025.06.01 ~ 06.30</div>
+        <div style="font-size:13px;color:#6b7280">수학 / 초등 기본</div>
+        <div><span class="badge badge-blue">초안</span></div>
+        <div class="fake-actions"><button class="fake-act-btn">편집</button><button class="fake-act-btn">발송</button></div>
+      </div>
+      <div class="fake-row">
+        <div><div class="fake-name">이서연</div><div class="fake-sub">초1</div></div>
+        <div style="font-size:13px;color:#374151">2025.06.01 ~ 06.30</div>
+        <div style="font-size:13px;color:#6b7280">수학 / 초등 기본</div>
+        <div><span class="badge badge-orange">대기</span></div>
+        <div class="fake-actions"><button class="fake-act-btn">편집</button><button class="fake-act-btn">발송</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE: 자동 발송 설정 목록
+════════════════════════════════════════════ -->
+<div id="pg-auto" class="page">
+  <div class="app-bar">
+    <button class="back-btn" onclick="showPage('pg-main')">‹</button>
+    <div class="app-logo">matholic</div>
+    <div style="font-size:14px;color:#6b7280;margin-left:4px">/ 보고서 자동 발송 설정</div>
+    <div class="ver-toggle-bar">
+      <span>버전:</span>
+      <div class="ver-switch">
+        <button class="vs-btn on" id="vb-light2" onclick="setVer(true)">라이트</button>
+        <button class="vs-btn" id="vb-prem2" onclick="setVer(false)">프리미엄</button>
+      </div>
+    </div>
+  </div>
+  <div class="auto-content">
+    <div class="page-header">
+      <h2>자동 발송 설정</h2>
+      <button class="btn btn-primary" onclick="openStudentModal()">+ 새 자동 발송 설정 만들기</button>
+    </div>
+    <div class="auto-tabs">
+      <div class="auto-tab on" onclick="switchAutoTab(this,'tab-rules')">생성된 보고서 설정</div>
+      <div class="auto-tab" onclick="switchAutoTab(this,'tab-pending')">발송 대기 학생 관리</div>
+      <div class="auto-tab" onclick="switchAutoTab(this,'tab-history')">과거 발송 이력</div>
+    </div>
+
+    <!-- Tab: 생성된 보고서 설정 -->
+    <div id="tab-rules">
+      <div class="rule-cards" id="rule-cards-list">
+        <!-- Cards injected by JS -->
+      </div>
+      <div id="empty-state" class="empty-state hidden">
+        <div class="es-icon">📭</div>
+        <h3>아직 설정된 자동 발송이 없어요</h3>
+        <p>새 발송 설정을 만들어 보세요.<br>주기적으로 보고서를 자동 생성·발송해 드려요.</p>
+      </div>
+    </div>
+
+    <!-- Tab: 발송 대기 학생 관리 -->
+    <div id="tab-pending" class="hidden">
+      <div class="pending-group">
+        <div class="pg-hdr">
+          <div class="pg-title">중1 전체 주간</div>
+          <span class="badge badge-green">주간</span>
+          <div class="pg-schedule">매주 금요일 오후 6:00</div>
+          <div class="pg-counts">
+            <span>전체 7명</span>
+            <span class="pg-count-ok">발송 예정 5명</span>
+            <span class="pg-count-warn">확인 필요 2명</span>
+          </div>
+        </div>
+        <div class="pg-row">
+          <div><div class="pg-stu-name">홍길동</div><div class="pg-stu-sub">중1 · 1반</div></div>
+          <div class="pg-date">2025.07.18 발송 예정</div>
+          <div></div>
+          <div class="pg-acts">
+            <div class="pg-act" title="미리보기" onclick="showPreview()">👁</div>
+            <div class="pg-act" title="AI 코멘트 수정">✏️</div>
+            <div class="pg-act" title="발송">📤</div>
+            <div class="pg-act danger" title="삭제">🗑</div>
+          </div>
+        </div>
+        <div class="pg-row">
+          <div><div class="pg-stu-name">김미미</div><div class="pg-stu-sub">중1 · 1반</div></div>
+          <div class="pg-date">2025.07.18 발송 예정</div>
+          <div><span class="pg-badge">AI 코멘트 수정됨</span></div>
+          <div class="pg-acts">
+            <div class="pg-act" title="미리보기" onclick="showPreview()">👁</div>
+            <div class="pg-act" title="AI 코멘트 수정">✏️</div>
+            <div class="pg-act" title="발송">📤</div>
+            <div class="pg-act danger" title="삭제">🗑</div>
+          </div>
+        </div>
+        <div class="pg-row">
+          <div><div class="pg-stu-name">신지수</div><div class="pg-stu-sub">중1 · 2반</div></div>
+          <div><div class="pg-warn">⚠️ 확인 필요</div><div style="font-size:11px;color:#9ca3af;margin-top:2px">학습 데이터 부족</div></div>
+          <div></div>
+          <div class="pg-acts">
+            <div class="pg-act" title="미리보기" onclick="showPreview()">👁</div>
+            <div class="pg-act" title="AI 코멘트 수정">✏️</div>
+            <div class="pg-act" title="발송">📤</div>
+            <div class="pg-act danger" title="삭제">🗑</div>
+          </div>
+        </div>
+        <div class="pg-row">
+          <div><div class="pg-stu-name">이도윤</div><div class="pg-stu-sub">중1 · 2반</div></div>
+          <div><div class="pg-warn">⚠️ 확인 필요</div><div style="font-size:11px;color:#9ca3af;margin-top:2px">연락처 미등록</div></div>
+          <div></div>
+          <div class="pg-acts">
+            <div class="pg-act" title="미리보기" onclick="showPreview()">👁</div>
+            <div class="pg-act" title="AI 코멘트 수정">✏️</div>
+            <div class="pg-act" title="발송">📤</div>
+            <div class="pg-act danger" title="삭제">🗑</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pending-group">
+        <div class="pg-hdr">
+          <div class="pg-title">중 1-1반 월간</div>
+          <span class="badge badge-blue">월간</span>
+          <div class="pg-schedule">매월 마지막 금요일 오후 6:00</div>
+          <div class="pg-counts">
+            <span>전체 4명</span>
+            <span class="pg-count-ok">발송 예정 4명</span>
+          </div>
+        </div>
+        <div class="pg-row">
+          <div><div class="pg-stu-name">홍길동</div><div class="pg-stu-sub">중1 · 1반</div></div>
+          <div class="pg-date">2025.07.31 발송 예정</div>
+          <div></div>
+          <div class="pg-acts">
+            <div class="pg-act" title="미리보기" onclick="showPreview()">👁</div>
+            <div class="pg-act" title="AI 코멘트 수정">✏️</div>
+            <div class="pg-act" title="발송">📤</div>
+            <div class="pg-act danger" title="삭제">🗑</div>
+          </div>
+        </div>
+        <div class="pg-row">
+          <div><div class="pg-stu-name">김미미</div><div class="pg-stu-sub">중1 · 1반</div></div>
+          <div class="pg-date">2025.07.31 발송 예정</div>
+          <div></div>
+          <div class="pg-acts">
+            <div class="pg-act" title="미리보기" onclick="showPreview()">👁</div>
+            <div class="pg-act" title="AI 코멘트 수정">✏️</div>
+            <div class="pg-act" title="발송">📤</div>
+            <div class="pg-act danger" title="삭제">🗑</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: 과거 발송 이력 -->
+    <div id="tab-history" class="hidden">
+      <div class="fake-table">
+        <div class="history-row history-thead">
+          <div>설정명</div><div>학생</div><div>발송일시</div><div>채널</div><div>상태</div>
+        </div>
+        <div class="history-row">
+          <div style="font-weight:700">중1 전체 주간</div>
+          <div>홍길동 외 6명</div>
+          <div>2025.07.11 18:00</div>
+          <div>알림톡</div>
+          <div><span class="badge badge-green">발송완료</span></div>
+        </div>
+        <div class="history-row">
+          <div style="font-weight:700">중 1-1반 월간</div>
+          <div>홍길동 외 3명</div>
+          <div>2025.06.27 18:00</div>
+          <div>알림톡</div>
+          <div><span class="badge badge-green">발송완료</span></div>
+        </div>
+        <div class="history-row">
+          <div style="font-weight:700">고 3-1반 주간</div>
+          <div>박지호 외 5명</div>
+          <div>2025.07.04 18:00</div>
+          <div>카카오톡</div>
+          <div><span class="badge badge-green">발송완료</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE: Wizard — Step 1 학습 선택
+════════════════════════════════════════════ -->
+<div id="pg-step1" class="page">
+  <div class="wizard-shell">
+    <div class="wizard-hdr">
+      <div class="wizard-hdr-row">
+        <button class="back-btn" onclick="showPage('pg-auto')">‹</button>
+        <h2>새 자동 발송 설정 만들기</h2>
+        <span id="wiz-stu-chip" style="background:#eff6ff;color:#1d4ed8;font-size:12px;font-weight:700;padding:3px 11px;border-radius:20px"></span>
+      </div>
+      <div class="wiz-stepper">
+        <div class="wst active"><div class="wst-n">1</div>학습 선택</div>
+        <div class="wst-sep">›</div>
+        <div class="wst"><div class="wst-n">2</div>보고서 구성 설정</div>
+      </div>
+    </div>
+    <div class="wizard-body">
+      <div class="sec">
+        <div class="lbl">학습 유형 선택 <span id="stu-toggle-label" style="font-size:12px;color:#6b7280;font-weight:400">— 학생별 개별 설정</span></div>
+        <div class="lt-stu-same" style="margin-bottom:14px;background:#f9fafb;padding:10px 14px;border-radius:8px;border:1.5px solid #e5e7eb">
+          <input type="checkbox" id="same-for-all" onchange="toggleSameAll(this)">
+          <label for="same-for-all" style="cursor:pointer;font-size:13px;color:#374151">전체 학생 동일하게 적용</label>
+        </div>
+      </div>
+      <div class="step1-layout">
+        <div class="s1-left">
+          <div class="s1-left-hdr">
+            <span>선택된 학생</span>
+            <span id="s1-stu-count" style="font-size:12px;color:#1d4ed8;font-weight:700"></span>
+          </div>
+          <div id="s1-stu-list"><!-- JS renders --></div>
+        </div>
+        <div class="s1-right">
+          <div class="s1-right-hdr">
+            <h4 id="s1-right-title">학습 유형 선택</h4>
+          </div>
+          <div class="learn-type-list">
+            <div class="lt-item locked" id="lt-class">
+              <div class="lt-icon">🏫</div>
+              <div class="lt-info">
+                <div class="lt-name">수업 <span class="prem-tag" id="lt-class-lock">프리미엄</span></div>
+                <div class="lt-desc">수업 중 진행한 학습 데이터</div>
+              </div>
+              <input type="checkbox" disabled id="chk-class">
+            </div>
+            <div class="lt-item checked" onclick="toggleLT(this,'chk-textbook')" id="lt-textbook">
+              <div class="lt-icon">📚</div>
+              <div class="lt-info">
+                <div class="lt-name">교재 채점</div>
+                <div class="lt-desc">교재 문제 채점 결과</div>
+              </div>
+              <input type="checkbox" checked id="chk-textbook">
+            </div>
+            <div class="lt-item checked" onclick="toggleLT(this,'chk-worksheet')" id="lt-worksheet">
+              <div class="lt-icon">📝</div>
+              <div class="lt-info">
+                <div class="lt-name">학습지</div>
+                <div class="lt-desc">학습지 풀이 결과</div>
+              </div>
+              <input type="checkbox" checked id="chk-worksheet">
+            </div>
+            <div class="lt-item" onclick="toggleLT(this,'chk-exam')" id="lt-exam">
+              <div class="lt-icon">📋</div>
+              <div class="lt-info">
+                <div class="lt-name">평가</div>
+                <div class="lt-desc">단원 평가 및 형성 평가</div>
+              </div>
+              <input type="checkbox" id="chk-exam">
+            </div>
+            <div class="lt-item" onclick="toggleLT(this,'chk-wrong')" id="lt-wrong">
+              <div class="lt-icon">🔄</div>
+              <div class="lt-info">
+                <div class="lt-name">오답</div>
+                <div class="lt-desc">오답 풀이 학습 현황</div>
+              </div>
+              <input type="checkbox" id="chk-wrong">
+            </div>
+            <div class="lt-item" onclick="toggleLT(this,'chk-challenge')" id="lt-challenge">
+              <div class="lt-icon">🏆</div>
+              <div class="lt-info">
+                <div class="lt-name">도전학습</div>
+                <div class="lt-desc">레벨업 도전 학습 현황</div>
+              </div>
+              <input type="checkbox" id="chk-challenge">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="wizard-ftr">
+      <button class="btn btn-ghost" onclick="showPage('pg-auto')">취소</button>
+      <button class="btn btn-primary" onclick="gotoStep2()"> 보고서 구성 설정 → </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE: Wizard — Step 2 보고서 구성 설정
+════════════════════════════════════════════ -->
+<div id="pg-step2" class="page">
+  <div class="wizard-shell">
+    <div class="wizard-hdr">
+      <div class="wizard-hdr-row">
+        <button class="back-btn" onclick="showPage('pg-step1')">‹</button>
+        <h2>새 자동 발송 설정 만들기</h2>
+        <span id="wiz-stu-chip2" style="background:#eff6ff;color:#1d4ed8;font-size:12px;font-weight:700;padding:3px 11px;border-radius:20px"></span>
+      </div>
+      <div class="wiz-stepper">
+        <div class="wst done"><div class="wst-n">✓</div>학습 선택</div>
+        <div class="wst-sep">›</div>
+        <div class="wst active"><div class="wst-n">2</div>보고서 구성 설정</div>
+      </div>
+    </div>
+    <div class="wizard-body">
+
+      <!-- 설정명 -->
+      <div class="sec">
+        <div class="lbl">설정명 <span class="req">*</span></div>
+        <input type="text" id="rule-name" placeholder="예: 중1 전체 주간 보고서" style="max-width:420px">
+      </div>
+
+      <!-- 발송 일정 -->
+      <div class="sec">
+        <div class="lbl">발송 일정</div>
+        <div class="schedule-box">
+          <div>
+            <div style="font-size:12px;font-weight:700;color:#6b7280;margin-bottom:8px">발행 주기</div>
+            <div class="radio-row">
+              <label class="radio-item"><input type="radio" name="cycle" value="daily" onchange="updateCycleUI()"> 일간</label>
+              <label class="radio-item"><input type="radio" name="cycle" value="weekly" checked onchange="updateCycleUI()"> 주간</label>
+              <label class="radio-item"><input type="radio" name="cycle" value="monthly" onchange="updateCycleUI()"> 월간</label>
+            </div>
+          </div>
+          <div id="weekly-opts">
+            <div style="font-size:12px;font-weight:700;color:#6b7280;margin-bottom:8px">발송 요일</div>
+            <div class="radio-row">
+              <label class="radio-item"><input type="radio" name="weekday" value="mon"> 월</label>
+              <label class="radio-item"><input type="radio" name="weekday" value="tue"> 화</label>
+              <label class="radio-item"><input type="radio" name="weekday" value="wed"> 수</label>
+              <label class="radio-item"><input type="radio" name="weekday" value="thu"> 목</label>
+              <label class="radio-item"><input type="radio" name="weekday" value="fri" checked> 금</label>
+              <label class="radio-item"><input type="radio" name="weekday" value="sat"> 토</label>
+            </div>
+          </div>
+          <div id="monthly-opts" class="hidden">
+            <div style="font-size:12px;font-weight:700;color:#6b7280;margin-bottom:8px">발송 시점</div>
+            <div class="radio-row">
+              <label class="radio-item"><input type="radio" name="monthday" value="last-fri" checked> 마지막 금요일</label>
+              <label class="radio-item"><input type="radio" name="monthday" value="last-day"> 말일</label>
+              <label class="radio-item"><input type="radio" name="monthday" value="1st"> 1일</label>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:#6b7280;margin-bottom:8px">발송 시간</div>
+            <input type="time" value="18:00" style="width:140px">
+          </div>
+        </div>
+      </div>
+
+      <!-- 저장된 템플릿 적용 (premium) -->
+      <div class="sec">
+        <div class="lbl">저장된 템플릿 적용 <span class="prem-tag" id="tmpl-lock">프리미엄</span></div>
+        <div id="tmpl-section">
+          <div class="prem-block" id="tmpl-prem-block">
+            <span style="font-size:20px">🔒</span>
+            <p>프리미엄 플랜에서 저장된 템플릿을 불러올 수 있어요.</p>
+          </div>
+          <select id="tmpl-select" class="hidden" style="max-width:320px">
+            <option value="">템플릿 선택 안함</option>
+            <option>중등 기본 주간 보고서</option>
+            <option>고등 상세 월간 보고서</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 내용 구성 -->
+      <div class="sec">
+        <div class="lbl">내용 구성</div>
+        <div class="type-select-btns" style="margin-bottom:12px">
+          <button class="type-sel-btn on" onclick="selectType(this,'summary')">상세형</button>
+          <button class="type-sel-btn" onclick="selectType(this,'detail')">요약형</button>
+        </div>
+        <div id="content-detail-section" style="position:relative">
+          <div id="content-lock-overlay" class="lock-overlay" onclick="void 0">
+            <span class="prem-tag" style="font-size:12px;padding:4px 12px">🔒 프리미엄 전용</span>
+          </div>
+          <div class="locked-section" id="content-checkboxes">
+            <div style="display:flex;flex-direction:column;gap:8px;padding:4px 0">
+              <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151"><input type="checkbox" checked> 대표 교재 학습 현황</label>
+              <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151"><input type="checkbox" checked> 정답률 추이</label>
+              <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151"><input type="checkbox"> 취약 단원 분석</label>
+              <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151"><input type="checkbox"> 학습 시간 통계</label>
+              <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151"><input type="checkbox"> 오답 유형 분석</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 선생님 총평 -->
+      <div class="sec">
+        <div class="lbl">선생님 총평</div>
+        <div class="radio-row" style="margin-bottom:12px">
+          <label class="radio-item"><input type="radio" name="comment-type" value="ai" checked onchange="updateCommentUI()"> AI 자동 생성</label>
+          <label class="radio-item"><input type="radio" name="comment-type" value="manual" onchange="updateCommentUI()"> 직접 입력</label>
+          <label class="radio-item"><input type="radio" name="comment-type" value="none" onchange="updateCommentUI()"> 사용 안함</label>
+        </div>
+        <div id="comment-ai-opts">
+          <div class="lbl" style="font-size:12px;color:#6b7280;font-weight:600;margin-bottom:6px">어조</div>
+          <div class="tone-btns">
+            <button class="tone-btn on">다정함</button>
+            <button class="tone-btn">직설적</button>
+            <button class="tone-btn">전문적</button>
+            <button class="tone-btn">공감형</button>
+            <button class="tone-btn">확신형</button>
+            <button class="tone-btn">스토리형</button>
+          </div>
+          <div class="lbl" style="margin-top:12px;font-size:12px;color:#6b7280;font-weight:600;margin-bottom:6px">맞춤형 지침 (선택)</div>
+          <textarea class="textarea-el" placeholder="예: 수학 공식 암기보다 개념 이해를 강조해 주세요." rows="2"></textarea>
+        </div>
+        <div id="comment-manual-opts" class="hidden">
+          <textarea class="textarea-el" placeholder="발송 전 각 학생별로 직접 입력할 수 있어요." rows="3"></textarea>
+        </div>
+      </div>
+
+      <!-- 보고서 테마 (premium) -->
+      <div class="sec">
+        <div class="lbl">보고서 테마 <span class="prem-tag" id="theme-lock">프리미엄</span></div>
+        <div id="theme-prem-block" class="prem-block">
+          <span style="font-size:20px">🔒</span>
+          <p>프리미엄 플랜에서 다양한 테마를 적용할 수 있어요.</p>
+        </div>
+        <div id="theme-options" class="hidden" style="display:flex;gap:10px;flex-wrap:wrap">
+          <div style="border:2px solid #1a3a8f;border-radius:8px;padding:8px 16px;font-size:12px;font-weight:700;color:#1a3a8f;background:#eff6ff">기본 블루</div>
+          <div style="border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 16px;font-size:12px;font-weight:700;color:#374151;cursor:pointer">그린</div>
+          <div style="border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 16px;font-size:12px;font-weight:700;color:#374151;cursor:pointer">다크</div>
+        </div>
+      </div>
+
+      <!-- 학원 로고 -->
+      <div class="sec">
+        <div class="lbl">학원 로고</div>
+        <div class="logo-upload" onclick="alert('이미지 업로드')">
+          📁 클릭하여 로고 이미지를 업로드하세요<br>
+          <span style="font-size:11px">PNG, JPG · 최대 2MB</span>
+        </div>
+      </div>
+
+      <!-- 발송 처리 -->
+      <div class="sec">
+        <div class="lbl">발송 처리</div>
+        <div class="schedule-box" style="gap:14px">
+          <div>
+            <div style="font-size:12px;font-weight:700;color:#6b7280;margin-bottom:8px">채널</div>
+            <div class="channel-btns">
+              <button class="ch-btn on" onclick="toggleCh(this)">💬 알림톡</button>
+              <button class="ch-btn" onclick="toggleCh(this)">🟡 카카오톡</button>
+              <button class="ch-btn" onclick="toggleCh(this)">📱 문자</button>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:#6b7280;margin-bottom:8px">형태</div>
+            <div class="version-btns">
+              <button class="ver-btn on" onclick="toggleVer(this)">📱 모바일</button>
+              <button class="ver-btn" onclick="toggleVer(this)">🖨 프린트</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="wizard-ftr">
+      <button class="btn btn-ghost" onclick="showPage('pg-step1')">← 학생 선택</button>
+      <button class="btn btn-primary" onclick="saveRule()">규칙 저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     OVERLAY: 학생 선택 모달
+════════════════════════════════════════════ -->
+<div class="backdrop hidden" id="stu-modal">
+  <div class="stu-dialog">
+    <div class="stu-hdr">
+      <h3>학생 선택</h3>
+      <button class="close-x" onclick="closeStudentModal()">✕</button>
+    </div>
+    <div class="stu-body">
+      <div class="stu-left">
+        <div class="stu-tabs">
+          <div class="stu-tab on">반</div>
+          <div class="stu-tab">그룹</div>
+          <div class="stu-tab">학년</div>
+          <div class="stu-tab">수업</div>
+        </div>
+        <div class="stu-filter">
+          <input class="stu-search" placeholder="학생 이름 검색…" oninput="filterStudents(this.value)">
+        </div>
+        <div class="stu-groups" id="stu-groups-list"></div>
+      </div>
+      <div class="stu-right">
+        <div class="stu-right-hdr">
+          <div class="stu-count">선택된 학생 <span id="sel-count">0</span>명</div>
+          <button class="stu-reset" onclick="resetStudents()">전체 초기화</button>
+        </div>
+        <div class="stu-selected" id="sel-chips-wrap">
+          <div class="sel-empty" id="sel-empty">선택된 학생이 없어요.<br>왼쪽에서 학생을 추가하세요.</div>
+          <div class="sel-chips" id="sel-chips"></div>
+        </div>
+        <div style="padding:10px 12px;border-top:1px solid #e5e7eb;font-size:11px;color:#9ca3af">
+          * 이미 다른 설정에 포함된 학생은 중복 경고가 표시됩니다.
+        </div>
+      </div>
+    </div>
+    <div class="stu-footer">
+      <button class="btn btn-ghost" onclick="closeStudentModal()">취소</button>
+      <button class="btn btn-primary" onclick="confirmStudents()">선택 완료</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     OVERLAY: 중복 학생 경고
+════════════════════════════════════════════ -->
+<div class="backdrop hidden" id="overlap-modal">
+  <div class="alert-dialog">
+    <h3>⚠️ 학생 중복 안내</h3>
+    <p>선택한 학생 중 <strong>2명</strong>이 다른 설정과 겹쳐요.<br>어떻게 처리할까요?</p>
+    <div class="alert-btns">
+      <button class="btn btn-ghost" onclick="closeOverlap()" style="width:100%">취소</button>
+      <button class="btn btn-ghost" onclick="proceedExclude()" style="width:100%;border-color:#1a3a8f;color:#1a3a8f">중복 학생 제외하고 진행</button>
+      <button class="btn btn-primary" onclick="proceedAll()" style="width:100%">모두 추가하고 진행</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     OVERLAY: 저장 성공
+════════════════════════════════════════════ -->
+<div class="backdrop hidden" id="success-modal">
+  <div class="success-alert">
+    <div class="sa-icon">🎉</div>
+    <div class="sa-title" id="success-title">저장되었습니다!</div>
+    <div class="sa-msg" id="success-msg"></div>
+    <div class="sa-info">
+      ℹ️ 다음 발송일 24시간 전, <strong>발송 대기 학생 관리</strong>에서 보고서 초안이 생성되어 검토할 수 있어요.
+    </div>
+    <button class="btn btn-primary" style="width:100%" onclick="closeSuccess()">확인</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     OVERLAY: 미리보기
+════════════════════════════════════════════ -->
+<div class="preview-overlay hidden" id="preview-overlay">
+  <div class="pv-hdr">
+    <div class="pv-date" id="pv-date">발송 예정: 2025.07.18</div>
+    <div class="pv-hdr-title" style="text-align:center">보고서 미리보기</div>
+    <div class="pv-zoom">
+      <button class="pv-z-btn">−</button>
+      <button class="pv-z-btn">+</button>
+      <button class="pv-z-btn" onclick="closePreview()" style="width:auto;padding:0 10px;font-size:13px;font-weight:600;color:#374151">✕</button>
+    </div>
+  </div>
+  <div class="pv-body">
+    <div class="pv-left">
+      <div style="font-size:11px;font-weight:700;color:#9ca3af;padding:8px 12px;text-transform:uppercase;letter-spacing:.05em">학생 목록</div>
+      <div class="pv-stu-item active">
+        <div>
+          <div class="pv-stu-name">홍길동</div>
+          <div class="pv-stu-meta">중1 · 1반</div>
+        </div>
+      </div>
+      <div class="pv-stu-item">
+        <div>
+          <div class="pv-stu-name">김미미</div>
+          <div class="pv-stu-meta">중1 · 1반</div>
+        </div>
+      </div>
+      <div class="pv-stu-item">
+        <div>
+          <div class="pv-stu-name">신지수</div>
+          <div class="pv-stu-meta">중1 · 2반</div>
+        </div>
+      </div>
+      <div class="pv-stu-item">
+        <div>
+          <div class="pv-stu-name">이도윤</div>
+          <div class="pv-stu-meta">중1 · 2반</div>
+        </div>
+      </div>
+      <div class="pv-stu-item">
+        <div>
+          <div class="pv-stu-name">이현민</div>
+          <div class="pv-stu-meta">중1 · 2반</div>
+        </div>
+      </div>
+      <div class="pv-stu-item">
+        <div>
+          <div class="pv-stu-name">강동원</div>
+          <div class="pv-stu-meta">중1 · 1반</div>
+        </div>
+      </div>
+      <div class="pv-stu-item">
+        <div>
+          <div class="pv-stu-name">정수아</div>
+          <div class="pv-stu-meta">중1 · 2반</div>
+        </div>
+      </div>
+    </div>
+    <div class="pv-center">
+      <div class="pv-card">
+        <div class="pvc-top">
+          <div class="pvc-logo">matholic</div>
+          <div class="pvc-subtitle">수학 학습 보고서</div>
+          <div class="pvc-stu">홍길동 학생</div>
+          <div class="pvc-stu-meta">중학교 1학년 · 1반</div>
+          <div class="pvc-period">2025.07.01 ~ 07.14</div>
+        </div>
+        <div class="pvc-section">
+          <div class="pvc-sec-title">대표 교재</div>
+          <div class="pvc-book">
+            <div class="pvc-book-icon">📘</div>
+            <div>
+              <div class="pvc-book-name">중등 수학 기본 Vol.3</div>
+              <div class="pvc-book-sub">단원: 일차방정식 · 20/32문제 완료</div>
+            </div>
+          </div>
+          <div class="pvc-stats">
+            <div class="pvc-stat"><div class="pvc-stat-val">87%</div><div class="pvc-stat-lbl">정답률</div></div>
+            <div class="pvc-stat"><div class="pvc-stat-val">20</div><div class="pvc-stat-lbl">학습량</div></div>
+            <div class="pvc-stat"><div class="pvc-stat-val">B+</div><div class="pvc-stat-lbl">이해도</div></div>
+          </div>
+        </div>
+        <div class="pvc-section">
+          <div class="pvc-sec-title">선생님 총평</div>
+          <div class="pvc-comment">
+            이번 2주 동안 일차방정식 단원을 꾸준히 학습하여 정답률이 87%로 우수해요.
+            특히 등식의 성질 파트에서 눈에 띄는 향상을 보였어요.
+            다음 단원인 연립방정식 준비를 위해 음수 계수 문제를 조금 더 연습해 보면 좋겠어요. 😊
+          </div>
+        </div>
+        <div class="pvc-footer">
+          <div class="pvc-footer-logo">matholic</div>
+          <div class="pvc-footer-date">2025.07.18 발송 예정</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pv-info-banner">
+    ℹ️ 이 보고서는 발송 24시간 전에 실제 학습 데이터로 초안 생성되었어요. 발송 전 내용을 수정할 수 있어요.
+  </div>
+</div>
+
+<script>
+// ── State ──────────────────────────────────
+let isLight = true;
+let selectedStudents = [];
+let ruleCount = 0;
+
+const STUDENTS = {
+  '중1 1반': ['홍길동','김미미','강동원'],
+  '중1 2반': ['신지수','이도윤','이현민','정수아'],
+  '초1': ['김민준','이서연','박지호','최수아'],
+  '초2': ['박서진','김도영','최지우'],
+};
+
+const EXISTING_RULES = [
+  {name:'중1 전체 주간', cycle:'weekly', cycleLabel:'주간', badgeClass:'badge-green',
+   next:'2025.07.18', count:7, students:['홍길동','김미미','신지수','이도윤','이현민','강동원','정수아'],
+   tags:['교재 채점','학습지','알림톡','모바일']},
+  {name:'중 1-1반 월간', cycle:'monthly', cycleLabel:'월간', badgeClass:'badge-blue',
+   next:'2025.07.31', count:4, students:['홍길동','김미미','강동원','이도윤'],
+   tags:['교재 채점','상세형','알림톡']},
+  {name:'고 3-1반 주간', cycle:'weekly', cycleLabel:'주간', badgeClass:'badge-green',
+   next:'2025.07.18', count:6, students:['박지호','최수아'],
+   tags:['평가','도전학습','카카오톡','모바일']},
+  {name:'중 1-1반 월간 (AI)', cycle:'monthly', cycleLabel:'월간', badgeClass:'badge-blue',
+   next:'2025.07.31', count:3, students:['김민준','이서연'],
+   tags:['교재 채점','AI 어조: 친근한','알림톡']},
+];
+
+// ── Navigation ─────────────────────────────
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  if (id === 'pg-auto') renderRuleCards();
+}
+
+// ── Version toggle ──────────────────────────
+function setVer(light) {
+  isLight = light;
+  ['vb-light','vb-prem','vb-light2','vb-prem2'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const isLightBtn = id.includes('light');
+    el.classList.toggle('on', isLight === isLightBtn);
+  });
+  applyPremLocks();
+}
+
+function applyPremLocks() {
+  // Step 1: 수업 type
+  const ltClass = document.getElementById('lt-class');
+  const chkClass = document.getElementById('chk-class');
+  const ltClassLock = document.getElementById('lt-class-lock');
+  if (ltClass) {
+    if (isLight) {
+      ltClass.classList.add('locked');
+      chkClass.disabled = true;
+      if (ltClassLock) ltClassLock.classList.remove('hidden');
+    } else {
+      ltClass.classList.remove('locked');
+      chkClass.disabled = false;
+      if (ltClassLock) ltClassLock.classList.add('hidden');
+    }
+  }
+  // Step 2: 저장된 템플릿
+  const tmplLock = document.getElementById('tmpl-lock');
+  const tmplPrem = document.getElementById('tmpl-prem-block');
+  const tmplSel = document.getElementById('tmpl-select');
+  if (tmplLock && tmplPrem && tmplSel) {
+    if (isLight) {
+      tmplLock.classList.remove('hidden');
+      tmplPrem.classList.remove('hidden');
+      tmplSel.classList.add('hidden');
+    } else {
+      tmplLock.classList.add('hidden');
+      tmplPrem.classList.add('hidden');
+      tmplSel.classList.remove('hidden');
+    }
+  }
+  // Step 2: 내용 구성 (lock overlay)
+  const contentLock = document.getElementById('content-lock-overlay');
+  if (contentLock) {
+    contentLock.style.display = isLight ? 'flex' : 'none';
+  }
+  // Step 2: 보고서 테마
+  const themeLock = document.getElementById('theme-lock');
+  const themePrem = document.getElementById('theme-prem-block');
+  const themeOpts = document.getElementById('theme-options');
+  if (themeLock && themePrem && themeOpts) {
+    if (isLight) {
+      themeLock.classList.remove('hidden');
+      themePrem.classList.remove('hidden');
+      themeOpts.classList.add('hidden');
+    } else {
+      themeLock.classList.add('hidden');
+      themePrem.classList.add('hidden');
+      themeOpts.classList.remove('hidden');
+      themeOpts.style.display = 'flex';
+    }
+  }
+}
+
+// ── Tab switching ──────────────────────────
+function switchAutoTab(el, tabId) {
+  document.querySelectorAll('.auto-tab').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+  ['tab-rules','tab-pending','tab-history'].forEach(id => {
+    document.getElementById(id).classList.toggle('hidden', id !== tabId);
+  });
+}
+
+// ── Rule cards ─────────────────────────────
+function renderRuleCards() {
+  const list = document.getElementById('rule-cards-list');
+  const empty = document.getElementById('empty-state');
+  const rules = [...EXISTING_RULES];
+  if (rules.length === 0) {
+    list.innerHTML = '';
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+  list.innerHTML = rules.map((r,i) => `
+    <div class="rule-card">
+      <div class="rc-body">
+        <div class="rc-title-row">
+          <div class="rc-name">${r.name}</div>
+          <span class="badge ${r.badgeClass}">${r.cycleLabel}</span>
+        </div>
+        <div class="rc-meta">
+          <span>📅 다음 발송: ${r.next}</span>
+          <span>👥 대상: ${r.count}명 · (${r.students.slice(0,2).join(', ')} 외 ${Math.max(0,r.students.length-2)}명)</span>
+        </div>
+        <div class="rc-tags">
+          ${r.tags.map(t=>`<span class="badge badge-blue">${t}</span>`).join('')}
+        </div>
+      </div>
+      <div class="rc-actions">
+        <button class="icon-btn" title="편집" onclick="editRule(${i})">✏️</button>
+        <button class="icon-btn danger" title="삭제" onclick="deleteRule(${i})">🗑</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function editRule(i) {
+  showPage('pg-step2');
+  document.getElementById('rule-name').value = EXISTING_RULES[i].name;
+}
+function deleteRule(i) {
+  if (confirm(`"${EXISTING_RULES[i].name}" 설정을 삭제할까요?`)) {
+    EXISTING_RULES.splice(i,1);
+    renderRuleCards();
+  }
+}
+
+// ── Student modal ──────────────────────────
+function openStudentModal() {
+  selectedStudents = [];
+  renderStudentGroups('');
+  updateSelChips();
+  document.getElementById('stu-modal').classList.remove('hidden');
+}
+function closeStudentModal() {
+  document.getElementById('stu-modal').classList.add('hidden');
+}
+function renderStudentGroups(filter) {
+  const container = document.getElementById('stu-groups-list');
+  let html = '';
+  for (const [grade, students] of Object.entries(STUDENTS)) {
+    const filtered = students.filter(s => !filter || s.includes(filter));
+    if (!filtered.length) continue;
+    html += `<div class="stu-group">
+      <div class="stu-group-hdr">
+        <div class="stu-grade">${grade}</div>
+        <button class="stu-all-btn" onclick="selectAll('${grade}')">전체 선택</button>
+      </div>
+      <div class="stu-grid">
+        ${filtered.map(s=>`
+          <button class="stu-btn ${selectedStudents.includes(s)?'checked':''}" onclick="toggleStudent('${s}',this)">
+            ${selectedStudents.includes(s)?'✓ ':'+ '}${s}
+          </button>`).join('')}
+      </div>
+    </div>`;
+  }
+  container.innerHTML = html;
+}
+function filterStudents(v) { renderStudentGroups(v); }
+function toggleStudent(name, el) {
+  const idx = selectedStudents.indexOf(name);
+  if (idx >= 0) { selectedStudents.splice(idx,1); }
+  else { selectedStudents.push(name); }
+  el.classList.toggle('checked', selectedStudents.includes(name));
+  el.innerHTML = (selectedStudents.includes(name)?'✓ ':'+ ') + name;
+  updateSelChips();
+}
+function selectAll(grade) {
+  STUDENTS[grade].forEach(s => { if (!selectedStudents.includes(s)) selectedStudents.push(s); });
+  renderStudentGroups('');
+  updateSelChips();
+}
+function resetStudents() { selectedStudents=[]; renderStudentGroups(''); updateSelChips(); }
+function updateSelChips() {
+  document.getElementById('sel-count').textContent = selectedStudents.length;
+  const chips = document.getElementById('sel-chips');
+  const empty = document.getElementById('sel-empty');
+  if (selectedStudents.length===0) { empty.style.display=''; chips.innerHTML=''; return; }
+  empty.style.display='none';
+  chips.innerHTML = selectedStudents.map(s=>`
+    <div class="sel-chip" onclick="removeStudent('${s}')">
+      ${s} <span style="opacity:.6;font-size:10px">✕</span>
+    </div>`).join('');
+}
+function removeStudent(name) {
+  selectedStudents = selectedStudents.filter(s=>s!==name);
+  renderStudentGroups('');
+  updateSelChips();
+}
+function confirmStudents() {
+  if (selectedStudents.length===0) { alert('학생을 선택해 주세요.'); return; }
+  // Check overlap with existing rules
+  const allExisting = EXISTING_RULES.flatMap(r=>r.students);
+  const overlaps = selectedStudents.filter(s=>allExisting.includes(s));
+  closeStudentModal();
+  if (overlaps.length>0) {
+    document.getElementById('overlap-modal').classList.remove('hidden');
+  } else {
+    goToStep1();
+  }
+}
+function closeOverlap() { document.getElementById('overlap-modal').classList.add('hidden'); }
+function proceedExclude() {
+  const allExisting = EXISTING_RULES.flatMap(r=>r.students);
+  selectedStudents = selectedStudents.filter(s=>!allExisting.includes(s));
+  closeOverlap(); goToStep1();
+}
+function proceedAll() { closeOverlap(); goToStep1(); }
+
+function goToStep1() {
+  // Render student list in Step 1
+  const list = document.getElementById('s1-stu-list');
+  const chip = document.getElementById('wiz-stu-chip');
+  chip.textContent = selectedStudents.length + '명 선택됨';
+  document.getElementById('s1-stu-count').textContent = selectedStudents.length + '명';
+  list.innerHTML = selectedStudents.map((s,i)=>`
+    <div class="s1-stu-row ${i===0?'sel':''}" onclick="selectS1Stu(this,'${s}')">
+      <div style="width:8px;height:8px;border-radius:50%;background:${i===0?'#1a3a8f':'#d1d5db'};flex-shrink:0"></div>
+      <div>
+        <div class="s1-stu-name">${s}</div>
+        <div class="s1-stu-meta">교재 채점 · 학습지</div>
+      </div>
+    </div>`).join('');
+  applyPremLocks();
+  showPage('pg-step1');
+}
+
+function selectS1Stu(el, name) {
+  document.querySelectorAll('.s1-stu-row').forEach(r=>r.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('s1-right-title').textContent = name + ' 학습 유형';
+}
+function toggleSameAll(cb) {
+  document.getElementById('stu-toggle-label').textContent = cb.checked ? '— 전체 동일 적용' : '— 학생별 개별 설정';
+  document.querySelectorAll('.s1-stu-row').forEach(r=>{
+    r.style.opacity = cb.checked ? '.5' : '1';
+    r.style.pointerEvents = cb.checked ? 'none' : '';
+  });
+}
+function toggleLT(el, chkId) {
+  if (el.classList.contains('locked')) return;
+  el.classList.toggle('checked');
+  document.getElementById(chkId).checked = el.classList.contains('checked');
+}
+
+function gotoStep2() {
+  const chip2 = document.getElementById('wiz-stu-chip2');
+  chip2.textContent = selectedStudents.length + '명 선택됨';
+  applyPremLocks();
+  showPage('pg-step2');
+}
+
+// ── Step 2 UI ──────────────────────────────
+function updateCycleUI() {
+  const val = document.querySelector('input[name="cycle"]:checked').value;
+  document.getElementById('weekly-opts').classList.toggle('hidden', val!=='weekly');
+  document.getElementById('monthly-opts').classList.toggle('hidden', val!=='monthly');
+}
+function updateCommentUI() {
+  const val = document.querySelector('input[name="comment-type"]:checked').value;
+  document.getElementById('comment-ai-opts').classList.toggle('hidden', val!=='ai');
+  document.getElementById('comment-manual-opts').classList.toggle('hidden', val!=='manual');
+}
+function selectType(el, type) {
+  document.querySelectorAll('.type-sel-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
+function toggleCh(el) {
+  document.querySelectorAll('.ch-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
+function toggleVer(el) {
+  document.querySelectorAll('.ver-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
+function toneBtnClick(el) {
+  document.querySelectorAll('.tone-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
+document.querySelectorAll('.tone-btn').forEach(b=>b.addEventListener('click',()=>toneBtnClick(b)));
+
+function saveRule() {
+  const name = document.getElementById('rule-name').value.trim();
+  if (!name) { document.getElementById('rule-name').focus(); alert('설정명을 입력해 주세요.'); return; }
+  const cycle = document.querySelector('input[name="cycle"]:checked').value;
+  const cycleLabel = {daily:'일간',weekly:'주간',monthly:'월간'}[cycle];
+  const badgeClass = cycle==='monthly'?'badge-blue':'badge-green';
+  const today = new Date();
+  const next = cycle==='monthly'
+    ? `${today.getFullYear()}.${String(today.getMonth()+1).padStart(2,'0')}.${new Date(today.getFullYear(),today.getMonth()+1,0).getDate()}`
+    : `${today.getFullYear()}.${String(today.getMonth()+1).padStart(2,'0')}.${String(today.getDate()+7-today.getDay()).padStart(2,'0')}`;
+
+  EXISTING_RULES.push({
+    name, cycle, cycleLabel, badgeClass,
+    next, count: selectedStudents.length,
+    students: [...selectedStudents],
+    tags: ['교재 채점', cycleLabel, '알림톡']
+  });
+
+  document.getElementById('success-title').textContent = `"${name}"이(가) 저장되었습니다.`;
+  document.getElementById('success-msg').textContent = `${selectedStudents.length}명 학생 대상, ${cycleLabel} 자동 발송이 설정되었어요.`;
+  document.getElementById('success-modal').classList.remove('hidden');
+}
+function closeSuccess() {
+  document.getElementById('success-modal').classList.add('hidden');
+  document.getElementById('rule-name').value = '';
+  selectedStudents = [];
+  showPage('pg-auto');
+}
+
+// ── Preview ────────────────────────────────
+function showPreview() {
+  document.getElementById('preview-overlay').classList.remove('hidden');
+  document.querySelectorAll('.pv-stu-item').forEach(el=>{
+    el.addEventListener('click',function(){
+      document.querySelectorAll('.pv-stu-item').forEach(i=>i.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+}
+function closePreview() {
+  document.getElementById('preview-overlay').classList.add('hidden');
+}
+
+// ── Init ────────────────────────────────────
+renderRuleCards();
+applyPremLocks();
+</script>
+</body>
+</html>
