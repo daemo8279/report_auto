@@ -359,6 +359,373 @@ input[type=checkbox],input[type=radio]{accent-color:#1a3a8f;cursor:pointer;flex-
 .pvc-footer-date{font-size:11px;color:#9ca3af}
 .pv-info-banner{background:#fffbeb;border-top:1px solid #fde68a;padding:10px 20px;font-size:12px;color:#92400e;display:flex;align-items:center;gap:8px;flex-shrink:0}
 </style>
+
+<style id="nr-styles">
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#e8ebf4;min-height:100vh;overflow:hidden;font-size:14px}
+.app-shell{position:fixed;inset:0;background:#f7f8fc;overflow:hidden}
+.app-bar{height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:0 24px;gap:16px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.app-logo{font-weight:900;font-size:17px;color:#1a3a8f}
+.app-nav{display:flex;gap:24px;margin-left:20px}
+.nav-item{font-size:13px;color:#6b7280;cursor:default}
+.nav-item.act{color:#1a3a8f;font-weight:700;border-bottom:2px solid #1a3a8f}
+.ver-toggle-bar{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12px;color:#6b7280}
+.ver-switch{display:flex;border:1.5px solid #e5e7eb;border-radius:20px;overflow:hidden}
+.vs-btn{padding:4px 14px;font-size:12px;font-weight:600;cursor:pointer;border:none;background:none;color:#6b7280;transition:all .1s}
+.vs-btn.on{background:#1a3a8f;color:white}
+.app-content{padding:32px 36px}
+.page-header{display:flex;align-items:center;gap:16px;margin-bottom:28px}
+.page-header h2{font-size:22px;font-weight:800;color:#111827}
+.btn-new{background:#1a3a8f;color:white;border:none;padding:9px 18px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}
+.btn-new:hover{background:#153379}
+.fake-table{background:white;border-radius:12px;border:1px solid #e5e7eb;overflow:hidden}
+.fake-thead{display:grid;grid-template-columns:2fr 2fr 3fr 1fr;padding:10px 20px;background:#f9fafb;border-bottom:1px solid #e5e7eb;font-size:12px;color:#9ca3af;font-weight:600}
+.fake-row{display:grid;grid-template-columns:2fr 2fr 3fr 1fr;padding:14px 20px;border-bottom:1px solid #f3f4f6;align-items:center}
+.fake-row:last-child{border:none}
+.fake-name{font-weight:700;color:#111827}
+.fake-sub{font-size:11px;color:#9ca3af;margin-top:2px}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;margin-right:4px}
+.badge-m{background:#dbeafe;color:#1d4ed8}
+.badge-w{background:#dcfce7;color:#16a34a}
+.fake-period{font-size:13px;color:#374151}
+.fake-course{font-size:13px;color:#6b7280}
+.fake-actions{display:flex;gap:6px}
+.fake-act-btn{padding:4px 10px;border-radius:6px;font-size:12px;font-weight:600;border:1.5px solid #e5e7eb;color:#374151;background:white;cursor:not-allowed}
+.backdrop{position:fixed;inset:0;background:rgba(17,24,39,.55);z-index:50;display:flex;align-items:center;justify-content:center}
+.backdrop.hidden{display:none!important}
+.btn{padding:9px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .1s}
+.btn-primary{background:#1a3a8f;color:white}
+.btn-primary:hover{background:#153379}
+.btn-ghost{background:white;color:#374151;border:1.5px solid #e5e7eb}
+.btn-ghost:hover{background:#f9fafb}
+.close-x{width:30px;height:30px;border:none;background:none;cursor:pointer;font-size:20px;color:#9ca3af;display:flex;align-items:center;justify-content:center;border-radius:6px}
+.close-x:hover{background:#f3f4f6;color:#374151}
+.hidden{display:none!important}
+.prem-tag{background:#fef3c7;color:#d97706;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px}
+.lbl{font-size:13px;font-weight:700;color:#374151;display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.req{color:#ef4444}
+input[type=checkbox],input[type=radio]{accent-color:#1a3a8f;cursor:pointer;flex-shrink:0}
+/* Student modal */
+.stu-dialog{background:white;border-radius:14px;width:900px;max-width:96vw;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.25)}
+.stu-hdr{padding:18px 22px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.stu-hdr h3{font-size:16px;font-weight:800;color:#111827}
+.stu-body{display:grid;grid-template-columns:1fr 240px;flex:1;overflow:hidden;min-height:0}
+.stu-left{display:flex;flex-direction:column;overflow:hidden;border-right:1px solid #e5e7eb}
+.stu-tabs{display:flex;border-bottom:1px solid #e5e7eb;flex-shrink:0}
+.stu-tab{padding:10px 18px;font-size:13px;font-weight:600;color:#9ca3af;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.stu-tab.on{color:#1a3a8f;border-bottom-color:#1a3a8f}
+.stu-filter{padding:10px 14px;display:flex;gap:8px;border-bottom:1px solid #f3f4f6;flex-shrink:0}
+.stu-sel{border:1.5px solid #e5e7eb;border-radius:7px;padding:6px 10px;font-size:13px;color:#374151;outline:none;background:white}
+.stu-search{flex:1;border:1.5px solid #e5e7eb;border-radius:7px;padding:6px 12px;font-size:13px;color:#374151;outline:none}
+.stu-search:focus{border-color:#93c5fd}
+.stu-groups{flex:1;overflow-y:auto;padding:4px 0}
+.stu-group{padding:12px 14px 10px}
+.stu-group-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.stu-grade{font-size:13px;font-weight:700;color:#374151}
+.stu-all-btn{font-size:12px;color:#1d4ed8;background:none;border:none;cursor:pointer;font-weight:600}
+.stu-grid{display:flex;flex-wrap:wrap;gap:7px}
+.stu-btn{border:1.5px solid #e5e7eb;border-radius:20px;padding:5px 12px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:5px;color:#374151;background:white;transition:all .1s;white-space:nowrap}
+.stu-btn:hover{border-color:#93c5fd;background:#f0f7ff}
+.stu-btn.checked{background:#eff6ff;border-color:#1a3a8f;color:#1a3a8f;font-weight:600}
+.stu-right{display:flex;flex-direction:column;overflow:hidden}
+.stu-right-hdr{padding:12px 14px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:#f9fafb}
+.stu-count{font-size:13px;font-weight:700;color:#374151}
+.stu-reset{font-size:12px;color:#6b7280;background:none;border:none;cursor:pointer}
+.stu-selected{flex:1;overflow-y:auto;padding:10px 12px}
+.sel-chips{display:flex;flex-wrap:wrap;gap:7px}
+.sel-chip{background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:20px;padding:4px 10px;font-size:12px;font-weight:600;color:#1d4ed8;display:flex;align-items:center;gap:5px;cursor:pointer}
+.sel-chip:hover{background:#dbeafe}
+.sel-empty{font-size:12px;color:#9ca3af;text-align:center;margin-top:20px;line-height:1.7}
+.stu-footer{padding:14px 20px;border-top:1px solid #e5e7eb;display:flex;justify-content:space-between;flex-shrink:0}
+/* Main modal */
+.modal{background:white;border-radius:14px;width:1060px;max-width:96vw;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.25)}
+.type-phase{padding:40px 44px 36px;display:flex;flex-direction:column}
+.type-phase-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px}
+.type-phase h2{font-size:20px;font-weight:800;color:#111827}
+.type-sub{font-size:13px;color:#6b7280;margin:6px 0 32px;line-height:1.6}
+.type-grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:640px;margin:0 auto 32px;width:100%}
+.type-card{border:2px solid #e5e7eb;border-radius:14px;padding:32px 24px;cursor:pointer;text-align:center;position:relative;transition:all .15s;user-select:none}
+.type-card:not(.locked):hover{border-color:#93c5fd;background:#f0f7ff}
+.type-card.sel{border-color:#1a3a8f;background:#eff6ff;box-shadow:0 0 0 3px #bfdbfe44}
+.type-card.locked{opacity:.5;cursor:not-allowed;background:#f9fafb}
+.tc-icon{font-size:40px;margin-bottom:14px;line-height:1}
+.tc-name{font-size:16px;font-weight:800;color:#111827;margin-bottom:8px}
+.tc-desc{font-size:12px;color:#9ca3af;line-height:1.6}
+.prem-badge-card{position:absolute;top:12px;right:12px;background:#fef3c7;color:#d97706;font-size:11px;font-weight:700;padding:3px 9px;border-radius:10px}
+.light-note{background:#fef9c3;border:1px solid #fde68a;border-radius:8px;padding:10px 14px;font-size:12px;color:#92400e;margin-bottom:28px;max-width:640px;margin-left:auto;margin-right:auto;width:100%}
+.type-footer{display:flex;justify-content:space-between;align-items:center}
+.stu-chips-mini{display:flex;gap:5px;flex-wrap:wrap}
+.stu-chip-mini{background:#eff6ff;color:#1d4ed8;font-size:12px;font-weight:600;padding:2px 9px;border-radius:12px}
+/* Stepper */
+.modal-hdr{padding:20px 24px 0;border-bottom:1px solid #e5e7eb;flex-shrink:0}
+.hdr-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.modal-title-wrap{display:flex;align-items:center;gap:10px}
+.modal-title{font-size:16px;font-weight:800;color:#111827}
+.type-chip{background:#eff6ff;color:#1d4ed8;font-size:12px;font-weight:700;padding:3px 11px;border-radius:20px}
+.stepper{display:flex;align-items:center;overflow-x:auto}
+.st{display:flex;align-items:center;gap:6px;padding:9px 10px 11px;font-size:12px;color:#9ca3af;white-space:nowrap}
+.st.active{color:#1a3a8f;font-weight:700;border-bottom:2px solid #1a3a8f}
+.st.done{color:#6b7280}
+.st-n{width:20px;height:20px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.st.active .st-n{background:#1a3a8f;color:white;border-color:#1a3a8f}
+.st.done .st-n{background:#6b7280;color:white;border-color:#6b7280}
+.st-sep{color:#d1d5db;font-size:12px;margin-bottom:6px;flex-shrink:0}
+.modal-body{flex:1;overflow-y:auto;padding:24px;min-height:0}
+.modal-ftr{padding:14px 24px;border-top:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;background:white}
+.scr{display:none}
+.scr.on{display:block}
+.hint-box{background:#eff6ff;border-radius:8px;padding:11px 15px;font-size:12px;color:#1d4ed8;margin-bottom:20px;line-height:1.6;border:1px solid #bfdbfe}
+/* Step 1 */
+.sec{margin-bottom:22px}
+.date-row{display:flex;align-items:center;gap:10px}
+.period-badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap}
+.period-badge.daily{background:#fef3c7;color:#d97706}
+.period-badge.weekly{background:#dbeafe;color:#1d4ed8}
+.period-badge.monthly{background:#dcfce7;color:#16a34a}
+.date-in{border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 14px;font-size:14px;color:#374151;width:160px;outline:none;background:white}
+.date-in:focus{border-color:#93c5fd}
+.scope-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.s-tab{padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;border:1.5px solid #e5e7eb;color:#374151;background:white;transition:all .1s;display:flex;align-items:center;gap:5px}
+.s-tab.on{background:#1a3a8f;color:white;border-color:#1a3a8f}
+.s-tab.locked{opacity:.5;cursor:not-allowed;color:#9ca3af}
+.learn-group{border:1px solid #e5e7eb;border-radius:8px;margin-bottom:8px;overflow:hidden}
+.lg-head{padding:10px 14px;background:#f9fafb;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#374151;cursor:pointer;user-select:none}
+.lg-head .arrow{margin-left:auto;color:#9ca3af;font-size:11px}
+.lg-body{padding:8px 14px 12px;display:flex;flex-direction:column;gap:7px}
+.li{display:flex;align-items:center;gap:8px;font-size:13px;color:#374151}
+.auto-section{margin-top:20px;border-top:1px solid #e5e7eb;padding-top:20px}
+.auto-row{margin-bottom:20px}
+.auto-label{font-size:13px;font-weight:700;color:#374151;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.auto-note{font-size:11px;color:#9ca3af;font-weight:400}
+.auto-tags{display:flex;gap:8px;flex-wrap:wrap}
+.auto-sub{font-size:12px;color:#374151;margin:8px 0 4px}
+.auto-tag{border:1.5px solid #bfdbfe;border-radius:8px;padding:6px 14px;font-size:13px;font-weight:600;color:#1d4ed8;background:#eff6ff;cursor:default}
+.auto-tag.sel{border-color:#1a3a8f;background:#dbeafe}
+.diff-tag{border:1.5px solid #e5e7eb;border-radius:8px;padding:6px 14px;font-size:13px;font-weight:600;color:#374151;background:white;cursor:pointer;transition:all .1s}
+.diff-tag.on{border-color:#1a3a8f;background:#eff6ff;color:#1a3a8f}
+/* Step 2 */
+.s2-section{padding:18px 0}
+.s2-section:first-child{padding-top:0}
+.s2-divider{height:1px;background:#f0f0f0;border:none;margin:0}
+.s2-row-label{font-size:14px;font-weight:700;color:#111827;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.template-bar{display:flex;align-items:flex-start;gap:16px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:14px 16px}
+.template-bar.locked{opacity:.45;pointer-events:none}
+.template-bar-left{flex:1}
+.template-bar-title{font-size:13px;font-weight:700;color:#374151}
+.template-sel{border:1.5px solid #e5e7eb;border-radius:7px;padding:7px 12px;font-size:13px;color:#374151;outline:none;background:white;min-width:160px}
+.prem-lock-notice{display:flex;align-items:center;gap:6px;font-size:12px;color:#b45309;background:#fef3c7;padding:8px 12px;border-radius:7px;margin-top:10px}
+.ctype-btns{display:flex;gap:8px;margin-bottom:14px}
+.ctype-btn{padding:6px 18px;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;border:1.5px solid #e5e7eb;background:white;color:#374151;transition:all .1s}
+.ctype-btn.on{background:#1a3a8f;color:white;border-color:#1a3a8f}
+.content-cks{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:6px}
+.ck-item{display:flex;align-items:center;gap:7px;font-size:13px;color:#374151;border:1.5px solid #e5e7eb;border-radius:8px;padding:10px 12px;cursor:pointer;transition:all .1s}
+.ck-item.checked{border-color:#1a3a8f;background:#eff6ff}
+.radio-row{display:flex;gap:16px;flex-wrap:wrap}
+.r-item{display:flex;align-items:center;gap:5px;font-size:13px;color:#374151;cursor:pointer}
+.sub-lbl{font-size:12px;color:#6b7280;margin:12px 0 6px;font-weight:600}
+.sel-input{width:100%;max-width:360px;border:1.5px solid #e5e7eb;border-radius:7px;padding:8px 12px;font-size:13px;color:#374151;outline:none;background:white}
+.theme-row{display:flex;gap:12px}
+.th-card{border:2px solid #e5e7eb;border-radius:10px;padding:10px;cursor:pointer;text-align:center;transition:border-color .1s;width:96px}
+.th-card.on{border-color:#1a3a8f}
+.th-thumb{width:72px;height:92px;border-radius:5px;margin:0 auto 8px}
+.t1{background:linear-gradient(160deg,#dbeafe,#93c5fd)}
+.t2{background:linear-gradient(160deg,#f3f4f6,#d1d5db)}
+.t3{background:linear-gradient(160deg,#fef3c7,#fde68a)}
+.t4{background:linear-gradient(160deg,#dcfce7,#86efac)}
+.th-name{font-size:12px;color:#374151;font-weight:600}
+/* Step 3: AI 코멘트 – full table + popup */
+.s3-wrap{position:relative;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;height:480px;display:flex;flex-direction:column}
+.s3-hdr{padding:12px 16px;border-bottom:1px solid #e5e7eb;background:white;flex-shrink:0;display:flex;align-items:center;justify-content:space-between}
+.s3-sel-info{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#374151}
+.s3-view-btns{display:flex;gap:4px}
+.s3-vbtn{width:28px;height:28px;border:1.5px solid #e5e7eb;border-radius:6px;background:none;cursor:pointer;font-size:14px;color:#6b7280;line-height:1;display:flex;align-items:center;justify-content:center}
+.s3-vbtn.on{background:#1a3a8f;color:white;border-color:#1a3a8f}
+.s3-col{display:grid;grid-template-columns:44px 1fr 115px 82px 72px 76px 1fr 100px}
+.s3-th{padding:8px 16px;background:#f9fafb;border-bottom:1px solid #e5e7eb;font-size:11px;font-weight:600;color:#9ca3af;flex-shrink:0}
+.s3-tbody{flex:1;overflow-y:auto}
+.s3-tr{padding:11px 16px;border-bottom:1px solid #f3f4f6;align-items:center;font-size:13px;transition:background .1s;cursor:default}
+.s3-tr:hover{background:#fafafa}
+.s3-tr.unc{opacity:.55}
+.s3-stu-cell{min-width:0}
+.s3-stu-name{font-size:13px;font-weight:600;color:#111827;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s3-stu-meta{font-size:10px;color:#9ca3af;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s3-amount{font-size:12px;color:#374151;line-height:1.55}
+.s3-pct{font-size:13px;color:#374151;font-weight:500}
+.s3-ai-btn{width:28px;height:28px;background:#fff7ed;border:1.5px solid #fed7aa;border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:background .1s;flex-shrink:0}
+.s3-ai-btn:hover{background:#ffedd5}
+.s3-course{font-size:12px;color:#374151;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:8px}
+.s3-status{font-size:11px;font-weight:600}
+.s3-status.editing{color:#f59e0b}.s3-status.done{color:#10b981}.s3-status.pending{color:#9ca3af}
+.ai-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot-g{background:#10b981}.dot-y{background:#f59e0b}.dot-gr{background:#d1d5db}
+/* S3 popup */
+.s3-popup-layer{position:absolute;inset:0;background:rgba(17,24,39,.18);z-index:20;display:flex;align-items:center;justify-content:center}
+.s3-popup-layer.hidden{display:none!important}
+.s3-popup{background:white;border-radius:12px;width:440px;max-height:92%;box-shadow:0 8px 32px rgba(0,0,0,.2);display:flex;flex-direction:column;overflow:hidden}
+.s3-popup-hdr{padding:14px 18px;border-bottom:1px solid #e5e7eb;flex-shrink:0;display:flex;align-items:center;gap:8px}
+.s3-popup-ico{background:#e0e7ff;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;color:#4338ca}
+.s3-popup-title{font-size:14px;font-weight:700;color:#111827}
+.s3-popup-body{padding:16px 18px;overflow-y:auto;flex:1}
+.s3-popup-ftr{padding:12px 18px;border-top:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+/* popup form fields */
+.ail-field{margin-bottom:14px}
+.ail-field-lbl{font-size:12px;font-weight:700;color:#374151;margin-bottom:6px}
+.ail-radios{display:flex;gap:12px;flex-wrap:wrap}
+.ail-ra{display:flex;align-items:center;gap:5px;font-size:13px;color:#374151;cursor:pointer}
+.ail-memo{width:100%;border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 12px;font-size:12px;color:#374151;outline:none;resize:vertical;min-height:64px;font-family:inherit;line-height:1.6}
+.ail-memo:focus{border-color:#93c5fd}
+.ail-preview{background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;padding:12px;font-size:12px;color:#374151;line-height:1.7;min-height:60px}
+.ail-regen{font-size:12px;color:#1d4ed8;background:none;border:none;cursor:pointer;font-weight:600}
+/* Report Viewer */
+.rv-overlay{position:fixed;inset:0;background:white;z-index:200;display:flex;flex-direction:column}
+.rv-overlay.hidden{display:none!important}
+.rv-hdr{height:52px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:0 20px;gap:12px;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.rv-hdr-title{font-size:15px;font-weight:800;color:#111827;flex:1}
+.rv-hdr-right{display:flex;align-items:center;gap:8px}
+.rv-zoom{display:flex;align-items:center;border:1.5px solid #e5e7eb;border-radius:7px;overflow:hidden;margin-right:4px}
+.rv-zoom-btn{width:28px;height:28px;background:none;border:none;cursor:pointer;font-size:15px;color:#374151;line-height:1}
+.rv-zoom-val{font-size:12px;font-weight:600;color:#374151;padding:0 8px;border-left:1px solid #e5e7eb;border-right:1px solid #e5e7eb;min-width:44px;text-align:center}
+.rv-body{flex:1;display:grid;grid-template-columns:220px 1fr;overflow:hidden}
+.rv-left{border-right:1px solid #e5e7eb;overflow-y:auto;background:#f9fafb;display:flex;flex-direction:column}
+.rv-left-hdr{padding:12px 14px;font-size:12px;font-weight:700;color:#374151;border-bottom:1px solid #e5e7eb;background:white;flex-shrink:0}
+.rv-stu-row{padding:10px 12px;border-bottom:1px solid #f3f4f6;cursor:pointer;transition:background .1s}
+.rv-stu-row:hover:not(.act){background:#f0f7ff}
+.rv-stu-row.act{background:#eff6ff}
+.rv-stu-name{font-size:13px;font-weight:600;color:#374151;margin-bottom:6px}
+.rv-stu-row.act .rv-stu-name{color:#1a3a8f}
+.rv-stu-acts{display:flex;gap:5px}
+.rv-act-btn{flex:1;padding:5px 0;font-size:11px;font-weight:600;border:1.5px solid #e5e7eb;border-radius:6px;background:white;cursor:pointer;color:#374151;text-align:center;transition:all .1s}
+.rv-act-btn:hover{background:#eff6ff;border-color:#93c5fd;color:#1a3a8f}
+.rv-center{overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:28px 20px;background:#e8ebf4;gap:0}
+.rv-page-badge{background:rgba(0,0,0,.45);color:white;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;align-self:flex-start;margin-bottom:12px}
+.rv-report-wrap{transform-origin:top center;transition:transform .2s}
+.rv-card{background:white;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,.14);padding:36px 30px;width:430px;min-height:560px}
+.rv-card-brand{text-align:center;font-size:10px;font-weight:800;color:#1a3a8f;letter-spacing:3px;margin-bottom:18px}
+.rv-card-eyebrow{font-size:12px;color:#6b7280;margin-bottom:4px}
+.rv-card-h1{font-size:30px;font-weight:900;color:#1a3a8f;margin-bottom:6px}
+.rv-card-date{font-size:11px;color:#9ca3af;margin-bottom:22px}
+.rv-card-sec{margin-bottom:18px}
+.rv-card-sec-t{font-size:11px;font-weight:700;color:#374151;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid #f3f4f6}
+.rv-card-bar-row{display:flex;flex-direction:column;gap:5px}
+.rv-card-bar{height:7px;background:#f3f4f6;border-radius:4px;overflow:hidden}
+.rv-card-fill{height:100%;border-radius:4px}
+.rv-card-comment{font-size:11px;color:#374151;line-height:1.8;padding:10px;background:#f8fafc;border-radius:8px}
+.rv-card-footer{display:flex;justify-content:space-between;margin-top:24px;font-size:10px;color:#9ca3af;padding-top:12px;border-top:1px solid #f3f4f6}
+/* S4 template lock */
+.s4-tmpl-lock{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:#9ca3af;padding:5px 12px;border:1.5px dashed #d1d5db;border-radius:7px;background:#f9fafb;cursor:default;white-space:nowrap}
+/* Step 4: 미리보기 */
+.s4-layout{display:grid;grid-template-columns:190px 1fr 218px;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;height:480px}
+.s4-left{border-right:1px solid #e5e7eb;display:flex;flex-direction:column;overflow:hidden;background:#f9fafb}
+.s4l-hdr{padding:10px 14px;font-size:12px;font-weight:700;color:#374151;border-bottom:1px solid #e5e7eb;background:white;flex-shrink:0}
+.pv-stu{padding:9px 12px;display:flex;align-items:center;gap:8px;cursor:pointer;border-bottom:1px solid #f3f4f6;transition:background .1s}
+.pv-stu.act{background:#eff6ff}
+.pv-stu:hover:not(.act){background:#f0f7ff}
+.pv-stu-info{flex:1;min-width:0}
+.pv-stu-name{font-size:13px;font-weight:600;color:#374151}
+.pv-stu-meta{font-size:10px;color:#9ca3af;margin-top:1px}
+.pv-stu.act .pv-stu-name{color:#1a3a8f}
+.stu-nm{flex:1;font-size:13px}
+.s4-center{display:flex;flex-direction:column;background:#f8fafc;min-width:0}
+.s4c-toolbar{padding:8px 10px;display:flex;align-items:center;gap:7px;border-bottom:1px solid #e5e7eb;background:white;flex-shrink:0}
+.s4c-title{font-size:12px;font-weight:700;color:#374151;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s4-page-badge{background:#e0e7ff;color:#4338ca;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap}
+.ver-toggle{display:flex;border:1.5px solid #e5e7eb;border-radius:8px;overflow:hidden}
+.vt-btn{padding:3px 10px;font-size:11px;font-weight:600;cursor:pointer;border:none;background:none;color:#6b7280;transition:all .1s}
+.vt-btn.on{background:#1a3a8f;color:white}
+.s4-zoom{display:flex;align-items:center;border:1.5px solid #e5e7eb;border-radius:7px;overflow:hidden}
+.s4-zoom-btn{padding:2px 8px;background:none;border:none;cursor:pointer;font-size:14px;color:#6b7280;line-height:1.4}
+.s4-zoom-btn:hover{background:#f3f4f6}
+.s4-zoom-val{font-size:11px;font-weight:600;color:#374151;padding:0 4px;min-width:34px;text-align:center;border-left:1px solid #e5e7eb;border-right:1px solid #e5e7eb}
+.s4c-pv{flex:1;overflow-y:auto;display:flex;align-items:flex-start;justify-content:center;padding:20px}
+.s4c-footer{padding:8px 14px;border-top:1px solid #e5e7eb;background:white;display:flex;justify-content:flex-end;flex-shrink:0}
+.s4-tmpl-btn{background:none;border:1.5px solid #e5e7eb;border-radius:7px;padding:5px 12px;font-size:12px;font-weight:600;color:#374151;cursor:pointer}
+.s4-tmpl-btn:hover{background:#f9fafb}
+.report-card{background:white;border-radius:8px;box-shadow:0 2px 14px rgba(0,0,0,.12);padding:28px 22px;transition:width .2s;min-height:360px}
+.report-card.print{width:300px}
+.report-card.mobile{width:200px}
+.rc-logo{font-size:10px;color:#9ca3af;text-align:center;margin-bottom:14px}
+.rc-title{font-size:18px;font-weight:800;color:#1a3a8f;margin-bottom:3px}
+.rc-sub{font-size:10px;color:#9ca3af;margin-bottom:18px}
+.rc-sec{margin-bottom:14px}
+.rc-sec-t{font-size:10px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid #e5e7eb;padding-bottom:4px;margin-bottom:8px}
+.rc-bar{height:7px;border-radius:4px;background:#e5e7eb;margin-bottom:5px;overflow:hidden}
+.rc-fill{height:100%;border-radius:4px}
+.rc-comment{font-size:10px;color:#374151;line-height:1.7;background:#f9fafb;border-radius:5px;padding:9px;margin-top:4px}
+.s4-right{display:flex;flex-direction:column;overflow:hidden;background:#f9fafb;border-left:1px solid #e5e7eb}
+.s4r-hdr{padding:9px 12px;border-bottom:1px solid #e5e7eb;background:white;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:6px}
+.s4r-hdr-title{font-size:12px;font-weight:700;color:#374151}
+.s4r-toggle{display:flex;align-items:center;gap:4px;font-size:10px;color:#6b7280;cursor:pointer;white-space:nowrap}
+.s4r-toggle input{accent-color:#1a3a8f}
+.pg-grid{flex:1;overflow-y:auto;padding:8px;display:grid;grid-template-columns:1fr 1fr;gap:6px;align-content:start}
+.pg-thumb{border-radius:6px;overflow:hidden;border:2px solid #e5e7eb;cursor:pointer;transition:border-color .1s;background:white}
+.pg-thumb.act{border-color:#1a3a8f}
+.pg-thumb:hover:not(.act){border-color:#93c5fd}
+.pg-img{background:#f3f4f6;height:60px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#9ca3af;font-weight:600;border-bottom:1px solid #f0f0f0;text-align:center;padding:4px}
+.pg-num{padding:3px 6px;font-size:10px;font-weight:700;color:#374151;text-align:center}
+.pg-actions{display:flex;justify-content:space-between;padding:2px 6px 4px}
+.pg-action{font-size:9px;border:none;background:none;cursor:pointer;color:#6b7280;font-weight:600;padding:0}
+.page-lock{background:#fef3c7;border:1px solid #fde68a;border-radius:7px;padding:8px 10px;font-size:11px;color:#92400e;text-align:center;margin:8px;line-height:1.5;flex-shrink:0}
+.s4r-footer{padding:10px 12px;border-top:1px solid #e5e7eb;background:white;flex-shrink:0}
+.s4r-hdr span{font-size:11px;font-weight:400;color:#9ca3af}
+.pg-thumb{margin:8px;border:2px solid transparent;border-radius:7px;cursor:pointer;padding:4px;background:white;box-shadow:0 1px 3px rgba(0,0,0,.07);transition:border-color .1s}
+.pg-thumb.act{border-color:#1a3a8f}
+.pg-thumb:hover:not(.act){border-color:#93c5fd}
+.pg-img{width:100%;height:86px;background:#f3f4f6;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#9ca3af}
+.pg-num{font-size:10px;text-align:center;color:#6b7280;margin-top:3px}
+.pg-actions{display:flex;gap:4px;justify-content:center;margin-top:4px;opacity:0;transition:opacity .1s}
+.pg-thumb:hover .pg-actions{opacity:1}
+.pg-action{font-size:10px;color:#6b7280;background:#f3f4f6;border:none;border-radius:4px;padding:2px 6px;cursor:pointer}
+.page-lock{display:none;margin:10px 8px;border:1.5px solid #fde68a;border-radius:8px;background:#fffbeb;padding:12px;text-align:center;font-size:11px;color:#92400e;line-height:1.6}
+/* Step 5: 생성하기 */
+.generate-wrap{display:flex;flex-direction:column;align-items:center;padding:20px 0}
+.gen-summary{width:100%;max-width:560px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;margin-bottom:24px}
+.gen-opt-btn{padding:8px 18px;border:1.5px solid #e5e7eb;border-radius:8px;background:white;font-size:13px;font-weight:500;color:#374151;cursor:pointer;transition:all .15s}
+.gen-opt-btn:hover{background:#f9fafb}
+.gen-opt-btn.on{background:#1a3a8f;color:white;border-color:#1a3a8f;font-weight:700}
+.gen-sum-title{padding:14px 20px;background:#f0f2f8;font-size:14px;font-weight:700;color:#374151;border-bottom:1px solid #e5e7eb}
+.gen-sum-row{display:flex;justify-content:space-between;align-items:center;padding:10px 20px;border-bottom:1px solid #f3f4f6;font-size:13px}
+.gen-sum-row:last-child{border:none}
+.gen-sum-lbl{color:#6b7280}
+.gen-sum-val{font-weight:600;color:#111827}
+.gen-btn-area{display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;max-width:560px}
+.btn-generate{background:#1a3a8f;color:white;border:none;padding:14px 48px;border-radius:10px;font-size:16px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:10px}
+.btn-generate:hover{background:#153379}
+.gen-result{display:none;width:100%;border:1px solid #d1fae5;background:#f0fdf4;border-radius:12px;padding:18px 20px;text-align:center}
+.gen-result-ico{font-size:40px;margin-bottom:8px}
+.gen-result-msg{font-size:14px;font-weight:700;color:#065f46;margin-bottom:4px}
+.gen-result-sub{font-size:12px;color:#6b7280;margin-bottom:16px}
+.gen-send-btns{display:flex;gap:12px;justify-content:center}
+.btn-print{background:white;color:#1a3a8f;border:2px solid #1a3a8f;padding:11px 28px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px}
+.btn-print:hover{background:#eff6ff}
+.btn-send-big{background:#1a3a8f;color:white;border:none;padding:11px 28px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px}
+.btn-send-big:hover{background:#153379}
+/* Dispatch modal */
+.dispatch-overlay{position:fixed;inset:0;z-index:200;background:rgba(17,24,39,.5);display:flex;align-items:center;justify-content:center}
+.dispatch-card{background:white;border-radius:14px;width:480px;max-width:96vw;box-shadow:0 20px 60px rgba(0,0,0,.25);overflow:hidden}
+.dispatch-hdr{padding:20px 24px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between}
+.dispatch-hdr h3{font-size:16px;font-weight:800;color:#111827}
+.dispatch-body{padding:22px 24px}
+.dispatch-sec{margin-bottom:20px}
+.dispatch-sec:last-child{margin-bottom:0}
+.dispatch-lbl{font-size:13px;font-weight:700;color:#374151;margin-bottom:10px;display:flex;align-items:center;gap:5px}
+.dispatch-ch{display:flex;flex-direction:column;gap:8px}
+.d-ch-opt{border:2px solid #e5e7eb;border-radius:10px;padding:11px 14px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:all .1s}
+.d-ch-opt:hover{border-color:#93c5fd}
+.d-ch-opt.on{border-color:#1a3a8f;background:#eff6ff}
+.d-ch-ico{width:34px;height:34px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.d-ch-name{font-size:13px;font-weight:700;color:#111827}
+.d-ch-desc{font-size:11px;color:#9ca3af}
+.dispatch-ver{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.d-ver-card{border:2px solid #e5e7eb;border-radius:10px;padding:16px;cursor:pointer;text-align:center;transition:all .1s}
+.d-ver-card:hover{border-color:#93c5fd;background:#f0f7ff}
+.d-ver-card.on{border-color:#1a3a8f;background:#eff6ff}
+.d-ver-icon{font-size:28px;margin-bottom:8px}
+.d-ver-name{font-size:14px;font-weight:700;color:#111827;margin-bottom:4px}
+.d-ver-desc{font-size:11px;color:#9ca3af}
+.dispatch-ftr{padding:14px 24px;border-top:1px solid #e5e7eb;display:flex;justify-content:space-between}
+
+</style>
 </head>
 <body>
 
@@ -386,7 +753,7 @@ input[type=checkbox],input[type=radio]{accent-color:#1a3a8f;cursor:pointer;flex-
     <div class="page-header">
       <h2>보고서</h2>
       <button class="btn btn-outline-blue" onclick="showPage('pg-auto')">⚡ 보고서 자동 발송 설정</button>
-      <button class="btn btn-primary" onclick="openNewReport()">+ 새 보고서 만들기</button>
+      <button class="btn btn-primary" onclick="nr_openStudentModal()">+ 새 보고서 만들기</button>
     </div>
     <!-- Report table -->
     <div class="fake-table">
@@ -1585,23 +1952,6 @@ function saveAIComment() {
   }
   closeAIModal();
 }
-
-// ===== 새 보고서 만들기 (iframe Blob 방식) =====
-const _genHtml = "<!DOCTYPE html>\n<html lang=\"ko\">\n<head>\n<meta charset=\"UTF-8\">\n<title>보고서 생성 모듈 — 개선안 v4<\/title>\n<style>\n*{box-sizing:border-box;margin:0;padding:0}\nbody{font-family:-apple-system,'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#e8ebf4;min-height:100vh;overflow:hidden;font-size:14px}\n.app-shell{position:fixed;inset:0;background:#f7f8fc;overflow:hidden}\n.app-bar{height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:0 24px;gap:16px;box-shadow:0 1px 3px rgba(0,0,0,.05)}\n.app-logo{font-weight:900;font-size:17px;color:#1a3a8f}\n.app-nav{display:flex;gap:24px;margin-left:20px}\n.nav-item{font-size:13px;color:#6b7280;cursor:default}\n.nav-item.act{color:#1a3a8f;font-weight:700;border-bottom:2px solid #1a3a8f}\n.ver-toggle-bar{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12px;color:#6b7280}\n.ver-switch{display:flex;border:1.5px solid #e5e7eb;border-radius:20px;overflow:hidden}\n.vs-btn{padding:4px 14px;font-size:12px;font-weight:600;cursor:pointer;border:none;background:none;color:#6b7280;transition:all .1s}\n.vs-btn.on{background:#1a3a8f;color:white}\n.app-content{padding:32px 36px}\n.page-header{display:flex;align-items:center;gap:16px;margin-bottom:28px}\n.page-header h2{font-size:22px;font-weight:800;color:#111827}\n.btn-new{background:#1a3a8f;color:white;border:none;padding:9px 18px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}\n.btn-new:hover{background:#153379}\n.fake-table{background:white;border-radius:12px;border:1px solid #e5e7eb;overflow:hidden}\n.fake-thead{display:grid;grid-template-columns:2fr 2fr 3fr 1fr;padding:10px 20px;background:#f9fafb;border-bottom:1px solid #e5e7eb;font-size:12px;color:#9ca3af;font-weight:600}\n.fake-row{display:grid;grid-template-columns:2fr 2fr 3fr 1fr;padding:14px 20px;border-bottom:1px solid #f3f4f6;align-items:center}\n.fake-row:last-child{border:none}\n.fake-name{font-weight:700;color:#111827}\n.fake-sub{font-size:11px;color:#9ca3af;margin-top:2px}\n.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;margin-right:4px}\n.badge-m{background:#dbeafe;color:#1d4ed8}\n.badge-w{background:#dcfce7;color:#16a34a}\n.fake-period{font-size:13px;color:#374151}\n.fake-course{font-size:13px;color:#6b7280}\n.fake-actions{display:flex;gap:6px}\n.fake-act-btn{padding:4px 10px;border-radius:6px;font-size:12px;font-weight:600;border:1.5px solid #e5e7eb;color:#374151;background:white;cursor:not-allowed}\n.backdrop{position:fixed;inset:0;background:rgba(17,24,39,.55);z-index:50;display:flex;align-items:center;justify-content:center}\n.backdrop.hidden{display:none!important}\n.btn{padding:9px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .1s}\n.btn-primary{background:#1a3a8f;color:white}\n.btn-primary:hover{background:#153379}\n.btn-ghost{background:white;color:#374151;border:1.5px solid #e5e7eb}\n.btn-ghost:hover{background:#f9fafb}\n.close-x{width:30px;height:30px;border:none;background:none;cursor:pointer;font-size:20px;color:#9ca3af;display:flex;align-items:center;justify-content:center;border-radius:6px}\n.close-x:hover{background:#f3f4f6;color:#374151}\n.hidden{display:none!important}\n.prem-tag{background:#fef3c7;color:#d97706;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px}\n.lbl{font-size:13px;font-weight:700;color:#374151;display:flex;align-items:center;gap:6px;margin-bottom:8px}\n.req{color:#ef4444}\ninput[type=checkbox],input[type=radio]{accent-color:#1a3a8f;cursor:pointer;flex-shrink:0}\n/* Student modal */\n.stu-dialog{background:white;border-radius:14px;width:900px;max-width:96vw;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.25)}\n.stu-hdr{padding:18px 22px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}\n.stu-hdr h3{font-size:16px;font-weight:800;color:#111827}\n.stu-body{display:grid;grid-template-columns:1fr 240px;flex:1;overflow:hidden;min-height:0}\n.stu-left{display:flex;flex-direction:column;overflow:hidden;border-right:1px solid #e5e7eb}\n.stu-tabs{display:flex;border-bottom:1px solid #e5e7eb;flex-shrink:0}\n.stu-tab{padding:10px 18px;font-size:13px;font-weight:600;color:#9ca3af;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}\n.stu-tab.on{color:#1a3a8f;border-bottom-color:#1a3a8f}\n.stu-filter{padding:10px 14px;display:flex;gap:8px;border-bottom:1px solid #f3f4f6;flex-shrink:0}\n.stu-sel{border:1.5px solid #e5e7eb;border-radius:7px;padding:6px 10px;font-size:13px;color:#374151;outline:none;background:white}\n.stu-search{flex:1;border:1.5px solid #e5e7eb;border-radius:7px;padding:6px 12px;font-size:13px;color:#374151;outline:none}\n.stu-search:focus{border-color:#93c5fd}\n.stu-groups{flex:1;overflow-y:auto;padding:4px 0}\n.stu-group{padding:12px 14px 10px}\n.stu-group-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}\n.stu-grade{font-size:13px;font-weight:700;color:#374151}\n.stu-all-btn{font-size:12px;color:#1d4ed8;background:none;border:none;cursor:pointer;font-weight:600}\n.stu-grid{display:flex;flex-wrap:wrap;gap:7px}\n.stu-btn{border:1.5px solid #e5e7eb;border-radius:20px;padding:5px 12px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:5px;color:#374151;background:white;transition:all .1s;white-space:nowrap}\n.stu-btn:hover{border-color:#93c5fd;background:#f0f7ff}\n.stu-btn.checked{background:#eff6ff;border-color:#1a3a8f;color:#1a3a8f;font-weight:600}\n.stu-right{display:flex;flex-direction:column;overflow:hidden}\n.stu-right-hdr{padding:12px 14px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:#f9fafb}\n.stu-count{font-size:13px;font-weight:700;color:#374151}\n.stu-reset{font-size:12px;color:#6b7280;background:none;border:none;cursor:pointer}\n.stu-selected{flex:1;overflow-y:auto;padding:10px 12px}\n.sel-chips{display:flex;flex-wrap:wrap;gap:7px}\n.sel-chip{background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:20px;padding:4px 10px;font-size:12px;font-weight:600;color:#1d4ed8;display:flex;align-items:center;gap:5px;cursor:pointer}\n.sel-chip:hover{background:#dbeafe}\n.sel-empty{font-size:12px;color:#9ca3af;text-align:center;margin-top:20px;line-height:1.7}\n.stu-footer{padding:14px 20px;border-top:1px solid #e5e7eb;display:flex;justify-content:space-between;flex-shrink:0}\n/* Main modal */\n.modal{background:white;border-radius:14px;width:1060px;max-width:96vw;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.25)}\n.type-phase{padding:40px 44px 36px;display:flex;flex-direction:column}\n.type-phase-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px}\n.type-phase h2{font-size:20px;font-weight:800;color:#111827}\n.type-sub{font-size:13px;color:#6b7280;margin:6px 0 32px;line-height:1.6}\n.type-grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:640px;margin:0 auto 32px;width:100%}\n.type-card{border:2px solid #e5e7eb;border-radius:14px;padding:32px 24px;cursor:pointer;text-align:center;position:relative;transition:all .15s;user-select:none}\n.type-card:not(.locked):hover{border-color:#93c5fd;background:#f0f7ff}\n.type-card.sel{border-color:#1a3a8f;background:#eff6ff;box-shadow:0 0 0 3px #bfdbfe44}\n.type-card.locked{opacity:.5;cursor:not-allowed;background:#f9fafb}\n.tc-icon{font-size:40px;margin-bottom:14px;line-height:1}\n.tc-name{font-size:16px;font-weight:800;color:#111827;margin-bottom:8px}\n.tc-desc{font-size:12px;color:#9ca3af;line-height:1.6}\n.prem-badge-card{position:absolute;top:12px;right:12px;background:#fef3c7;color:#d97706;font-size:11px;font-weight:700;padding:3px 9px;border-radius:10px}\n.light-note{background:#fef9c3;border:1px solid #fde68a;border-radius:8px;padding:10px 14px;font-size:12px;color:#92400e;margin-bottom:28px;max-width:640px;margin-left:auto;margin-right:auto;width:100%}\n.type-footer{display:flex;justify-content:space-between;align-items:center}\n.stu-chips-mini{display:flex;gap:5px;flex-wrap:wrap}\n.stu-chip-mini{background:#eff6ff;color:#1d4ed8;font-size:12px;font-weight:600;padding:2px 9px;border-radius:12px}\n/* Stepper */\n.modal-hdr{padding:20px 24px 0;border-bottom:1px solid #e5e7eb;flex-shrink:0}\n.hdr-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}\n.modal-title-wrap{display:flex;align-items:center;gap:10px}\n.modal-title{font-size:16px;font-weight:800;color:#111827}\n.type-chip{background:#eff6ff;color:#1d4ed8;font-size:12px;font-weight:700;padding:3px 11px;border-radius:20px}\n.stepper{display:flex;align-items:center;overflow-x:auto}\n.st{display:flex;align-items:center;gap:6px;padding:9px 10px 11px;font-size:12px;color:#9ca3af;white-space:nowrap}\n.st.active{color:#1a3a8f;font-weight:700;border-bottom:2px solid #1a3a8f}\n.st.done{color:#6b7280}\n.st-n{width:20px;height:20px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}\n.st.active .st-n{background:#1a3a8f;color:white;border-color:#1a3a8f}\n.st.done .st-n{background:#6b7280;color:white;border-color:#6b7280}\n.st-sep{color:#d1d5db;font-size:12px;margin-bottom:6px;flex-shrink:0}\n.modal-body{flex:1;overflow-y:auto;padding:24px;min-height:0}\n.modal-ftr{padding:14px 24px;border-top:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;background:white}\n.scr{display:none}\n.scr.on{display:block}\n.hint-box{background:#eff6ff;border-radius:8px;padding:11px 15px;font-size:12px;color:#1d4ed8;margin-bottom:20px;line-height:1.6;border:1px solid #bfdbfe}\n/* Step 1 */\n.sec{margin-bottom:22px}\n.date-row{display:flex;align-items:center;gap:10px}\n.period-badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap}\n.period-badge.daily{background:#fef3c7;color:#d97706}\n.period-badge.weekly{background:#dbeafe;color:#1d4ed8}\n.period-badge.monthly{background:#dcfce7;color:#16a34a}\n.date-in{border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 14px;font-size:14px;color:#374151;width:160px;outline:none;background:white}\n.date-in:focus{border-color:#93c5fd}\n.scope-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}\n.s-tab{padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;border:1.5px solid #e5e7eb;color:#374151;background:white;transition:all .1s;display:flex;align-items:center;gap:5px}\n.s-tab.on{background:#1a3a8f;color:white;border-color:#1a3a8f}\n.s-tab.locked{opacity:.5;cursor:not-allowed;color:#9ca3af}\n.learn-group{border:1px solid #e5e7eb;border-radius:8px;margin-bottom:8px;overflow:hidden}\n.lg-head{padding:10px 14px;background:#f9fafb;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#374151;cursor:pointer;user-select:none}\n.lg-head .arrow{margin-left:auto;color:#9ca3af;font-size:11px}\n.lg-body{padding:8px 14px 12px;display:flex;flex-direction:column;gap:7px}\n.li{display:flex;align-items:center;gap:8px;font-size:13px;color:#374151}\n.auto-section{margin-top:20px;border-top:1px solid #e5e7eb;padding-top:20px}\n.auto-row{margin-bottom:20px}\n.auto-label{font-size:13px;font-weight:700;color:#374151;margin-bottom:6px;display:flex;align-items:center;gap:8px}\n.auto-note{font-size:11px;color:#9ca3af;font-weight:400}\n.auto-tags{display:flex;gap:8px;flex-wrap:wrap}\n.auto-sub{font-size:12px;color:#374151;margin:8px 0 4px}\n.auto-tag{border:1.5px solid #bfdbfe;border-radius:8px;padding:6px 14px;font-size:13px;font-weight:600;color:#1d4ed8;background:#eff6ff;cursor:default}\n.auto-tag.sel{border-color:#1a3a8f;background:#dbeafe}\n.diff-tag{border:1.5px solid #e5e7eb;border-radius:8px;padding:6px 14px;font-size:13px;font-weight:600;color:#374151;background:white;cursor:pointer;transition:all .1s}\n.diff-tag.on{border-color:#1a3a8f;background:#eff6ff;color:#1a3a8f}\n/* Step 2 */\n.s2-section{padding:18px 0}\n.s2-section:first-child{padding-top:0}\n.s2-divider{height:1px;background:#f0f0f0;border:none;margin:0}\n.s2-row-label{font-size:14px;font-weight:700;color:#111827;margin-bottom:12px;display:flex;align-items:center;gap:8px}\n.template-bar{display:flex;align-items:flex-start;gap:16px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:14px 16px}\n.template-bar.locked{opacity:.45;pointer-events:none}\n.template-bar-left{flex:1}\n.template-bar-title{font-size:13px;font-weight:700;color:#374151}\n.template-sel{border:1.5px solid #e5e7eb;border-radius:7px;padding:7px 12px;font-size:13px;color:#374151;outline:none;background:white;min-width:160px}\n.prem-lock-notice{display:flex;align-items:center;gap:6px;font-size:12px;color:#b45309;background:#fef3c7;padding:8px 12px;border-radius:7px;margin-top:10px}\n.ctype-btns{display:flex;gap:8px;margin-bottom:14px}\n.ctype-btn{padding:6px 18px;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;border:1.5px solid #e5e7eb;background:white;color:#374151;transition:all .1s}\n.ctype-btn.on{background:#1a3a8f;color:white;border-color:#1a3a8f}\n.content-cks{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:6px}\n.ck-item{display:flex;align-items:center;gap:7px;font-size:13px;color:#374151;border:1.5px solid #e5e7eb;border-radius:8px;padding:10px 12px;cursor:pointer;transition:all .1s}\n.ck-item.checked{border-color:#1a3a8f;background:#eff6ff}\n.radio-row{display:flex;gap:16px;flex-wrap:wrap}\n.r-item{display:flex;align-items:center;gap:5px;font-size:13px;color:#374151;cursor:pointer}\n.sub-lbl{font-size:12px;color:#6b7280;margin:12px 0 6px;font-weight:600}\n.sel-input{width:100%;max-width:360px;border:1.5px solid #e5e7eb;border-radius:7px;padding:8px 12px;font-size:13px;color:#374151;outline:none;background:white}\n.theme-row{display:flex;gap:12px}\n.th-card{border:2px solid #e5e7eb;border-radius:10px;padding:10px;cursor:pointer;text-align:center;transition:border-color .1s;width:96px}\n.th-card.on{border-color:#1a3a8f}\n.th-thumb{width:72px;height:92px;border-radius:5px;margin:0 auto 8px}\n.t1{background:linear-gradient(160deg,#dbeafe,#93c5fd)}\n.t2{background:linear-gradient(160deg,#f3f4f6,#d1d5db)}\n.t3{background:linear-gradient(160deg,#fef3c7,#fde68a)}\n.t4{background:linear-gradient(160deg,#dcfce7,#86efac)}\n.th-name{font-size:12px;color:#374151;font-weight:600}\n/* Step 3: AI 코멘트 – full table + popup */\n.s3-wrap{position:relative;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;height:480px;display:flex;flex-direction:column}\n.s3-hdr{padding:12px 16px;border-bottom:1px solid #e5e7eb;background:white;flex-shrink:0;display:flex;align-items:center;justify-content:space-between}\n.s3-sel-info{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#374151}\n.s3-view-btns{display:flex;gap:4px}\n.s3-vbtn{width:28px;height:28px;border:1.5px solid #e5e7eb;border-radius:6px;background:none;cursor:pointer;font-size:14px;color:#6b7280;line-height:1;display:flex;align-items:center;justify-content:center}\n.s3-vbtn.on{background:#1a3a8f;color:white;border-color:#1a3a8f}\n.s3-col{display:grid;grid-template-columns:44px 1fr 115px 82px 72px 76px 1fr 100px}\n.s3-th{padding:8px 16px;background:#f9fafb;border-bottom:1px solid #e5e7eb;font-size:11px;font-weight:600;color:#9ca3af;flex-shrink:0}\n.s3-tbody{flex:1;overflow-y:auto}\n.s3-tr{padding:11px 16px;border-bottom:1px solid #f3f4f6;align-items:center;font-size:13px;transition:background .1s;cursor:default}\n.s3-tr:hover{background:#fafafa}\n.s3-tr.unc{opacity:.55}\n.s3-stu-cell{min-width:0}\n.s3-stu-name{font-size:13px;font-weight:600;color:#111827;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}\n.s3-stu-meta{font-size:10px;color:#9ca3af;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}\n.s3-amount{font-size:12px;color:#374151;line-height:1.55}\n.s3-pct{font-size:13px;color:#374151;font-weight:500}\n.s3-ai-btn{width:28px;height:28px;background:#fff7ed;border:1.5px solid #fed7aa;border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:background .1s;flex-shrink:0}\n.s3-ai-btn:hover{background:#ffedd5}\n.s3-course{font-size:12px;color:#374151;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:8px}\n.s3-status{font-size:11px;font-weight:600}\n.s3-status.editing{color:#f59e0b}.s3-status.done{color:#10b981}.s3-status.pending{color:#9ca3af}\n.ai-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}\n.dot-g{background:#10b981}.dot-y{background:#f59e0b}.dot-gr{background:#d1d5db}\n/* S3 popup */\n.s3-popup-layer{position:absolute;inset:0;background:rgba(17,24,39,.18);z-index:20;display:flex;align-items:center;justify-content:center}\n.s3-popup-layer.hidden{display:none!important}\n.s3-popup{background:white;border-radius:12px;width:440px;max-height:92%;box-shadow:0 8px 32px rgba(0,0,0,.2);display:flex;flex-direction:column;overflow:hidden}\n.s3-popup-hdr{padding:14px 18px;border-bottom:1px solid #e5e7eb;flex-shrink:0;display:flex;align-items:center;gap:8px}\n.s3-popup-ico{background:#e0e7ff;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;color:#4338ca}\n.s3-popup-title{font-size:14px;font-weight:700;color:#111827}\n.s3-popup-body{padding:16px 18px;overflow-y:auto;flex:1}\n.s3-popup-ftr{padding:12px 18px;border-top:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}\n/* popup form fields */\n.ail-field{margin-bottom:14px}\n.ail-field-lbl{font-size:12px;font-weight:700;color:#374151;margin-bottom:6px}\n.ail-radios{display:flex;gap:12px;flex-wrap:wrap}\n.ail-ra{display:flex;align-items:center;gap:5px;font-size:13px;color:#374151;cursor:pointer}\n.ail-memo{width:100%;border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 12px;font-size:12px;color:#374151;outline:none;resize:vertical;min-height:64px;font-family:inherit;line-height:1.6}\n.ail-memo:focus{border-color:#93c5fd}\n.ail-preview{background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;padding:12px;font-size:12px;color:#374151;line-height:1.7;min-height:60px}\n.ail-regen{font-size:12px;color:#1d4ed8;background:none;border:none;cursor:pointer;font-weight:600}\n/* Report Viewer */\n.rv-overlay{position:fixed;inset:0;background:white;z-index:200;display:flex;flex-direction:column}\n.rv-overlay.hidden{display:none!important}\n.rv-hdr{height:52px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:0 20px;gap:12px;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,.05)}\n.rv-hdr-title{font-size:15px;font-weight:800;color:#111827;flex:1}\n.rv-hdr-right{display:flex;align-items:center;gap:8px}\n.rv-zoom{display:flex;align-items:center;border:1.5px solid #e5e7eb;border-radius:7px;overflow:hidden;margin-right:4px}\n.rv-zoom-btn{width:28px;height:28px;background:none;border:none;cursor:pointer;font-size:15px;color:#374151;line-height:1}\n.rv-zoom-val{font-size:12px;font-weight:600;color:#374151;padding:0 8px;border-left:1px solid #e5e7eb;border-right:1px solid #e5e7eb;min-width:44px;text-align:center}\n.rv-body{flex:1;display:grid;grid-template-columns:220px 1fr;overflow:hidden}\n.rv-left{border-right:1px solid #e5e7eb;overflow-y:auto;background:#f9fafb;display:flex;flex-direction:column}\n.rv-left-hdr{padding:12px 14px;font-size:12px;font-weight:700;color:#374151;border-bottom:1px solid #e5e7eb;background:white;flex-shrink:0}\n.rv-stu-row{padding:10px 12px;border-bottom:1px solid #f3f4f6;cursor:pointer;transition:background .1s}\n.rv-stu-row:hover:not(.act){background:#f0f7ff}\n.rv-stu-row.act{background:#eff6ff}\n.rv-stu-name{font-size:13px;font-weight:600;color:#374151;margin-bottom:6px}\n.rv-stu-row.act .rv-stu-name{color:#1a3a8f}\n.rv-stu-acts{display:flex;gap:5px}\n.rv-act-btn{flex:1;padding:5px 0;font-size:11px;font-weight:600;border:1.5px solid #e5e7eb;border-radius:6px;background:white;cursor:pointer;color:#374151;text-align:center;transition:all .1s}\n.rv-act-btn:hover{background:#eff6ff;border-color:#93c5fd;color:#1a3a8f}\n.rv-center{overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:28px 20px;background:#e8ebf4;gap:0}\n.rv-page-badge{background:rgba(0,0,0,.45);color:white;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;align-self:flex-start;margin-bottom:12px}\n.rv-report-wrap{transform-origin:top center;transition:transform .2s}\n.rv-card{background:white;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,.14);padding:36px 30px;width:430px;min-height:560px}\n.rv-card-brand{text-align:center;font-size:10px;font-weight:800;color:#1a3a8f;letter-spacing:3px;margin-bottom:18px}\n.rv-card-eyebrow{font-size:12px;color:#6b7280;margin-bottom:4px}\n.rv-card-h1{font-size:30px;font-weight:900;color:#1a3a8f;margin-bottom:6px}\n.rv-card-date{font-size:11px;color:#9ca3af;margin-bottom:22px}\n.rv-card-sec{margin-bottom:18px}\n.rv-card-sec-t{font-size:11px;font-weight:700;color:#374151;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid #f3f4f6}\n.rv-card-bar-row{display:flex;flex-direction:column;gap:5px}\n.rv-card-bar{height:7px;background:#f3f4f6;border-radius:4px;overflow:hidden}\n.rv-card-fill{height:100%;border-radius:4px}\n.rv-card-comment{font-size:11px;color:#374151;line-height:1.8;padding:10px;background:#f8fafc;border-radius:8px}\n.rv-card-footer{display:flex;justify-content:space-between;margin-top:24px;font-size:10px;color:#9ca3af;padding-top:12px;border-top:1px solid #f3f4f6}\n/* S4 template lock */\n.s4-tmpl-lock{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:#9ca3af;padding:5px 12px;border:1.5px dashed #d1d5db;border-radius:7px;background:#f9fafb;cursor:default;white-space:nowrap}\n/* Step 4: 미리보기 */\n.s4-layout{display:grid;grid-template-columns:190px 1fr 218px;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;height:480px}\n.s4-left{border-right:1px solid #e5e7eb;display:flex;flex-direction:column;overflow:hidden;background:#f9fafb}\n.s4l-hdr{padding:10px 14px;font-size:12px;font-weight:700;color:#374151;border-bottom:1px solid #e5e7eb;background:white;flex-shrink:0}\n.pv-stu{padding:9px 12px;display:flex;align-items:center;gap:8px;cursor:pointer;border-bottom:1px solid #f3f4f6;transition:background .1s}\n.pv-stu.act{background:#eff6ff}\n.pv-stu:hover:not(.act){background:#f0f7ff}\n.pv-stu-info{flex:1;min-width:0}\n.pv-stu-name{font-size:13px;font-weight:600;color:#374151}\n.pv-stu-meta{font-size:10px;color:#9ca3af;margin-top:1px}\n.pv-stu.act .pv-stu-name{color:#1a3a8f}\n.stu-nm{flex:1;font-size:13px}\n.s4-center{display:flex;flex-direction:column;background:#f8fafc;min-width:0}\n.s4c-toolbar{padding:8px 10px;display:flex;align-items:center;gap:7px;border-bottom:1px solid #e5e7eb;background:white;flex-shrink:0}\n.s4c-title{font-size:12px;font-weight:700;color:#374151;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}\n.s4-page-badge{background:#e0e7ff;color:#4338ca;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap}\n.ver-toggle{display:flex;border:1.5px solid #e5e7eb;border-radius:8px;overflow:hidden}\n.vt-btn{padding:3px 10px;font-size:11px;font-weight:600;cursor:pointer;border:none;background:none;color:#6b7280;transition:all .1s}\n.vt-btn.on{background:#1a3a8f;color:white}\n.s4-zoom{display:flex;align-items:center;border:1.5px solid #e5e7eb;border-radius:7px;overflow:hidden}\n.s4-zoom-btn{padding:2px 8px;background:none;border:none;cursor:pointer;font-size:14px;color:#6b7280;line-height:1.4}\n.s4-zoom-btn:hover{background:#f3f4f6}\n.s4-zoom-val{font-size:11px;font-weight:600;color:#374151;padding:0 4px;min-width:34px;text-align:center;border-left:1px solid #e5e7eb;border-right:1px solid #e5e7eb}\n.s4c-pv{flex:1;overflow-y:auto;display:flex;align-items:flex-start;justify-content:center;padding:20px}\n.s4c-footer{padding:8px 14px;border-top:1px solid #e5e7eb;background:white;display:flex;justify-content:flex-end;flex-shrink:0}\n.s4-tmpl-btn{background:none;border:1.5px solid #e5e7eb;border-radius:7px;padding:5px 12px;font-size:12px;font-weight:600;color:#374151;cursor:pointer}\n.s4-tmpl-btn:hover{background:#f9fafb}\n.report-card{background:white;border-radius:8px;box-shadow:0 2px 14px rgba(0,0,0,.12);padding:28px 22px;transition:width .2s;min-height:360px}\n.report-card.print{width:300px}\n.report-card.mobile{width:200px}\n.rc-logo{font-size:10px;color:#9ca3af;text-align:center;margin-bottom:14px}\n.rc-title{font-size:18px;font-weight:800;color:#1a3a8f;margin-bottom:3px}\n.rc-sub{font-size:10px;color:#9ca3af;margin-bottom:18px}\n.rc-sec{margin-bottom:14px}\n.rc-sec-t{font-size:10px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid #e5e7eb;padding-bottom:4px;margin-bottom:8px}\n.rc-bar{height:7px;border-radius:4px;background:#e5e7eb;margin-bottom:5px;overflow:hidden}\n.rc-fill{height:100%;border-radius:4px}\n.rc-comment{font-size:10px;color:#374151;line-height:1.7;background:#f9fafb;border-radius:5px;padding:9px;margin-top:4px}\n.s4-right{display:flex;flex-direction:column;overflow:hidden;background:#f9fafb;border-left:1px solid #e5e7eb}\n.s4r-hdr{padding:9px 12px;border-bottom:1px solid #e5e7eb;background:white;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:6px}\n.s4r-hdr-title{font-size:12px;font-weight:700;color:#374151}\n.s4r-toggle{display:flex;align-items:center;gap:4px;font-size:10px;color:#6b7280;cursor:pointer;white-space:nowrap}\n.s4r-toggle input{accent-color:#1a3a8f}\n.pg-grid{flex:1;overflow-y:auto;padding:8px;display:grid;grid-template-columns:1fr 1fr;gap:6px;align-content:start}\n.pg-thumb{border-radius:6px;overflow:hidden;border:2px solid #e5e7eb;cursor:pointer;transition:border-color .1s;background:white}\n.pg-thumb.act{border-color:#1a3a8f}\n.pg-thumb:hover:not(.act){border-color:#93c5fd}\n.pg-img{background:#f3f4f6;height:60px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#9ca3af;font-weight:600;border-bottom:1px solid #f0f0f0;text-align:center;padding:4px}\n.pg-num{padding:3px 6px;font-size:10px;font-weight:700;color:#374151;text-align:center}\n.pg-actions{display:flex;justify-content:space-between;padding:2px 6px 4px}\n.pg-action{font-size:9px;border:none;background:none;cursor:pointer;color:#6b7280;font-weight:600;padding:0}\n.page-lock{background:#fef3c7;border:1px solid #fde68a;border-radius:7px;padding:8px 10px;font-size:11px;color:#92400e;text-align:center;margin:8px;line-height:1.5;flex-shrink:0}\n.s4r-footer{padding:10px 12px;border-top:1px solid #e5e7eb;background:white;flex-shrink:0}\n.s4r-hdr span{font-size:11px;font-weight:400;color:#9ca3af}\n.pg-thumb{margin:8px;border:2px solid transparent;border-radius:7px;cursor:pointer;padding:4px;background:white;box-shadow:0 1px 3px rgba(0,0,0,.07);transition:border-color .1s}\n.pg-thumb.act{border-color:#1a3a8f}\n.pg-thumb:hover:not(.act){border-color:#93c5fd}\n.pg-img{width:100%;height:86px;background:#f3f4f6;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#9ca3af}\n.pg-num{font-size:10px;text-align:center;color:#6b7280;margin-top:3px}\n.pg-actions{display:flex;gap:4px;justify-content:center;margin-top:4px;opacity:0;transition:opacity .1s}\n.pg-thumb:hover .pg-actions{opacity:1}\n.pg-action{font-size:10px;color:#6b7280;background:#f3f4f6;border:none;border-radius:4px;padding:2px 6px;cursor:pointer}\n.page-lock{display:none;margin:10px 8px;border:1.5px solid #fde68a;border-radius:8px;background:#fffbeb;padding:12px;text-align:center;font-size:11px;color:#92400e;line-height:1.6}\n/* Step 5: 생성하기 */\n.generate-wrap{display:flex;flex-direction:column;align-items:center;padding:20px 0}\n.gen-summary{width:100%;max-width:560px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;margin-bottom:24px}\n.gen-opt-btn{padding:8px 18px;border:1.5px solid #e5e7eb;border-radius:8px;background:white;font-size:13px;font-weight:500;color:#374151;cursor:pointer;transition:all .15s}\n.gen-opt-btn:hover{background:#f9fafb}\n.gen-opt-btn.on{background:#1a3a8f;color:white;border-color:#1a3a8f;font-weight:700}\n.gen-sum-title{padding:14px 20px;background:#f0f2f8;font-size:14px;font-weight:700;color:#374151;border-bottom:1px solid #e5e7eb}\n.gen-sum-row{display:flex;justify-content:space-between;align-items:center;padding:10px 20px;border-bottom:1px solid #f3f4f6;font-size:13px}\n.gen-sum-row:last-child{border:none}\n.gen-sum-lbl{color:#6b7280}\n.gen-sum-val{font-weight:600;color:#111827}\n.gen-btn-area{display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;max-width:560px}\n.btn-generate{background:#1a3a8f;color:white;border:none;padding:14px 48px;border-radius:10px;font-size:16px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:10px}\n.btn-generate:hover{background:#153379}\n.gen-result{display:none;width:100%;border:1px solid #d1fae5;background:#f0fdf4;border-radius:12px;padding:18px 20px;text-align:center}\n.gen-result-ico{font-size:40px;margin-bottom:8px}\n.gen-result-msg{font-size:14px;font-weight:700;color:#065f46;margin-bottom:4px}\n.gen-result-sub{font-size:12px;color:#6b7280;margin-bottom:16px}\n.gen-send-btns{display:flex;gap:12px;justify-content:center}\n.btn-print{background:white;color:#1a3a8f;border:2px solid #1a3a8f;padding:11px 28px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px}\n.btn-print:hover{background:#eff6ff}\n.btn-send-big{background:#1a3a8f;color:white;border:none;padding:11px 28px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px}\n.btn-send-big:hover{background:#153379}\n/* Dispatch modal */\n.dispatch-overlay{position:fixed;inset:0;z-index:200;background:rgba(17,24,39,.5);display:flex;align-items:center;justify-content:center}\n.dispatch-card{background:white;border-radius:14px;width:480px;max-width:96vw;box-shadow:0 20px 60px rgba(0,0,0,.25);overflow:hidden}\n.dispatch-hdr{padding:20px 24px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between}\n.dispatch-hdr h3{font-size:16px;font-weight:800;color:#111827}\n.dispatch-body{padding:22px 24px}\n.dispatch-sec{margin-bottom:20px}\n.dispatch-sec:last-child{margin-bottom:0}\n.dispatch-lbl{font-size:13px;font-weight:700;color:#374151;margin-bottom:10px;display:flex;align-items:center;gap:5px}\n.dispatch-ch{display:flex;flex-direction:column;gap:8px}\n.d-ch-opt{border:2px solid #e5e7eb;border-radius:10px;padding:11px 14px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:all .1s}\n.d-ch-opt:hover{border-color:#93c5fd}\n.d-ch-opt.on{border-color:#1a3a8f;background:#eff6ff}\n.d-ch-ico{width:34px;height:34px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}\n.d-ch-name{font-size:13px;font-weight:700;color:#111827}\n.d-ch-desc{font-size:11px;color:#9ca3af}\n.dispatch-ver{display:grid;grid-template-columns:1fr 1fr;gap:10px}\n.d-ver-card{border:2px solid #e5e7eb;border-radius:10px;padding:16px;cursor:pointer;text-align:center;transition:all .1s}\n.d-ver-card:hover{border-color:#93c5fd;background:#f0f7ff}\n.d-ver-card.on{border-color:#1a3a8f;background:#eff6ff}\n.d-ver-icon{font-size:28px;margin-bottom:8px}\n.d-ver-name{font-size:14px;font-weight:700;color:#111827;margin-bottom:4px}\n.d-ver-desc{font-size:11px;color:#9ca3af}\n.dispatch-ftr{padding:14px 24px;border-top:1px solid #e5e7eb;display:flex;justify-content:space-between}\n<\/style>\n<\/head>\n<body>\n<div class=\"app-shell\">\n  <div class=\"app-bar\">\n    <span class=\"app-logo\">매쓰홀릭<\/span>\n    <div class=\"app-nav\">\n      <span class=\"nav-item\">수업<\/span><span class=\"nav-item\">학습지<\/span><span class=\"nav-item act\">보고서<\/span><span class=\"nav-item\">학습현황<\/span>\n    <\/div>\n    <div class=\"ver-toggle-bar\">\n      <span>버전 데모:<\/span>\n      <div class=\"ver-switch\">\n        <button class=\"vs-btn on\" id=\"vs-light\" onclick=\"setVersion('light')\">라이트<\/button>\n        <button class=\"vs-btn\" id=\"vs-prem\" onclick=\"setVersion('premium')\">프리미엄<\/button>\n      <\/div>\n    <\/div>\n  <\/div>\n  <div class=\"app-content\">\n    <div class=\"page-header\"><h2>보고서<\/h2><button class=\"btn-new\" onclick=\"openStudentModal()\">＋ 새 보고서 만들기<\/button><\/div>\n    <div class=\"fake-table\">\n      <div class=\"fake-thead\"><div>보고서명<\/div><div>학습 기간<\/div><div>과정<\/div><div><\/div><\/div>\n      <div class=\"fake-row\">\n        <div><div class=\"fake-name\"><span class=\"badge badge-m\">월간<\/span>2월 학습 보고서<\/div><div class=\"fake-sub\">홍길동 선생님 | 26.02.08 생성<\/div><\/div>\n        <div class=\"fake-period\">26.02.01 ~ 26.02.28<\/div><div class=\"fake-course\">중등 1-1 외 1개<\/div>\n        <div class=\"fake-actions\"><span class=\"fake-act-btn\">출력<\/span><span class=\"fake-act-btn\">공유<\/span><\/div>\n      <\/div>\n      <div class=\"fake-row\">\n        <div><div class=\"fake-name\"><span class=\"badge badge-w\">주간<\/span>1월 학습 보고서<\/div><div class=\"fake-sub\">홍길동 선생님 | 26.01.12 생성<\/div><\/div>\n        <div class=\"fake-period\">26.01.01 ~ 26.01.31<\/div><div class=\"fake-course\">확률과 통계 (2022) 외 1개<\/div>\n        <div class=\"fake-actions\"><span class=\"fake-act-btn\">출력<\/span><span class=\"fake-act-btn\">공유<\/span><\/div>\n      <\/div>\n    <\/div>\n  <\/div>\n<\/div>\n\n<div class=\"backdrop hidden\" id=\"backdrop\">\n  <!-- 학생 선택 -->\n  <div class=\"stu-dialog\" id=\"stu-modal\">\n    <div class=\"stu-hdr\"><h3>학생 선택<\/h3><button class=\"close-x\" onclick=\"closeAll()\">✕<\/button><\/div>\n    <div class=\"stu-body\">\n      <div class=\"stu-left\">\n        <div class=\"stu-tabs\">\n          <div class=\"stu-tab\" onclick=\"setStuTab(this)\">반<\/div>\n          <div class=\"stu-tab\" onclick=\"setStuTab(this)\">그룹<\/div>\n          <div class=\"stu-tab on\" onclick=\"setStuTab(this)\">학년<\/div>\n          <div class=\"stu-tab\" onclick=\"setStuTab(this)\">수업<\/div>\n        <\/div>\n        <div class=\"stu-filter\">\n          <select class=\"stu-sel\"><option>학년 전체<\/option><option>초등학교<\/option><option>중학교<\/option><option>고등학교<\/option><\/select>\n          <input class=\"stu-search\" type=\"text\" placeholder=\"🔍 학생이름 검색\">\n        <\/div>\n        <div class=\"stu-groups\" id=\"stu-groups\"><\/div>\n      <\/div>\n      <div class=\"stu-right\">\n        <div class=\"stu-right-hdr\">\n          <span class=\"stu-count\">선택된 학생 <span id=\"sel-count\">0<\/span>명<\/span>\n          <button class=\"stu-reset\" onclick=\"resetStudents()\">↺ 초기화<\/button>\n        <\/div>\n        <div class=\"stu-selected\">\n          <div class=\"sel-chips\" id=\"sel-chips\">\n            <div class=\"sel-empty\" id=\"sel-empty\">선택된 학생이 없습니다.<br>왼쪽에서 학생을 선택해 주세요.<\/div>\n          <\/div>\n        <\/div>\n      <\/div>\n    <\/div>\n    <div class=\"stu-footer\">\n      <button class=\"btn btn-ghost\" onclick=\"closeAll()\">취소<\/button>\n      <button class=\"btn btn-primary\" id=\"btn-stu-done\" onclick=\"goToType()\" disabled>선택 완료<\/button>\n    <\/div>\n  <\/div>\n\n  <!-- 메인 모달 -->\n  <div class=\"modal hidden\" id=\"main-modal\">\n    <!-- 보고서 종류 -->\n    <div class=\"type-phase scr on\" id=\"phase-type\">\n      <div class=\"type-phase-hdr\">\n        <div><h2>보고서 종류를 선택해 주세요<\/h2><p class=\"type-sub\">선택한 종류에 따라 보고서에 포함되는 내용이 달라집니다.<\/p><\/div>\n        <button class=\"close-x\" onclick=\"closeAll()\">✕<\/button>\n      <\/div>\n      <div class=\"type-grid2\">\n        <div class=\"type-card sel\" data-type=\"combined\" data-label=\"통합 보고서\" onclick=\"selectType(this)\">\n          <div class=\"tc-icon\">📋<\/div><div class=\"tc-name\">통합 보고서<\/div>\n          <div class=\"tc-desc\">학습지·평가·오답/보충·도전학습 등<br>전체 학습 활동을 종합한 보고서<\/div>\n        <\/div>\n        <div class=\"type-card\" data-type=\"class\" data-label=\"수업 보고서\" id=\"type-class\" onclick=\"selectType(this)\">\n          <span class=\"prem-badge-card\" id=\"class-prem-badge\">프리미엄<\/span>\n          <div class=\"tc-icon\" id=\"class-icon\" style=\"filter:grayscale(1)\">🏫<\/div>\n          <div class=\"tc-name\">수업 보고서<\/div>\n          <div class=\"tc-desc\">수업 내용과 학생 참여를 중심으로<br>구성된 보고서<\/div>\n        <\/div>\n      <\/div>\n      <div class=\"light-note\" id=\"light-note\">💡 <b>라이트 버전<\/b>에서 수업 보고서는 사용할 수 없어요. 프리미엄으로 업그레이드하면 이용 가능합니다.<\/div>\n      <div class=\"type-footer\">\n        <div style=\"display:flex;align-items:center;gap:8px;font-size:13px\">\n          <span style=\"font-size:12px;color:#6b7280\">선택 학생:<\/span>\n          <div class=\"stu-chips-mini\" id=\"type-stu-chips\"><\/div>\n          <span style=\"font-size:12px;color:#1d4ed8;cursor:pointer;font-weight:600\" onclick=\"backToStudents()\">변경 →<\/span>\n        <\/div>\n        <div style=\"display:flex;gap:8px\">\n          <button class=\"btn btn-ghost\" onclick=\"backToStudents()\">← 학생 변경<\/button>\n          <button class=\"btn btn-primary\" onclick=\"startSteps()\">학습 범위 설정 →<\/button>\n        <\/div>\n      <\/div>\n    <\/div>\n\n    <!-- Steps 1-5 -->\n    <div class=\"scr\" id=\"phase-steps\" style=\"display:flex;flex-direction:column;flex:1;min-height:0\">\n      <div class=\"modal-hdr\">\n        <div class=\"hdr-row\">\n          <div class=\"modal-title-wrap\">\n            <span class=\"modal-title\">보고서 만들기<\/span>\n            <span class=\"type-chip\" id=\"type-chip\">통합 보고서<\/span>\n          <\/div>\n          <button class=\"close-x\" onclick=\"closeAll()\">✕<\/button>\n        <\/div>\n        <div class=\"stepper\">\n          <div class=\"st active\" id=\"st1\"><div class=\"st-n\">1<\/div>학습 설정<\/div>\n          <div class=\"st-sep\">›<\/div>\n          <div class=\"st\" id=\"st2\"><div class=\"st-n\">2<\/div>보고서 설정<\/div>\n          <div class=\"st-sep\">›<\/div>\n          <div class=\"st\" id=\"st3\"><div class=\"st-n\">3<\/div>AI 코멘트<\/div>\n          <div class=\"st-sep\" id=\"st-sep-4\">›<\/div>\n          <div class=\"st\" id=\"st4\"><div class=\"st-n\">4<\/div>미리보기&amp;편집<\/div>\n          <div class=\"st-sep\">›<\/div>\n          <div class=\"st\" id=\"st5\"><div class=\"st-n\">5<\/div>생성하기<\/div>\n        <\/div>\n      <\/div>\n      <div class=\"modal-body\" id=\"modal-body\">\n\n        <!-- S1 학습 설정 -->\n        <div class=\"scr on\" id=\"s1\">\n          <div class=\"hint-box\" id=\"s1-hint\">💡 <b>통합 보고서<\/b> 기준으로 학습 범위가 구성됩니다. 라이트 버전에서는 수업 데이터를 포함할 수 없어요.<\/div>\n          <div class=\"sec\">\n            <div class=\"lbl\">기간 <span class=\"req\">*<\/span><\/div>\n            <div class=\"date-row\">\n              <input class=\"date-in\" type=\"text\" id=\"date-start\" value=\"2026-01-27\" onchange=\"onDateChange()\">\n              <span style=\"color:#9ca3af\">~<\/span>\n              <input class=\"date-in\" type=\"text\" id=\"date-end\" value=\"2026-03-16\" onchange=\"onDateChange()\">\n              <span id=\"period-badge\" class=\"period-badge monthly\">월간 보고서 자동 감지<\/span>\n            <\/div>\n          <\/div>\n          <div class=\"sec\">\n            <div class=\"lbl\">학습 범위 <span class=\"req\">*<\/span><\/div>\n            <div class=\"scope-tabs\">\n              <div class=\"s-tab locked\" id=\"tab-class\">🔒 수업<\/div>\n              <div class=\"s-tab on\" onclick=\"setTab(this)\">전체<\/div>\n              <div class=\"s-tab\" onclick=\"setTab(this)\">교재 채점<\/div>\n              <div class=\"s-tab\" onclick=\"setTab(this)\">학습지<\/div>\n              <div class=\"s-tab\" onclick=\"setTab(this)\">평가<\/div>\n              <div class=\"s-tab\" onclick=\"setTab(this)\">오답/보충<\/div>\n              <div class=\"s-tab\" onclick=\"setTab(this)\">도전학습<\/div>\n            <\/div>\n            <div class=\"learn-group\" id=\"class-group\" style=\"opacity:.45;pointer-events:none\">\n              <div id=\"class-locked-head\" class=\"lg-head\">\n                <input type=\"checkbox\" disabled>\n                🔒 수업 <span style=\"color:#f59e0b;font-size:11px;font-weight:600;margin-left:6px\">라이트 버전 제외<\/span>\n                <span class=\"arrow\">▼<\/span>\n              <\/div>\n              <div id=\"class-active-content\" style=\"display:none\">\n                <div class=\"lg-head\" onclick=\"toggleGroup(this)\">\n                  <input type=\"checkbox\" checked onclick=\"event.stopPropagation()\">\n                  수업 <span style=\"color:#9ca3af;font-size:12px;font-weight:400;margin-left:6px\">월간다푸네 기본편 2호 외 1개<\/span>\n                  <span class=\"arrow\">▲<\/span>\n                <\/div>\n                <div class=\"lg-body\">\n                  <div class=\"li\"><input type=\"checkbox\" checked>월간다푸네 기본편 2호<\/div>\n                  <div class=\"li\"><input type=\"checkbox\" checked>월간다푸네 기본편 3호<\/div>\n                <\/div>\n              <\/div>\n            <\/div>\n            <div class=\"learn-group other-group\">\n              <div class=\"lg-head\" onclick=\"toggleGroup(this)\">\n                <input type=\"checkbox\" checked onclick=\"event.stopPropagation()\">\n                교재 채점 <span style=\"color:#9ca3af;font-size:12px;font-weight:400;margin-left:6px\">EBS 올림포스 외 1개<\/span>\n                <span class=\"arrow\">▲<\/span>\n              <\/div>\n              <div class=\"lg-body\">\n                <div class=\"li\"><input type=\"checkbox\" checked>[EBS 올림포스 유형편] 확률과 통계 (2022개정)<\/div>\n                <div class=\"li\"><input type=\"checkbox\" checked>[수수학의 바이블] 확률과 통계<\/div>\n              <\/div>\n            <\/div>\n            <div class=\"learn-group other-group\"><div class=\"lg-head\" onclick=\"toggleGroup(this)\"><input type=\"checkbox\" checked onclick=\"event.stopPropagation()\">학습지 <span style=\"color:#9ca3af;font-size:12px;font-weight:400;margin-left:6px\">시중교재 외 6개<\/span><span class=\"arrow\">▼<\/span><\/div><\/div>\n            <div class=\"learn-group other-group\"><div class=\"lg-head\" onclick=\"toggleGroup(this)\"><input type=\"checkbox\" checked onclick=\"event.stopPropagation()\">평가 <span style=\"color:#9ca3af;font-size:12px;font-weight:400;margin-left:6px\">진단평가 외 1개<\/span><span class=\"arrow\">▼<\/span><\/div><\/div>\n            <div class=\"learn-group other-group\"><div class=\"lg-head\" onclick=\"toggleGroup(this)\"><input type=\"checkbox\" checked onclick=\"event.stopPropagation()\">오답/보충학습 <span style=\"color:#9ca3af;font-size:12px;font-weight:400;margin-left:6px\">오답유사사학습 외 8개<\/span><span class=\"arrow\">▼<\/span><\/div><\/div>\n            <div class=\"learn-group other-group\"><div class=\"lg-head\" onclick=\"toggleGroup(this)\"><input type=\"checkbox\" checked onclick=\"event.stopPropagation()\">도전학습 <span style=\"color:#9ca3af;font-size:12px;font-weight:400;margin-left:6px\">중단원 과벨업 외 2개<\/span><span class=\"arrow\">▼<\/span><\/div><\/div>\n          <\/div>\n          <div class=\"auto-section\">\n            <div class=\"auto-row\">\n              <div class=\"auto-label\">과정 <span class=\"auto-note\">위 목록 기준으로 자동 구성<\/span><\/div>\n              <div class=\"auto-tags\"><span class=\"auto-tag sel\">중등 1-1 (2022 개정)<\/span><span class=\"auto-tag sel\">고등 확률과 통계<\/span><\/div>\n            <\/div>\n            <div style=\"height:1px;background:#f3f4f6;margin:12px 0\"><\/div>\n            <div class=\"auto-row\">\n              <div class=\"auto-label\">단원 <span class=\"auto-note\">선택한 과정 기준으로 자동 구성<\/span><\/div>\n              <div class=\"auto-sub\">중등 1-1 (2022 개정)<\/div>\n              <div class=\"auto-tags\" style=\"margin-bottom:8px\"><span class=\"auto-tag sel\">1. 수와 연산<\/span><span class=\"auto-tag\">2. 문자와 식<\/span><\/div>\n              <div class=\"auto-sub\">고등 확률과 통계<\/div>\n              <div class=\"auto-tags\"><span class=\"auto-tag sel\">1. 경우의 수<\/span><span class=\"auto-tag sel\">2. 확률<\/span><\/div>\n            <\/div>\n            <div style=\"height:1px;background:#f3f4f6;margin:12px 0\"><\/div>\n            <div class=\"auto-row\">\n              <div class=\"auto-label\">난이도 <span class=\"auto-note\">위 목록 기준으로 자동 구성<\/span><\/div>\n              <div class=\"auto-tags\">\n                <span class=\"diff-tag on\" onclick=\"this.classList.toggle('on')\">개념<\/span>\n                <span class=\"diff-tag on\" onclick=\"this.classList.toggle('on')\">기본<\/span>\n                <span class=\"diff-tag on\" onclick=\"this.classList.toggle('on')\">실력<\/span>\n                <span class=\"diff-tag on\" onclick=\"this.classList.toggle('on')\">심화<\/span>\n              <\/div>\n            <\/div>\n          <\/div>\n        <\/div>\n\n        <!-- S2 보고서 설정 -->\n        <div class=\"scr\" id=\"s2\">\n          <div class=\"hint-box\" id=\"s2-hint\">💡 <b style=\"color:#d97706\">프리미엄 전용<\/b> 항목은 현재 잠겨 있습니다. 기본 설정으로 진행됩니다.<\/div>\n          <div class=\"s2-section\">\n            <div class=\"s2-row-label\">⬡ 저장된 템플릿 <span class=\"prem-tag\">프리미엄<\/span><\/div>\n            <div class=\"template-bar\" id=\"template-bar\">\n              <div class=\"template-bar-left\"><div class=\"template-bar-title\">저장된 설정을 적용하면 상세 설정값이 모두 적용됩니다.<\/div><\/div>\n              <select class=\"template-sel\"><option>템플릿 없음<\/option><option>수능 대비반 기본<\/option><option>내신 집중반<\/option><\/select>\n            <\/div>\n            <div class=\"prem-lock-notice hidden\" id=\"template-lock\">🔒 라이트 버전에서는 저장된 템플릿을 사용할 수 없어요. <span style=\"text-decoration:underline;cursor:pointer;margin-left:auto\">프리미엄 업그레이드 →<\/span><\/div>\n          <\/div>\n          <hr class=\"s2-divider\">\n          <div class=\"s2-section\">\n            <div class=\"s2-row-label\">내용 구성 <span class=\"req\">*<\/span> <span class=\"prem-tag\">프리미엄<\/span>\n              <span id=\"period-indicator\" style=\"font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:6px;background:#dcfce7;color:#16a34a\">월간 기준<\/span>\n            <\/div>\n            <div class=\"ctype-btns\" id=\"ctype-btns\">\n              <div class=\"ctype-btn on\" onclick=\"setCtype(this)\">상세형<\/div>\n              <div class=\"ctype-btn\" onclick=\"setCtype(this)\">요약형<\/div>\n            <\/div>\n            <div class=\"prem-lock-notice hidden\" id=\"content-lock\">🔒 라이트 버전은 상세형, 요약형 전체 구성으로 고정됩니다. <span style=\"text-decoration:underline;cursor:pointer;margin-left:auto\">프리미엄 업그레이드 →<\/span><\/div>\n            <div id=\"content-wrap\">\n              <div class=\"content-cks\">\n                <div class=\"ck-item checked\" onclick=\"toggleCk(this)\"><input type=\"checkbox\" checked> 표지<\/div>\n                <div class=\"ck-item checked\" onclick=\"toggleCk(this)\"><input type=\"checkbox\" checked> 학습 요약<\/div>\n                <div class=\"ck-item checked\" onclick=\"toggleCk(this)\"><input type=\"checkbox\" checked> 학습 활동<\/div>\n                <div class=\"ck-item checked\" onclick=\"toggleCk(this)\"><input type=\"checkbox\" checked> 성취도 분석<\/div>\n                <div class=\"ck-item checked\" onclick=\"toggleCk(this)\"><input type=\"checkbox\" checked> 유형 이해도<\/div>\n                <div class=\"ck-item checked\" onclick=\"toggleCk(this)\"><input type=\"checkbox\" checked> 취약 학습 성과<\/div>\n                <div class=\"ck-item checked\" onclick=\"toggleCk(this)\"><input type=\"checkbox\" checked> 학습 내역<\/div>\n              <\/div>\n            <\/div>\n          <\/div>\n          <hr class=\"s2-divider\">\n          <div class=\"s2-section\">\n            <div class=\"s2-row-label\">선생님 총평 <span class=\"req\">*<\/span><\/div>\n            <div class=\"radio-row\" style=\"margin-bottom:12px\">\n              <label class=\"r-item\"><input type=\"radio\" name=\"cm\" checked> AI 코멘트 사용하기<\/label>\n              <label class=\"r-item\"><input type=\"radio\" name=\"cm\"> 직접 입력하기<\/label>\n              <label class=\"r-item\"><input type=\"radio\" name=\"cm\"> 사용하지 않기<\/label>\n            <\/div>\n            <div style=\"font-size:11px;color:#9ca3af;margin-bottom:12px\">※ [직접 입력하기]는 수동 발송에서만 제공됩니다.<\/div>\n            <div class=\"sub-lbl\" style=\"margin-top:0\">AI 코멘트 어조<\/div>\n            <div class=\"radio-row\" style=\"margin-bottom:10px\">\n              <label class=\"r-item\"><input type=\"radio\" name=\"tone\" checked> 다정한 어조<\/label>\n              <label class=\"r-item\"><input type=\"radio\" name=\"tone\"> 직설적 어조<\/label>\n            <\/div>\n            <div class=\"sub-lbl\">맞춤형 지침 (전체 공통)<\/div>\n            <select class=\"sel-input\" style=\"margin-bottom:8px\"><option>지침 1<\/option><option>지침 2 — 수능 대비반<\/option><\/select>\n            <div class=\"sub-lbl\">총평 입력 영역<\/div>\n            <div class=\"radio-row\">\n              <label class=\"r-item\"><input type=\"radio\" name=\"pos\" checked> 내용(학습 요약)에 포함하기<\/label>\n              <label class=\"r-item\"><input type=\"radio\" name=\"pos\"> 표지에 포함하기<\/label>\n            <\/div>\n          <\/div>\n          <hr class=\"s2-divider\">\n          <div class=\"s2-section\">\n            <div class=\"s2-row-label\">보고서 테마 <span style=\"font-size:12px;color:#9ca3af;font-weight:400\">(선택)<\/span> <span class=\"prem-tag\">프리미엄<\/span><\/div>\n            <div style=\"font-size:11px;color:#9ca3af;margin-bottom:12px\">※ 테마를 선택하지 않으면 기본 디자인이 적용됩니다.<\/div>\n            <div id=\"theme-wrap\">\n              <div class=\"theme-row\">\n                <div class=\"th-card on\" onclick=\"selectTheme(this)\"><div class=\"th-thumb t1\"><\/div><div class=\"th-name\">기본<\/div><\/div>\n                <div class=\"th-card\" onclick=\"selectTheme(this)\"><div class=\"th-thumb t2\"><\/div><div class=\"th-name\">심플<\/div><\/div>\n                <div class=\"th-card\" onclick=\"selectTheme(this)\"><div class=\"th-thumb t3\"><\/div><div class=\"th-name\">도형<\/div><\/div>\n                <div class=\"th-card\" onclick=\"selectTheme(this)\"><div class=\"th-thumb t4\"><\/div><div class=\"th-name\">그래프<\/div><\/div>\n              <\/div>\n            <\/div>\n            <div class=\"prem-lock-notice hidden\" id=\"theme-lock\">🔒 라이트 버전은 기본 테마만 사용 가능합니다.<\/div>\n          <\/div>\n          <hr class=\"s2-divider\">\n          <div class=\"s2-section\">\n            <div class=\"s2-row-label\">학원 로고 <span class=\"req\">*<\/span><\/div>\n            <div class=\"radio-row\">\n              <label class=\"r-item\"><input type=\"radio\" name=\"logo\" checked> 넣기<\/label>\n              <label class=\"r-item\"><input type=\"radio\" name=\"logo\"> 넣지 않기<\/label>\n            <\/div>\n          <\/div>\n        <\/div>\n\n        <!-- S3 AI 코멘트 -->\n        <div class=\"scr\" id=\"s3\">\n          <div class=\"s3-wrap\">\n            <!-- Header bar -->\n            <div class=\"s3-hdr\">\n              <div class=\"s3-sel-info\">\n                <input type=\"checkbox\" id=\"ail-sel-all\" onchange=\"ailToggleAll(this.checked)\" checked style=\"cursor:pointer;width:15px;height:15px\">\n                전체 <span id=\"ail-count\">0<\/span>명 중 <span id=\"ail-sel-count\">0<\/span>명 선택됨\n              <\/div>\n              <div style=\"display:flex;align-items:center;gap:8px\">\n                <span id=\"ail-done-count\" style=\"font-size:11px;color:#10b981;font-weight:600\"><\/span>\n                <div class=\"s3-view-btns\">\n                  <button class=\"s3-vbtn on\" title=\"목록 보기\">☰<\/button>\n                  <button class=\"s3-vbtn\" title=\"그리드 보기\">⊞<\/button>\n                <\/div>\n              <\/div>\n            <\/div>\n            <!-- Column headers -->\n            <div class=\"s3-col s3-th\">\n              <div><\/div>\n              <div>학생<\/div>\n              <div>학습량<\/div>\n              <div>정답률<\/div>\n              <div>이해도<\/div>\n              <div>AI 코멘트<\/div>\n              <div>과정<\/div>\n              <div id=\"s3-th-last\">상태<\/div>\n            <\/div>\n            <!-- Rows -->\n            <div class=\"s3-tbody\" id=\"ail-student-list\"><\/div>\n            <!-- Popup layer -->\n            <div class=\"s3-popup-layer hidden\" id=\"ail-popup-layer\" onclick=\"if(event.target===this)ailCloseEdit()\">\n              <div class=\"s3-popup\">\n                <div class=\"s3-popup-hdr\">\n                  <span class=\"s3-popup-ico\">AI<\/span>\n                  <span class=\"s3-popup-title\">AI 코멘트 수정 &nbsp;<span id=\"ail-edit-name\" style=\"color:#1a3a8f\"><\/span><\/span>\n                <\/div>\n                <div class=\"s3-popup-body\">\n                  <div class=\"ail-field\">\n                    <div class=\"ail-field-lbl\">AI 코멘트 어조<\/div>\n                    <div class=\"ail-radios\">\n                      <label class=\"ail-ra\"><input type=\"radio\" name=\"ail-tone\" checked> 다정한 어조<\/label>\n                      <label class=\"ail-ra\"><input type=\"radio\" name=\"ail-tone\"> 직설적 어조<\/label>\n                    <\/div>\n                  <\/div>\n                  <div class=\"ail-field\">\n                    <div class=\"ail-field-lbl\">맞춤형 지침<\/div>\n                    <select class=\"sel-input\" style=\"max-width:100%\"><option>지침 1 (기본)<\/option><option>지침 2 — 수능 대비반<\/option><\/select>\n                  <\/div>\n                  <div class=\"ail-field\">\n                    <div class=\"ail-field-lbl\">학생별 메모 <span style=\"font-size:11px;color:#9ca3af;font-weight:400\">(이 학생에게만 적용)<\/span><\/div>\n                    <textarea class=\"ail-memo\" id=\"ail-memo\" placeholder=\"학생에 대해 AI가 참고할 내용을 입력하세요. ex) 수업에 태도가 좋음. 계산 실수가 잦음.\"><\/textarea>\n                    <div style=\"font-size:11px;color:#9ca3af;margin-top:4px;text-align:right\"><span id=\"ail-memo-cnt\">0<\/span>/300자<\/div>\n                  <\/div>\n                  <div class=\"ail-field\">\n                    <div class=\"ail-field-lbl\">미리보기<\/div>\n                    <div class=\"ail-preview\" id=\"ail-preview\"><\/div>\n                  <\/div>\n                <\/div>\n                <div class=\"s3-popup-ftr\">\n                  <button class=\"ail-regen\" onclick=\"ailRegen()\">↻ AI 코멘트 재생성<\/button>\n                  <div style=\"display:flex;gap:8px\">\n                    <button class=\"btn btn-ghost\" style=\"padding:7px 16px;font-size:13px\" onclick=\"ailCancel()\">취소<\/button>\n                    <button class=\"btn btn-primary\" style=\"padding:7px 16px;font-size:13px\" onclick=\"ailSave()\">저장하기<\/button>\n                  <\/div>\n                <\/div>\n              <\/div>\n            <\/div>\n          <\/div>\n        <\/div>\n\n        <!-- S4 미리보기 & 편집 -->\n        <div class=\"scr\" id=\"s4\">\n          <div class=\"s4-layout\">\n            <div class=\"s4-left\">\n              <div class=\"s4l-hdr\">학생 <span id=\"s4-stu-count\">0<\/span>명<\/div>\n              <div id=\"s4-stu-list\"><\/div>\n            <\/div>\n            <div class=\"s4-center\">\n              <div class=\"s4c-toolbar\">\n                <span class=\"s4c-title\" id=\"cur-stu\">학생을 선택하세요<\/span>\n                <span class=\"s4-page-badge\">1/12 페이지<\/span>\n                <div class=\"ver-toggle\">\n                  <button class=\"vt-btn\" onclick=\"setVer('print',this)\">🖨 프린트<\/button>\n                  <button class=\"vt-btn on\" onclick=\"setVer('mobile',this)\">📱 모바일<\/button>\n                <\/div>\n                <div class=\"s4-zoom\">\n                  <button class=\"s4-zoom-btn\">−<\/button>\n                  <span class=\"s4-zoom-val\">100%<\/span>\n                  <button class=\"s4-zoom-btn\">+<\/button>\n                <\/div>\n              <\/div>\n              <div class=\"s4c-pv\">\n                <div class=\"report-card mobile\" id=\"report-card\">\n                  <div class=\"rc-logo\">매쓰홀릭<\/div>\n                  <div class=\"rc-title\">학습 보고서<\/div>\n                  <div class=\"rc-sub\">2026.01.27 ~ 2026.03.16<\/div>\n                  <div class=\"rc-sec\">\n                    <div class=\"rc-sec-t\">학습 요약<\/div>\n                    <div style=\"height:7px;background:#f3f4f6;border-radius:4px;margin-bottom:5px\"><\/div>\n                    <div style=\"height:7px;background:#f3f4f6;border-radius:4px;width:75%;margin-bottom:5px\"><\/div>\n                    <div style=\"height:7px;background:#f3f4f6;border-radius:4px;width:88%\"><\/div>\n                  <\/div>\n                  <div class=\"rc-sec\">\n                    <div class=\"rc-sec-t\">성취도 분석<\/div>\n                    <div class=\"rc-bar\"><div class=\"rc-fill\" style=\"width:82%;background:#1a3a8f\"><\/div><\/div>\n                    <div class=\"rc-bar\"><div class=\"rc-fill\" style=\"width:65%;background:#f97316\"><\/div><\/div>\n                    <div class=\"rc-bar\"><div class=\"rc-fill\" style=\"width:90%;background:#1a3a8f\"><\/div><\/div>\n                  <\/div>\n                  <div class=\"rc-sec\">\n                    <div class=\"rc-sec-t\">선생님 총평<\/div>\n                    <div class=\"rc-comment\" id=\"preview-comment\">학생을 선택하면 내용이 표시됩니다.<\/div>\n                  <\/div>\n                  <div style=\"margin-top:18px;text-align:right;font-size:9px;color:#9ca3af\">매쓰홀릭반<\/div>\n                <\/div>\n              <\/div>\n              <div class=\"s4c-footer\" style=\"justify-content:flex-start\">\n                <button class=\"s4-tmpl-btn\" id=\"s4-tmpl-btn\" onclick=\"if(!isLight)alert('템플릿이 저장되었습니다.')\">📋 템플릿 저장하기<\/button>\n                <div class=\"s4-tmpl-lock hidden\" id=\"s4-tmpl-lock\">🔒 템플릿 저장하기 <span class=\"prem-tag\">프리미엄<\/span><\/div>\n              <\/div>\n            <\/div>\n            <div class=\"s4-right\">\n              <div class=\"s4r-hdr\">\n                <span class=\"s4r-hdr-title\">페이지 <span id=\"page-action-label\">수정/삭제<\/span><\/span>\n                <label class=\"s4r-toggle\"><input type=\"checkbox\"> 내용 모아 찍기<\/label>\n              <\/div>\n              <div class=\"page-lock\" id=\"page-lock\">🔒 페이지 편집·삭제는<br>프리미엄 전용입니다<\/div>\n              <div id=\"page-thumbs\" class=\"pg-grid\">\n                <div class=\"pg-thumb act\" onclick=\"selectPage(this)\"><div class=\"pg-img\">표지<\/div><div class=\"pg-num\">1<\/div><div class=\"pg-actions\"><button class=\"pg-action\">수정<\/button><button class=\"pg-action\" style=\"color:#ef4444\">삭제<\/button><\/div><\/div>\n                <div class=\"pg-thumb\" onclick=\"selectPage(this)\"><div class=\"pg-img\">학습 요약<\/div><div class=\"pg-num\">2<\/div><div class=\"pg-actions\"><button class=\"pg-action\">수정<\/button><button class=\"pg-action\" style=\"color:#ef4444\">삭제<\/button><\/div><\/div>\n                <div class=\"pg-thumb\" onclick=\"selectPage(this)\"><div class=\"pg-img\">학습 활동<\/div><div class=\"pg-num\">3<\/div><div class=\"pg-actions\"><button class=\"pg-action\">수정<\/button><button class=\"pg-action\" style=\"color:#ef4444\">삭제<\/button><\/div><\/div>\n                <div class=\"pg-thumb\" onclick=\"selectPage(this)\"><div class=\"pg-img\">성취도 분석<\/div><div class=\"pg-num\">4<\/div><div class=\"pg-actions\"><button class=\"pg-action\">수정<\/button><button class=\"pg-action\" style=\"color:#ef4444\">삭제<\/button><\/div><\/div>\n                <div class=\"pg-thumb\" onclick=\"selectPage(this)\"><div class=\"pg-img\">유형 이해도<\/div><div class=\"pg-num\">5<\/div><div class=\"pg-actions\"><button class=\"pg-action\">수정<\/button><button class=\"pg-action\" style=\"color:#ef4444\">삭제<\/button><\/div><\/div>\n              <\/div>\n              <div class=\"s4r-footer\">\n                <button class=\"btn btn-primary\" style=\"width:100%;padding:9px;font-size:13px\" onclick=\"goNext()\">발송 설정 →<\/button>\n              <\/div>\n            <\/div>\n          <\/div>\n        <\/div>\n\n        <!-- S5 생성하기 -->\n        <div class=\"scr\" id=\"s5\">\n          <div class=\"generate-wrap\">\n            <!-- 통합 보고서용 발송 요약 -->\n            <div class=\"gen-summary\" id=\"gen-combined-summary\">\n              <div class=\"gen-sum-title\">발송 설정 요약<\/div>\n              <div class=\"gen-sum-row\"><span class=\"gen-sum-lbl\">보고서 종류<\/span><span class=\"gen-sum-val\" id=\"g-type\">통합 보고서<\/span><\/div>\n              <div class=\"gen-sum-row\"><span class=\"gen-sum-lbl\">발송 채널<\/span><span class=\"gen-sum-val\" id=\"g-channel\">알림톡<\/span><\/div>\n              <div class=\"gen-sum-row\"><span class=\"gen-sum-lbl\">발송 버전<\/span><span class=\"gen-sum-val\" id=\"g-ver\">모바일<\/span><\/div>\n              <div class=\"gen-sum-row\"><span class=\"gen-sum-lbl\">대상 학생<\/span><span class=\"gen-sum-val\" id=\"g-stu\">0명<\/span><\/div>\n              <div class=\"gen-sum-row\"><span class=\"gen-sum-lbl\">기간<\/span><span class=\"gen-sum-val\">2026.01.27 ~ 03.16<\/span><\/div>\n            <\/div>\n            <!-- 수업 보고서용 발송 설정 선택 -->\n            <div id=\"gen-class-settings\" style=\"display:none;width:100%;max-width:560px\">\n              <div class=\"gen-sum-title\" style=\"margin-bottom:16px\">발송 설정<\/div>\n              <div style=\"margin-bottom:18px\">\n                <div style=\"font-size:12px;font-weight:600;color:#6b7280;margin-bottom:8px\">발송 버전<\/div>\n                <div style=\"display:flex;gap:8px\">\n                  <button class=\"gen-opt-btn on\" id=\"go-mobile\" onclick=\"genOptSelect('ver',this,'모바일')\">📱 모바일<\/button>\n                  <button class=\"gen-opt-btn\" id=\"go-print\" onclick=\"genOptSelect('ver',this,'출력')\">🖨 출력하기<\/button>\n                <\/div>\n              <\/div>\n              <div style=\"margin-bottom:20px\">\n                <div style=\"font-size:12px;font-weight:600;color:#6b7280;margin-bottom:8px\">발송 채널<\/div>\n                <div style=\"display:flex;gap:8px\">\n                  <button class=\"gen-opt-btn on\" id=\"go-alimtalk\" onclick=\"genOptSelect('ch',this,'알림톡')\">알림톡<\/button>\n                  <button class=\"gen-opt-btn\" id=\"go-sms\" onclick=\"genOptSelect('ch',this,'SMS')\">SMS<\/button>\n                  <button class=\"gen-opt-btn\" id=\"go-kakao\" onclick=\"genOptSelect('ch',this,'카카오톡')\">카카오톡<\/button>\n                <\/div>\n              <\/div>\n              <div style=\"font-size:13px;color:#6b7280\">대상 학생 <b id=\"g-stu-class\" style=\"color:#111827\">0명<\/b><\/div>\n            <\/div>\n            <div class=\"gen-btn-area\">\n              <button class=\"btn-generate\" id=\"btn-generate\" onclick=\"doGenerate()\">📄 생성하기<\/button>\n              <div class=\"gen-result\" id=\"gen-result\">\n                <div class=\"gen-result-ico\">✅<\/div>\n                <div class=\"gen-result-msg\">보고서 생성이 완료되었습니다!<\/div>\n                <div class=\"gen-result-sub\" id=\"gen-result-sub\"><\/div>\n                <div class=\"gen-send-btns\" id=\"gen-send-btns\"><\/div>\n              <\/div>\n            <\/div>\n          <\/div>\n        <\/div>\n\n      <\/div><!-- /modal-body -->\n      <div class=\"modal-ftr\">\n        <button class=\"btn btn-ghost\" id=\"btn-back\" onclick=\"goBack()\">← 종류 변경<\/button>\n        <div id=\"ftr-right\" style=\"display:flex;gap:8px\">\n          <button class=\"btn btn-ghost\" onclick=\"if(confirm('초기화하시겠습니까?')){}\">↺ 초기화<\/button>\n          <button class=\"btn btn-primary\" id=\"btn-next\" onclick=\"goNext()\">다음 단계 →<\/button>\n        <\/div>\n      <\/div>\n    <\/div>\n  <\/div>\n<\/div>\n\n<!-- 발송 설정 모달 -->\n<div class=\"dispatch-overlay hidden\" id=\"dispatch-overlay\">\n  <div class=\"dispatch-card\">\n    <div class=\"dispatch-hdr\"><h3>발송 설정<\/h3><button class=\"close-x\" onclick=\"closeDispatch()\">✕<\/button><\/div>\n    <div class=\"dispatch-body\">\n      <div class=\"dispatch-sec\">\n        <div class=\"dispatch-lbl\">발송 채널 <span class=\"req\">*<\/span><\/div>\n        <div class=\"dispatch-ch\">\n          <div class=\"d-ch-opt on\" onclick=\"selectDCh(this,'알림톡')\"><div class=\"d-ch-ico\" style=\"background:#fff8e1\">🔔<\/div><div><div class=\"d-ch-name\">알림톡<\/div><div class=\"d-ch-desc\">카카오 채널 알림톡으로 발송<\/div><\/div><\/div>\n          <div class=\"d-ch-opt\" onclick=\"selectDCh(this,'카카오톡')\"><div class=\"d-ch-ico\" style=\"background:#fffde7\">💬<\/div><div><div class=\"d-ch-name\">카카오톡<\/div><div class=\"d-ch-desc\">카카오톡 메시지로 발송<\/div><\/div><\/div>\n          <div class=\"d-ch-opt\" onclick=\"selectDCh(this,'문자(SMS)')\"><div class=\"d-ch-ico\" style=\"background:#f0fdf4\">📩<\/div><div><div class=\"d-ch-name\">문자(SMS)<\/div><div class=\"d-ch-desc\">링크 포함 문자 메시지 발송<\/div><\/div><\/div>\n        <\/div>\n      <\/div>\n\n    <\/div>\n    <div class=\"dispatch-ftr\">\n      <button class=\"btn btn-ghost\" onclick=\"closeDispatch()\">취소<\/button>\n      <button class=\"btn btn-primary\" onclick=\"confirmDispatch()\">다음 단계 →<\/button>\n    <\/div>\n  <\/div>\n<\/div>\n\n<!-- Report Viewer Overlay -->\n<div class=\"rv-overlay hidden\" id=\"rv-overlay\">\n  <div class=\"rv-hdr\">\n    <span class=\"rv-hdr-title\" id=\"rv-title\">학생 보고서<\/span>\n    <div class=\"rv-hdr-right\">\n      <div class=\"rv-zoom\">\n        <button class=\"rv-zoom-btn\" onclick=\"rvZoom(-10)\">−<\/button>\n        <span class=\"rv-zoom-val\" id=\"rv-zoom-val\">100%<\/span>\n        <button class=\"rv-zoom-btn\" onclick=\"rvZoom(10)\">+<\/button>\n      <\/div>\n      <button class=\"btn btn-primary\" style=\"padding:6px 14px;font-size:13px;display:flex;align-items:center;gap:5px\" onclick=\"alert('공유하기')\">📤 공유하기<\/button>\n      <button class=\"btn btn-primary\" style=\"padding:6px 14px;font-size:13px;display:flex;align-items:center;gap:5px\" onclick=\"alert('출력하기')\">🖨 출력하기<\/button>\n      <button class=\"close-x\" onclick=\"closeRv()\">✕<\/button>\n    <\/div>\n  <\/div>\n  <div class=\"rv-body\">\n    <div class=\"rv-left\">\n      <div class=\"rv-left-hdr\">학생 <span id=\"rv-stu-count\"><\/span><\/div>\n      <div id=\"rv-stu-list\"><\/div>\n    <\/div>\n    <div class=\"rv-center\">\n      <div class=\"rv-page-badge\">1/12 페이지<\/div>\n      <div class=\"rv-report-wrap\" id=\"rv-report-wrap\">\n        <div class=\"rv-card\">\n          <div class=\"rv-card-brand\">매쓰홀릭<\/div>\n          <div class=\"rv-card-eyebrow\">눈으로 보이는 실력 향상<\/div>\n          <div class=\"rv-card-h1\">학습 보고서<\/div>\n          <div class=\"rv-card-date\">2026.01.27 ~ 2026.03.16<\/div>\n          <div class=\"rv-card-sec\">\n            <div class=\"rv-card-sec-t\">학습 요약<\/div>\n            <div style=\"height:7px;background:#f3f4f6;border-radius:4px;margin-bottom:5px\"><\/div>\n            <div style=\"height:7px;background:#f3f4f6;border-radius:4px;width:78%;margin-bottom:5px\"><\/div>\n            <div style=\"height:7px;background:#f3f4f6;border-radius:4px;width:90%\"><\/div>\n          <\/div>\n          <div class=\"rv-card-sec\">\n            <div class=\"rv-card-sec-t\">성취도 분석<\/div>\n            <div class=\"rv-card-bar-row\">\n              <div class=\"rv-card-bar\"><div class=\"rv-card-fill\" style=\"width:82%;background:#1a3a8f\"><\/div><\/div>\n              <div class=\"rv-card-bar\"><div class=\"rv-card-fill\" style=\"width:65%;background:#f97316\"><\/div><\/div>\n              <div class=\"rv-card-bar\"><div class=\"rv-card-fill\" style=\"width:90%;background:#10b981\"><\/div><\/div>\n            <\/div>\n          <\/div>\n          <div class=\"rv-card-sec\">\n            <div class=\"rv-card-sec-t\">선생님 총평<\/div>\n            <div class=\"rv-card-comment\" id=\"rv-comment\">학생을 선택하면 코멘트가 표시됩니다.<\/div>\n          <\/div>\n          <div class=\"rv-card-footer\">\n            <span id=\"rv-stu-grade\">매쓰홀릭반<\/span>\n            <span id=\"rv-stu-name-bot\" style=\"font-weight:700;color:#374151\"><\/span>\n          <\/div>\n        <\/div>\n      <\/div>\n    <\/div>\n  <\/div>\n<\/div>\n\n<script>\nlet isLight=true,selectedStudents=[],curStep=0,dispatchChannel='알림톡',dispatchVersion='모바일',ailActiveStu=null,curReportType='combined',curPeriodType='월간';\nconst studentData={'초등학교 1학년':['김민준','이서연','박지호','최수아','정도윤','한아름','이현수'],'초등학교 2학년':['박서진','김도영','최지우','이준서'],'중학교 1학년':['홍길동','김미미','신지수','이도윤','이현민','강동원','정수아']};\nconst aiTexts={'김미미':'김미미 학생은 지난 5주간 정답률을 79%까지 꾸준히 끌어올리며 학습 이해도를 크게 향상시켰습니다. 특히 심화 난이도의 약수와 배수, 소인수분해 유형에서 보완이 필요했던 부분을 완벽하게 이해로 전환한 점이 매우 고무적입니다.','강동원':'강동원 학생은 이번 달 학습량이 크게 증가했으며, 고등 확률과 통계 과정의 기본 개념을 탄탄히 다졌습니다. 꾸준한 노력이 성취로 이어지고 있으니 이 흐름을 이어나가길 바랍니다.','박지호':'박지호 학생은 개념 이해도가 뛰어나지만 실력·심화 단계에서 아직 보완이 필요합니다. 틀린 문제를 꼼꼼히 복습하는 습관을 만들면 더 큰 성과를 기대할 수 있습니다.','신아수':'신아수 학생의 이번 달 학습 데이터를 분석 중입니다. AI 코멘트가 곧 준비됩니다.','정수아':'정수아 학생은 이번 달 정답률 85%를 기록하며 매우 우수한 성취를 보였습니다. 특히 서술형 문제에서 두드러진 향상이 있었습니다.'};\nconst ailStatus={};\nconst stuCourses={'김민준':'중등 1-1 외 2개','이서연':'고등 확률과 통계','박지호':'중등 1-1 외 2개','최수아':'중등 1-1 외 2개','정도윤':'고등 확률과 통계','한아름':'중등 1-1 외 2개','이현수':'중등 1-1 외 2개','박서진':'고등 확률과 통계','김도영':'중등 2-1 외 1개','최지우':'고등 확률과 통계','이준서':'중등 1-1 외 2개','홍길동':'고등 확률과 통계','김미미':'고등 확률과 통계 외 1개','신지수':'중등 3-1 외 2개','이도윤':'중등 3-1 외 2개','이현민':'고등 확률과 통계','강동원':'고등 확률과 통계 외 1개','정수아':'고등 확률과 통계 외 1개'};\n\nfunction setVersion(v){\n  isLight=v==='light';\n  document.getElementById('vs-light').classList.toggle('on',isLight);\n  document.getElementById('vs-prem').classList.toggle('on',!isLight);\n  const cc=document.getElementById('type-class');\n  cc.classList.toggle('locked',isLight);\n  document.getElementById('class-prem-badge').style.display=isLight?'':'none';\n  document.getElementById('class-icon').style.filter=isLight?'grayscale(1)':'';\n  if(!isLight)cc.onclick=()=>selectType(cc);\n  else{cc.onclick=null;if(cc.classList.contains('sel')){cc.classList.remove('sel');document.querySelector('.type-card[data-type=\"combined\"]').classList.add('sel');}}\n  document.getElementById('light-note').style.display=isLight?'':'none';\n  if(curReportType!=='class') document.getElementById('tab-class').className=isLight?'s-tab locked':'s-tab';\n  if(curReportType!=='class'){\n    document.getElementById('class-group').style.opacity=isLight?'.45':'';\n    document.getElementById('class-group').style.pointerEvents=isLight?'none':'';\n  }\n  applyS2Locks();applyS4Locks();\n  document.getElementById('s2-hint').style.display=isLight?'':'none';\n  if(curReportType!=='class') document.getElementById('s1-hint').style.display=isLight?'':'none';\n}\nfunction applyS2Locks(){\n  const tBar=document.getElementById('template-bar'),tLock=document.getElementById('template-lock');\n  tBar.classList.toggle('locked',isLight);tLock.classList.toggle('hidden',!isLight);\n  const cWrap=document.getElementById('content-wrap'),cLock=document.getElementById('content-lock');\n  cWrap.querySelectorAll('input').forEach(el=>{el.disabled=isLight;});\n  cWrap.style.opacity=isLight?'.45':'';cLock.classList.toggle('hidden',!isLight);\n  const thWrap=document.getElementById('theme-wrap'),thLock=document.getElementById('theme-lock');\n  thWrap.style.opacity=isLight?'.45':'';thWrap.style.pointerEvents=isLight?'none':'';thLock.classList.toggle('hidden',!isLight);\n}\nfunction applyS4Locks(){\n  const pageLock=document.getElementById('page-lock'),pageLabel=document.getElementById('page-action-label');\n  if(isLight){pageLock.style.display='block';document.querySelectorAll('#page-thumbs .pg-actions').forEach(a=>a.style.display='none');pageLabel.textContent='(프리미엄 전용)';}\n  else{pageLock.style.display='none';document.querySelectorAll('#page-thumbs .pg-actions').forEach(a=>a.style.display='');pageLabel.textContent='수정/삭제';}\n  const tmplBtn=document.getElementById('s4-tmpl-btn'),tmplLock=document.getElementById('s4-tmpl-lock');\n  if(tmplBtn)tmplBtn.classList.toggle('hidden',isLight);\n  if(tmplLock)tmplLock.classList.toggle('hidden',!isLight);\n}\n// Student modal\nfunction openStudentModal(){renderStudentGroups();renderSelected();document.getElementById('backdrop').classList.remove('hidden');document.getElementById('stu-modal').classList.remove('hidden');document.getElementById('main-modal').classList.add('hidden');}\nfunction renderStudentGroups(){const c=document.getElementById('stu-groups');c.innerHTML='';for(const[g,ns]of Object.entries(studentData)){const d=document.createElement('div');d.className='stu-group';d.innerHTML=`<div class=\"stu-group-hdr\"><span class=\"stu-grade\">${g}<\/span><button class=\"stu-all-btn\" onclick=\"selectAllGrade('${g}')\">전체선택<\/button><\/div><div class=\"stu-grid\">${ns.map(n=>`<div class=\"stu-btn${selectedStudents.includes(n)?' checked':''}\" onclick=\"toggleStudent(this,'${n}')\">${n} <span>${selectedStudents.includes(n)?'✓':'+'}<\/span><\/div>`).join('')}<\/div>`;c.appendChild(d);}}\nfunction renderSelected(){const chips=document.getElementById('sel-chips'),empty=document.getElementById('sel-empty');document.getElementById('sel-count').textContent=selectedStudents.length;document.getElementById('btn-stu-done').disabled=selectedStudents.length===0;empty.style.display=selectedStudents.length===0?'':'none';chips.querySelectorAll('.sel-chip').forEach(c=>c.remove());selectedStudents.forEach(n=>{const d=document.createElement('div');d.className='sel-chip';d.innerHTML=`${n} <span onclick=\"removeStudent('${n}')\">×<\/span>`;chips.insertBefore(d,empty);});}\nfunction toggleStudent(btn,name){const i=selectedStudents.indexOf(name);if(i===-1){selectedStudents.push(name);btn.classList.add('checked');btn.querySelector('span').textContent='✓';}else{selectedStudents.splice(i,1);btn.classList.remove('checked');btn.querySelector('span').textContent='+';}renderSelected();}\nfunction removeStudent(name){selectedStudents=selectedStudents.filter(n=>n!==name);renderStudentGroups();renderSelected();}\nfunction selectAllGrade(g){studentData[g].forEach(n=>{if(!selectedStudents.includes(n))selectedStudents.push(n);});renderStudentGroups();renderSelected();}\nfunction resetStudents(){selectedStudents=[];renderStudentGroups();renderSelected();}\nfunction setStuTab(tab){tab.closest('.stu-tabs').querySelectorAll('.stu-tab').forEach(t=>t.classList.remove('on'));tab.classList.add('on');}\nfunction backToStudents(){renderStudentGroups();renderSelected();document.getElementById('main-modal').classList.add('hidden');document.getElementById('stu-modal').classList.remove('hidden');}\n// Type\nfunction goToType(){const chips=document.getElementById('type-stu-chips');chips.innerHTML=selectedStudents.slice(0,3).map(n=>`<span class=\"stu-chip-mini\">${n}<\/span>`).join('');if(selectedStudents.length>3)chips.innerHTML+=`<span class=\"stu-chip-mini\">+${selectedStudents.length-3}명<\/span>`;document.getElementById('g-stu').textContent=selectedStudents.length+'명';document.getElementById('stu-modal').classList.add('hidden');document.getElementById('main-modal').classList.remove('hidden');showPhase('type');}\nfunction selectType(card){\n  if(card.classList.contains('locked'))return;\n  document.querySelectorAll('.type-card:not(.locked)').forEach(c=>c.classList.remove('sel'));\n  card.classList.add('sel');\n  const label=card.dataset.label||'통합 보고서';\n  document.getElementById('type-chip').textContent=label;\n  document.getElementById('g-type').textContent=label;\n  curReportType=card.dataset.type||'combined';\n  applyTypeToStep1(curReportType);\n  applyContentSections();\n}\nfunction applyTypeToStep1(type){\n  const classTab=document.getElementById('tab-class');\n  const hint=document.getElementById('s1-hint');\n  const allTabs=document.querySelectorAll('.scope-tabs .s-tab');\n  const cg=document.getElementById('class-group');\n  const lockedHead=document.getElementById('class-locked-head');\n  const activeContent=document.getElementById('class-active-content');\n\n  if(type==='class'){\n    // 탭: 수업만 활성화\n    allTabs.forEach(t=>{\n      if(t!==classTab){\n        t.classList.remove('on');\n        t.classList.add('locked');\n        t.dataset.savedClick=t.getAttribute('onclick')||'';\n        t.removeAttribute('onclick');\n      }\n    });\n    classTab.className='s-tab on';\n    classTab.textContent='수업';\n    if(hint){hint.innerHTML='💡 <b>수업 보고서<\/b>는 수업 학습 데이터만 포함합니다.';hint.style.display='';}\n    // 수업 그룹 활성화\n    cg.style.opacity='';cg.style.pointerEvents='';\n    if(lockedHead)lockedHead.style.display='none';\n    if(activeContent)activeContent.style.display='';\n    // 다른 그룹 비활성화\n    document.querySelectorAll('.other-group').forEach(g=>{\n      g.style.opacity='.35';g.style.pointerEvents='none';\n      g.querySelectorAll('input[type=checkbox]').forEach(cb=>cb.disabled=true);\n    });\n    // 스텝 레이블 변경 (수업 보고서)\n    document.getElementById('st3').innerHTML='<div class=\"st-n\">3<\/div>프리뷰';\n    document.getElementById('st4').style.display='none';\n    document.getElementById('st-sep-4').style.display='none';\n    document.getElementById('st5').innerHTML='<div class=\"st-n\">4<\/div>생성하기';\n  } else {\n    // 탭 원상복원\n    allTabs.forEach(t=>{\n      if(t!==classTab){\n        t.classList.remove('locked');\n        if(t.dataset.savedClick){t.setAttribute('onclick',t.dataset.savedClick);delete t.dataset.savedClick;}\n      }\n    });\n    classTab.className=isLight?'s-tab locked':'s-tab';\n    classTab.innerHTML=isLight?'🔒 수업':'수업';\n    allTabs.forEach(t=>t.classList.remove('on'));\n    const allTab=Array.from(allTabs).find(t=>t.textContent.trim()==='전체');\n    if(allTab)allTab.classList.add('on');\n    if(hint){hint.innerHTML='💡 <b>통합 보고서<\/b> 기준으로 학습 범위가 구성됩니다. 라이트 버전에서는 수업 데이터를 포함할 수 없어요.';hint.style.display=isLight?'':'none';}\n    // 수업 그룹 잠금 복원\n    cg.style.opacity=isLight?'.45':'';cg.style.pointerEvents=isLight?'none':'';\n    if(lockedHead)lockedHead.style.display='';\n    if(activeContent)activeContent.style.display='none';\n    // 다른 그룹 복원\n    document.querySelectorAll('.other-group').forEach(g=>{\n      g.style.opacity='';g.style.pointerEvents='';\n      g.querySelectorAll('input[type=checkbox]').forEach(cb=>cb.disabled=false);\n    });\n    // 스텝 레이블 복원\n    document.getElementById('st3').innerHTML='<div class=\"st-n\">3<\/div>AI 코멘트';\n    document.getElementById('st4').style.display='';\n    document.getElementById('st-sep-4').style.display='';\n    document.getElementById('st5').innerHTML='<div class=\"st-n\">5<\/div>생성하기';\n  }\n}\nfunction applyContentSections(){\n  const wrap=document.getElementById('content-wrap');\n  if(!wrap)return;\n  const activeBtn=document.querySelector('.ctype-btn.on');\n  const ctype=activeBtn?activeBtn.textContent.trim():'상세형';\n  if(curReportType==='class'){\n    const classPeriodSecs={\n      '일간':[\n        {name:'표지 + 선생님 코멘트',on:true,extra:false},\n        {name:'오늘의 수업 현황',on:true,extra:false},\n        {name:'유형 이해도 현황',on:true,extra:false},\n      ],\n      '주간':[\n        {name:'표지 + 선생님 코멘트',on:true,extra:false},\n        {name:'수업 요약',on:true,extra:false},\n        {name:'수업 진도',on:true,extra:false},\n        {name:'유형 이해도 현황',on:true,extra:false},\n        {name:'단원별 성취도',on:ctype==='상세형',extra:true},\n      ],\n      '월간':[\n        {name:'표지 + 선생님 코멘트',on:true,extra:false},\n        {name:'수업 요약',on:true,extra:false},\n        {name:'수업 진도',on:true,extra:false},\n        {name:'주간 학습 현황/달력',on:ctype==='상세형',extra:true},\n        {name:'난이도별·행동영역별 분석',on:ctype==='상세형',extra:true},\n        {name:'단원별 성취도',on:true,extra:false},\n        {name:'유형 이해도 현황',on:true,extra:false},\n      ]\n    };\n    const secs=classPeriodSecs[curPeriodType]||classPeriodSecs['월간'];\n    wrap.innerHTML='<div class=\"content-cks\">'+secs.map(s=>\n      `<div class=\"ck-item${s.on?' checked':''}\" style=\"${!s.on?'opacity:.4;pointer-events:none':''}\" onclick=\"${s.on?'toggleCk(this)':''}\">\n        <input type=\"checkbox\" ${s.on?'checked':'disabled'}>\n        ${s.name}${s.extra?` <span style=\"font-size:10px;font-weight:700;margin-left:3px;color:${s.on?'#16a34a':'#9ca3af'}\">${ctype==='상세형'?'●':'○'}<\/span>`:''}\n      <\/div>`\n    ).join('')+'<\/div>';\n  } else {\n    // 기간별 내용 구성 (사용자 확정 데이터)\n    const isDetail=ctype==='상세형';\n    const periodSecs={\n      '월간':[\n        {name:'표지',on:true,extra:false},\n        {name:'학습 요약',on:true,extra:false},\n        {name:'학습 활동',on:true,extra:false},\n        {name:'성취도 분석',on:true,extra:false},\n        {name:'유형 이해도 분석',on:isDetail,extra:true},\n        {name:'취약 학습 성과',on:isDetail,extra:true},\n        {name:'학습 내역',on:true,extra:false},\n      ],\n      '주간':[\n        {name:'표지',on:true,extra:false},\n        {name:'학습 요약',on:true,extra:false},\n        {name:'학습 활동',on:true,extra:false},\n        {name:'성취도 분석',on:true,extra:false},\n        {name:'유형 이해도 분석',on:isDetail,extra:true},\n        {name:'취약 학습 성과',on:isDetail,extra:true},\n        {name:'학습 내역',on:true,extra:false},\n      ],\n      '일간':[\n        {name:'학습 요약',on:true,extra:false},\n        {name:'취약 학습 관리',on:true,extra:false},\n        {name:'학습 내역',on:isDetail,extra:true},\n      ]\n    };\n    const secs=periodSecs[curPeriodType]||periodSecs['월간'];\n    wrap.innerHTML='<div class=\"content-cks\">'+secs.map(s=>\n      `<div class=\"ck-item${s.on?' checked':''}\" style=\"${!s.on?'opacity:.4;pointer-events:none':''}\" onclick=\"${s.on?'toggleCk(this)':''}\">\n        <input type=\"checkbox\" ${s.on?'checked':'disabled'}>\n        ${s.name}${s.extra?` <span style=\"font-size:10px;font-weight:700;margin-left:3px;color:${s.on?'#1d4ed8':'#9ca3af'}\">${ctype==='상세형'?'●':'○'}<\/span>`:''}\n      <\/div>`\n    ).join('')+'<\/div>';\n  }\n}\nfunction onDateChange(){\n  const s=document.getElementById('date-start');\n  const e=document.getElementById('date-end');\n  if(!s||!e)return;\n  const d1=new Date(s.value),d2=new Date(e.value);\n  if(isNaN(d1)||isNaN(d2))return;\n  const days=Math.max(1,Math.round((d2-d1)/86400000)+1);\n  const badge=document.getElementById('period-badge');\n  const ind=document.getElementById('period-indicator');\n  if(days<=1){\n    curPeriodType='일간';\n    if(badge){badge.textContent='일간 보고서 자동 감지';badge.className='period-badge daily';}\n    if(ind){ind.textContent='일간 기준';ind.style.background='#fef3c7';ind.style.color='#d97706';}\n  }else if(days<=7){\n    curPeriodType='주간';\n    if(badge){badge.textContent='주간 보고서 자동 감지';badge.className='period-badge weekly';}\n    if(ind){ind.textContent='주간 기준';ind.style.background='#dbeafe';ind.style.color='#1d4ed8';}\n  }else{\n    curPeriodType='월간';\n    if(badge){badge.textContent='월간 보고서 자동 감지';badge.className='period-badge monthly';}\n    if(ind){ind.textContent='월간 기준';ind.style.background='#dcfce7';ind.style.color='#16a34a';}\n  }\n  applyContentSections();\n}\nfunction startSteps(){curStep=1;showPhase('steps');updateStepUI();}\nonDateChange();\n// Navigation\nfunction goNext(){if(curStep===4){openDispatch();return;}if(curReportType==='class'&&curStep===3){curStep=5;updateStepUI();return;}if(curStep<5){curStep++;updateStepUI();}}\nfunction goBack(){if(curReportType==='class'&&curStep===5){curStep=3;updateStepUI();return;}if(curStep>1){curStep--;updateStepUI();}else{showPhase('type');curStep=0;}}\nfunction updateStepUI(){\n  ['s1','s2','s3','s4','s5'].forEach((id,i)=>document.getElementById(id).classList.toggle('on',i+1===curStep));\n  ['st1','st2','st3','st4','st5'].forEach((id,i)=>{const el=document.getElementById(id);el.className='st';if(i+1===curStep)el.classList.add('active');else if(i+1<curStep)el.classList.add('done');});\n  document.getElementById('btn-back').textContent=curStep===1?'← 종류 변경':'← 이전 단계';\n  const fr=document.getElementById('ftr-right');\n  if(curStep===5){fr.innerHTML='';}\n  else if(curStep===4){fr.innerHTML=`<button class=\"btn btn-ghost\" onclick=\"if(confirm('초기화?')){}\">↺ 초기화<\/button><button class=\"btn btn-primary\" onclick=\"goNext()\">발송 설정 →<\/button>`;}\n  else{fr.innerHTML=`<button class=\"btn btn-ghost\" onclick=\"if(confirm('초기화?')){}\">↺ 초기화<\/button><button class=\"btn btn-primary\" onclick=\"goNext()\">다음 단계 →<\/button>`;}\n  if(curStep===2){applyS2Locks();applyContentSections();}\n  if(curStep===3){renderAilStep();}\n  if(curStep===4){renderS4StuList();applyS4Locks();}\n  if(curStep===5)updateGenStep();\n  document.getElementById('modal-body').scrollTop=0;\n}\nfunction showPhase(p){document.getElementById('phase-type').classList.toggle('on',p==='type');const sw=document.getElementById('phase-steps');if(p==='steps'){sw.style.display='flex';sw.classList.add('on');}else{sw.style.display='none';sw.classList.remove('on');}}\nfunction closeAll(){document.getElementById('backdrop').classList.add('hidden');selectedStudents=[];curStep=0;}\n// Step 1\nfunction setTab(tab){tab.closest('.scope-tabs').querySelectorAll('.s-tab:not(.locked)').forEach(t=>t.classList.remove('on'));tab.classList.add('on');}\nfunction toggleGroup(head){const body=head.nextElementSibling;if(!body||!body.classList.contains('lg-body'))return;const open=body.offsetHeight>0&&body.style.display!=='none';body.style.display=open?'none':'';head.querySelector('.arrow').textContent=open?'▼':'▲';}\n// Step 2\nfunction setCtype(btn){btn.closest('.ctype-btns').querySelectorAll('.ctype-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');applyContentSections();}\nfunction toggleCk(item){if(isLight)return;item.classList.toggle('checked');item.querySelector('input').checked=item.classList.contains('checked');}\nfunction selectTheme(card){if(isLight)return;card.closest('.theme-row').querySelectorAll('.th-card').forEach(c=>c.classList.remove('on'));card.classList.add('on');}\n// Step 3: AI 코멘트\nconst ailChecked={};\nfunction getStudentGrade(name){for(const[g,ns]of Object.entries(studentData)){if(ns.includes(name))return g;}return '';}\nfunction renderAilStep(){\n  if(!selectedStudents.length)return;\n  selectedStudents.forEach(n=>{\n    if(!ailStatus[n])ailStatus[n]='pending';\n    if(ailChecked[n]===undefined)ailChecked[n]=true;\n  });\n  renderS3Table();\n}\nfunction renderS3Table(){\n  const tbody=document.getElementById('ail-student-list');tbody.innerHTML='';\n  const total=selectedStudents.length;\n  const sel=selectedStudents.filter(n=>ailChecked[n]).length;\n  const done=selectedStudents.filter(n=>ailStatus[n]==='done').length;\n  document.getElementById('ail-count').textContent=total;\n  document.getElementById('ail-sel-count').textContent=sel;\n  const dc=document.getElementById('ail-done-count');if(dc)dc.textContent=done?done+'명 완료':'';\n  const allCk=document.getElementById('ail-sel-all');if(allCk)allCk.checked=sel===total&&total>0;\n  selectedStudents.forEach(n=>{\n    const st=ailStatus[n]||'pending';\n    const stLabel=st==='done'?'완료':st==='editing'?'편집중':'미편집';\n    const stCls=st==='done'?'done':st==='editing'?'editing':'pending';\n    const grade=getStudentGrade(n);\n    const ck=ailChecked[n];\n    const div=document.createElement('div');\n    div.className='s3-col s3-tr'+(ck?'':' unc');\n    div.innerHTML=\n      `<div><input type=\"checkbox\" ${ck?'checked':''} onclick=\"event.stopPropagation();ailToggleOne('${n}',this.checked)\" style=\"cursor:pointer;width:15px;height:15px\"><\/div>`+\n      `<div class=\"s3-stu-cell\"><div class=\"s3-stu-name\">${n}<\/div><div class=\"s3-stu-meta\">${grade}<\/div><\/div>`+\n      `<div class=\"s3-amount\">540개<br><span style=\"font-size:11px;color:#9ca3af\">정답 396개<\/span><\/div>`+\n      `<div class=\"s3-pct\">73.4%<\/div>`+\n      `<div class=\"s3-pct\">25%<\/div>`+\n      `<div><button class=\"s3-ai-btn\" onclick=\"event.stopPropagation();ailOpenEdit('${n}')\" title=\"AI 코멘트 편집\">✏️<\/button><\/div>`+\n      `<div class=\"s3-course\">${stuCourses[n]||'중등 1-1'}<\/div>`+\n      (curReportType==='class'\n        ?`<div style=\"display:flex;align-items:center;justify-content:flex-end;padding-right:4px\"><button onclick=\"event.stopPropagation();openReportPreview('${n}')\" style=\"font-size:11px;padding:4px 11px;background:#1a3a8f;color:white;border:none;border-radius:6px;cursor:pointer;white-space:nowrap\">미리보기<\/button><\/div>`\n        :`<div class=\"s3-status ${stCls}\">${stLabel}<\/div>`);\n    const _th=document.getElementById('s3-th-last');\n    if(_th)_th.textContent=curReportType==='class'?'미리보기':'상태';\n    tbody.appendChild(div);\n  });\n}\nfunction ailOpenEdit(name){\n  ailActiveStu=name;\n  document.getElementById('ail-edit-name').textContent=name;\n  document.getElementById('ail-preview').textContent=aiTexts[name]||'AI 코멘트를 생성 중입니다...';\n  document.getElementById('ail-memo').value='';\n  document.getElementById('ail-memo-cnt').textContent='0';\n  if(ailStatus[name]==='pending')ailStatus[name]='editing';\n  document.getElementById('ail-popup-layer').classList.remove('hidden');\n  renderS3Table();\n}\nfunction ailCloseEdit(){document.getElementById('ail-popup-layer').classList.add('hidden');ailActiveStu=null;}\nfunction ailToggleOne(name,checked){ailChecked[name]=checked;renderS3Table();}\nfunction ailToggleAll(checked){selectedStudents.forEach(n=>ailChecked[n]=checked);renderS3Table();}\nfunction ailSave(){if(ailActiveStu){ailStatus[ailActiveStu]='done';renderS3Table();ailCloseEdit();}}\nfunction ailCancel(){if(ailActiveStu&&ailStatus[ailActiveStu]==='editing'){ailStatus[ailActiveStu]='pending';}ailCloseEdit();renderS3Table();}\nfunction openReportPreview(name){\n  window.open('수업_보고서_프로토타입.html','_blank');\n}\nfunction ailRegen(){const n=ailActiveStu;if(!n)return;document.getElementById('ail-preview').textContent='재생성 중...';setTimeout(()=>{document.getElementById('ail-preview').textContent=(aiTexts[n]||'')+'(재생성됨)';},800);}\ndocument.getElementById('ail-memo').addEventListener('input',function(){document.getElementById('ail-memo-cnt').textContent=this.value.length;});\n// Step 4\nfunction renderS4StuList(){\n  const list=document.getElementById('s4-stu-list');list.innerHTML='';\n  document.getElementById('s4-stu-count').textContent=selectedStudents.length;\n  selectedStudents.forEach((n,i)=>{\n    const grade=getStudentGrade(n);\n    const div=document.createElement('div');\n    div.className='pv-stu'+(i===0?' act':'');\n    div.innerHTML=`<input type=\"checkbox\" checked onclick=\"event.stopPropagation()\" style=\"cursor:pointer;flex-shrink:0\"><div class=\"pv-stu-info\"><div class=\"pv-stu-name\">${n}<\/div><div class=\"pv-stu-meta\">${grade}<\/div><\/div>`;\n    div.onclick=()=>selectStu(div,n);\n    list.appendChild(div);\n  });\n  if(selectedStudents.length)selectStu(list.firstChild,selectedStudents[0]);\n}\nfunction selectStu(el,name){document.querySelectorAll('.pv-stu').forEach(s=>s.classList.remove('act'));el.classList.add('act');document.getElementById('cur-stu').textContent=name+' 학생';document.getElementById('preview-comment').textContent=(aiTexts[name]||'').substring(0,60)+'...';}\nfunction setVer(ver,btn){document.querySelectorAll('.s4c-toolbar .vt-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');document.getElementById('report-card').className=ver==='mobile'?'report-card mobile':'report-card print';dispatchVersion=ver==='print'?'프린트':'모바일';}\nfunction selectPage(thumb){thumb.closest('.s4-right').querySelectorAll('.pg-thumb').forEach(t=>t.classList.remove('act'));thumb.classList.add('act');}\n// Step 5\nfunction updateGenStep(){\n  const isClass=curReportType==='class';\n  const sumEl=document.getElementById('gen-combined-summary');\n  const setEl=document.getElementById('gen-class-settings');\n  if(sumEl)sumEl.style.display=isClass?'none':'';\n  if(setEl)setEl.style.display=isClass?'':'none';\n  if(!isClass){\n    document.getElementById('g-channel').textContent=dispatchChannel;\n    document.getElementById('g-ver').textContent=dispatchVersion;\n    document.getElementById('g-stu').textContent=selectedStudents.length+'명';\n    document.getElementById('g-type').textContent=document.getElementById('type-chip').textContent;\n  }else{\n    const gsc=document.getElementById('g-stu-class');\n    if(gsc)gsc.textContent=selectedStudents.length+'명';\n  }\n  document.getElementById('btn-generate').style.display='flex';\n  document.getElementById('btn-generate').textContent='📄 생성하기';\n  document.getElementById('btn-generate').disabled=false;\n  document.getElementById('gen-result').style.display='none';\n}\nfunction genOptSelect(type,btn,val){\n  const grp=btn.parentElement;\n  grp.querySelectorAll('.gen-opt-btn').forEach(b=>b.classList.remove('on'));\n  btn.classList.add('on');\n  if(type==='ch')dispatchChannel=val;\n  else dispatchVersion=val;\n}\nfunction doGenerate(){\n  const btn=document.getElementById('btn-generate');\n  btn.textContent='⏳ 생성 중...';btn.disabled=true;\n  setTimeout(()=>{openReportViewer();},1200);\n}\nlet rvZoomLevel=100;\nfunction openReportViewer(){\n  const list=document.getElementById('rv-stu-list');list.innerHTML='';\n  selectedStudents.forEach((n,i)=>{\n    const div=document.createElement('div');\n    div.className='rv-stu-row'+(i===0?' act':'');\n    div.onclick=()=>rvSelectStu(div,n);\n    div.innerHTML=`<div class=\"rv-stu-name\">${n}<\/div><div class=\"rv-stu-acts\"><button class=\"rv-act-btn\" onclick=\"event.stopPropagation();alert('${n} 보고서를 공유합니다.')\">📤 공유<\/button><button class=\"rv-act-btn\" onclick=\"event.stopPropagation();alert('${n} 보고서를 출력합니다.')\">🖨 출력<\/button><\/div>`;\n    list.appendChild(div);\n  });\n  if(selectedStudents.length)rvSelectStu(list.firstChild,selectedStudents[0]);\n  document.getElementById('rv-overlay').classList.remove('hidden');\n}\nfunction rvSelectStu(el,name){\n  document.querySelectorAll('.rv-stu-row').forEach(r=>r.classList.remove('act'));\n  el.classList.add('act');\n  document.getElementById('rv-title').textContent=name+' 학생 보고서';\n  const grade=getStudentGrade(name);\n  document.getElementById('rv-stu-grade').textContent=grade+' / 매쓰홀릭반';\n  document.getElementById('rv-stu-name-bot').textContent=name;\n  const t=aiTexts[name]||'AI 코멘트가 여기에 표시됩니다.';\n  document.getElementById('rv-comment').textContent=t;\n  rvZoomLevel=100;document.getElementById('rv-zoom-val').textContent='100%';\n  document.getElementById('rv-report-wrap').style.transform='scale(1)';\n}\nfunction rvZoom(delta){\n  rvZoomLevel=Math.max(50,Math.min(200,rvZoomLevel+delta));\n  document.getElementById('rv-zoom-val').textContent=rvZoomLevel+'%';\n  document.getElementById('rv-report-wrap').style.transform=`scale(${rvZoomLevel/100})`;\n}\nfunction closeRv(){\n  document.getElementById('rv-overlay').classList.add('hidden');\n  const btn=document.getElementById('btn-generate');\n  btn.textContent='📄 생성하기';btn.disabled=false;btn.style.display='flex';\n}\n// Dispatch\nfunction openDispatch(){document.getElementById('dispatch-overlay').classList.remove('hidden');}\nfunction closeDispatch(){document.getElementById('dispatch-overlay').classList.add('hidden');}\nfunction selectDCh(el,name){document.querySelectorAll('.d-ch-opt').forEach(c=>c.classList.remove('on'));el.classList.add('on');dispatchChannel=name;}\nfunction selectDVer(el,ver){document.querySelectorAll('.d-ver-card').forEach(c=>c.classList.remove('on'));el.classList.add('on');dispatchVersion=ver;}\nfunction confirmDispatch(){closeDispatch();curStep=5;updateStepUI();}\n// Init\nsetVersion('light');\n<\/script>\n<script>document.addEventListener(\"DOMContentLoaded\",function(){setTimeout(openStudentModal,0);});<\/script>\n<\/body>\n<\/html>\n\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000";
-let _genBlobUrl = null;
-function openNewReport() {
-  const overlay = document.getElementById('newreport-overlay');
-  overlay.style.display = 'flex';
-  const frame = document.getElementById('newreport-frame');
-  if (!_genBlobUrl) {
-    const blob = new Blob([_genHtml], {type: 'text/html; charset=utf-8'});
-    _genBlobUrl = URL.createObjectURL(blob);
-    frame.src = _genBlobUrl;
-  }
-}
-function closeNewReport() {
-  document.getElementById('newreport-overlay').style.display = 'none';
-}
 </script>
 
 <!-- ═══════════════════════════════════════════
@@ -1673,14 +2023,992 @@ function closeNewReport() {
 </div>
 
 
-<!-- ===== 새 보고서 만들기 오버레이 ===== -->
-<div id="newreport-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:white;flex-direction:column">
-  <div style="display:flex;align-items:center;height:48px;padding:0 16px;background:white;border-bottom:1px solid #e5e7eb;flex-shrink:0">
-    <button onclick="closeNewReport()" style="background:none;border:none;cursor:pointer;color:#1a3a8f;font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px">
-      ← 보고서 목록으로
-    </button>
+<div id="nr-root">
+<div class="backdrop hidden" id="nr-backdrop">
+  <!-- 학생 선택 -->
+  <div class="stu-dialog" id="nr-stu-modal">
+    <div class="stu-hdr"><h3>학생 선택</h3><button class="close-x" onclick="nr_closeAll()">✕</button></div>
+    <div class="stu-body">
+      <div class="stu-left">
+        <div class="stu-tabs">
+          <div class="stu-tab" onclick="nr_setStuTab(this)">반</div>
+          <div class="stu-tab" onclick="nr_setStuTab(this)">그룹</div>
+          <div class="stu-tab on" onclick="nr_setStuTab(this)">학년</div>
+          <div class="stu-tab" onclick="nr_setStuTab(this)">수업</div>
+        </div>
+        <div class="stu-filter">
+          <select class="stu-sel"><option>학년 전체</option><option>초등학교</option><option>중학교</option><option>고등학교</option></select>
+          <input class="stu-search" type="text" placeholder="🔍 학생이름 검색">
+        </div>
+        <div class="stu-groups" id="stu-groups"></div>
+      </div>
+      <div class="stu-right">
+        <div class="stu-right-hdr">
+          <span class="stu-count">선택된 학생 <span id="nr-sel-count">0</span>명</span>
+          <button class="stu-reset" onclick="nr_resetStudents()">↺ 초기화</button>
+        </div>
+        <div class="stu-selected">
+          <div class="sel-chips" id="nr-sel-chips">
+            <div class="sel-empty" id="nr-sel-empty">선택된 학생이 없습니다.<br>왼쪽에서 학생을 선택해 주세요.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="stu-footer">
+      <button class="btn btn-ghost" onclick="nr_closeAll()">취소</button>
+      <button class="btn btn-primary" id="btn-stu-done" onclick="nr_goToType()" disabled>선택 완료</button>
+    </div>
   </div>
-  <iframe id="newreport-frame" style="flex:1;border:none;width:100%;height:100%"></iframe>
+
+  <!-- 메인 모달 -->
+  <div class="modal hidden" id="nr-main-modal">
+    <!-- 보고서 종류 -->
+    <div class="type-phase scr on" id="phase-type">
+      <div class="type-phase-hdr">
+        <div><h2>보고서 종류를 선택해 주세요</h2><p class="type-sub">선택한 종류에 따라 보고서에 포함되는 내용이 달라집니다.</p></div>
+        <button class="close-x" onclick="nr_closeAll()">✕</button>
+      </div>
+      <div class="type-grid2">
+        <div class="type-card sel" data-type="combined" data-label="통합 보고서" onclick="nr_selectType(this)">
+          <div class="tc-icon">📋</div><div class="tc-name">통합 보고서</div>
+          <div class="tc-desc">학습지·평가·오답/보충·도전학습 등<br>전체 학습 활동을 종합한 보고서</div>
+        </div>
+        <div class="type-card" data-type="class" data-label="수업 보고서" id="type-class" onclick="nr_selectType(this)">
+          <span class="prem-badge-card" id="class-prem-badge">프리미엄</span>
+          <div class="tc-icon" id="class-icon" style="filter:grayscale(1)">🏫</div>
+          <div class="tc-name">수업 보고서</div>
+          <div class="tc-desc">수업 내용과 학생 참여를 중심으로<br>구성된 보고서</div>
+        </div>
+      </div>
+      <div class="light-note" id="light-note">💡 <b>라이트 버전</b>에서 수업 보고서는 사용할 수 없어요. 프리미엄으로 업그레이드하면 이용 가능합니다.</div>
+      <div class="type-footer">
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px">
+          <span style="font-size:12px;color:#6b7280">선택 학생:</span>
+          <div class="stu-chips-mini" id="type-stu-chips"></div>
+          <span style="font-size:12px;color:#1d4ed8;cursor:pointer;font-weight:600" onclick="nr_backToStudents()">변경 →</span>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-ghost" onclick="nr_backToStudents()">← 학생 변경</button>
+          <button class="btn btn-primary" onclick="nr_startSteps()">학습 범위 설정 →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Steps 1-5 -->
+    <div class="scr" id="phase-steps" style="display:flex;flex-direction:column;flex:1;min-height:0">
+      <div class="modal-hdr">
+        <div class="hdr-row">
+          <div class="modal-title-wrap">
+            <span class="modal-title">보고서 만들기</span>
+            <span class="type-chip" id="type-chip">통합 보고서</span>
+          </div>
+          <button class="close-x" onclick="nr_closeAll()">✕</button>
+        </div>
+        <div class="stepper">
+          <div class="st active" id="st1"><div class="st-n">1</div>학습 설정</div>
+          <div class="st-sep">›</div>
+          <div class="st" id="st2"><div class="st-n">2</div>보고서 설정</div>
+          <div class="st-sep">›</div>
+          <div class="st" id="st3"><div class="st-n">3</div>AI 코멘트</div>
+          <div class="st-sep" id="st-sep-4">›</div>
+          <div class="st" id="st4"><div class="st-n">4</div>미리보기&amp;편집</div>
+          <div class="st-sep">›</div>
+          <div class="st" id="st5"><div class="st-n">5</div>생성하기</div>
+        </div>
+      </div>
+      <div class="modal-body" id="modal-body">
+
+        <!-- S1 학습 설정 -->
+        <div class="scr on" id="s1">
+          <div class="hint-box" id="s1-hint">💡 <b>통합 보고서</b> 기준으로 학습 범위가 구성됩니다. 라이트 버전에서는 수업 데이터를 포함할 수 없어요.</div>
+          <div class="sec">
+            <div class="lbl">기간 <span class="req">*</span></div>
+            <div class="date-row">
+              <input class="date-in" type="text" id="date-start" value="2026-01-27" onchange="onDateChange()">
+              <span style="color:#9ca3af">~</span>
+              <input class="date-in" type="text" id="date-end" value="2026-03-16" onchange="onDateChange()">
+              <span id="period-badge" class="period-badge monthly">월간 보고서 자동 감지</span>
+            </div>
+          </div>
+          <div class="sec">
+            <div class="lbl">학습 범위 <span class="req">*</span></div>
+            <div class="scope-tabs">
+              <div class="s-tab locked" id="tab-class">🔒 수업</div>
+              <div class="s-tab on" onclick="setTab(this)">전체</div>
+              <div class="s-tab" onclick="setTab(this)">교재 채점</div>
+              <div class="s-tab" onclick="setTab(this)">학습지</div>
+              <div class="s-tab" onclick="setTab(this)">평가</div>
+              <div class="s-tab" onclick="setTab(this)">오답/보충</div>
+              <div class="s-tab" onclick="setTab(this)">도전학습</div>
+            </div>
+            <div class="learn-group" id="class-group" style="opacity:.45;pointer-events:none">
+              <div id="class-locked-head" class="lg-head">
+                <input type="checkbox" disabled>
+                🔒 수업 <span style="color:#f59e0b;font-size:11px;font-weight:600;margin-left:6px">라이트 버전 제외</span>
+                <span class="arrow">▼</span>
+              </div>
+              <div id="class-active-content" style="display:none">
+                <div class="lg-head" onclick="nr_toggleGroup(this)">
+                  <input type="checkbox" checked onclick="event.stopPropagation()">
+                  수업 <span style="color:#9ca3af;font-size:12px;font-weight:400;margin-left:6px">월간다푸네 기본편 2호 외 1개</span>
+                  <span class="arrow">▲</span>
+                </div>
+                <div class="lg-body">
+                  <div class="li"><input type="checkbox" checked>월간다푸네 기본편 2호</div>
+                  <div class="li"><input type="checkbox" checked>월간다푸네 기본편 3호</div>
+                </div>
+              </div>
+            </div>
+            <div class="learn-group other-group">
+              <div class="lg-head" onclick="nr_toggleGroup(this)">
+                <input type="checkbox" checked onclick="event.stopPropagation()">
+                교재 채점 <span style="color:#9ca3af;font-size:12px;font-weight:400;margin-left:6px">EBS 올림포스 외 1개</span>
+                <span class="arrow">▲</span>
+              </div>
+              <div class="lg-body">
+                <div class="li"><input type="checkbox" checked>[EBS 올림포스 유형편] 확률과 통계 (2022개정)</div>
+                <div class="li"><input type="checkbox" checked>[수수학의 바이블] 확률과 통계</div>
+              </div>
+            </div>
+            <div class="learn-group other-group"><div class="lg-head" onclick="nr_toggleGroup(this)"><input type="checkbox" checked onclick="event.stopPropagation()">학습지 <span style="color:#9ca3af;font-size:12px;font-weight:400;margin-left:6px">시중교재 외 6개</span><span class="arrow">▼</span></div></div>
+            <div class="learn-group other-group"><div class="lg-head" onclick="nr_toggleGroup(this)"><input type="checkbox" checked onclick="event.stopPropagation()">평가 <span style="color:#9ca3af;font-size:12px;font-weight:400;margin-left:6px">진단평가 외 1개</span><span class="arrow">▼</span></div></div>
+            <div class="learn-group other-group"><div class="lg-head" onclick="nr_toggleGroup(this)"><input type="checkbox" checked onclick="event.stopPropagation()">오답/보충학습 <span style="color:#9ca3af;font-size:12px;font-weight:400;margin-left:6px">오답유사사학습 외 8개</span><span class="arrow">▼</span></div></div>
+            <div class="learn-group other-group"><div class="lg-head" onclick="nr_toggleGroup(this)"><input type="checkbox" checked onclick="event.stopPropagation()">도전학습 <span style="color:#9ca3af;font-size:12px;font-weight:400;margin-left:6px">중단원 과벨업 외 2개</span><span class="arrow">▼</span></div></div>
+          </div>
+          <div class="auto-section">
+            <div class="auto-row">
+              <div class="auto-label">과정 <span class="auto-note">위 목록 기준으로 자동 구성</span></div>
+              <div class="auto-tags"><span class="auto-tag sel">중등 1-1 (2022 개정)</span><span class="auto-tag sel">고등 확률과 통계</span></div>
+            </div>
+            <div style="height:1px;background:#f3f4f6;margin:12px 0"></div>
+            <div class="auto-row">
+              <div class="auto-label">단원 <span class="auto-note">선택한 과정 기준으로 자동 구성</span></div>
+              <div class="auto-sub">중등 1-1 (2022 개정)</div>
+              <div class="auto-tags" style="margin-bottom:8px"><span class="auto-tag sel">1. 수와 연산</span><span class="auto-tag">2. 문자와 식</span></div>
+              <div class="auto-sub">고등 확률과 통계</div>
+              <div class="auto-tags"><span class="auto-tag sel">1. 경우의 수</span><span class="auto-tag sel">2. 확률</span></div>
+            </div>
+            <div style="height:1px;background:#f3f4f6;margin:12px 0"></div>
+            <div class="auto-row">
+              <div class="auto-label">난이도 <span class="auto-note">위 목록 기준으로 자동 구성</span></div>
+              <div class="auto-tags">
+                <span class="diff-tag on" onclick="this.classList.toggle('on')">개념</span>
+                <span class="diff-tag on" onclick="this.classList.toggle('on')">기본</span>
+                <span class="diff-tag on" onclick="this.classList.toggle('on')">실력</span>
+                <span class="diff-tag on" onclick="this.classList.toggle('on')">심화</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- S2 보고서 설정 -->
+        <div class="scr" id="s2">
+          <div class="hint-box" id="s2-hint">💡 <b style="color:#d97706">프리미엄 전용</b> 항목은 현재 잠겨 있습니다. 기본 설정으로 진행됩니다.</div>
+          <div class="s2-section">
+            <div class="s2-row-label">⬡ 저장된 템플릿 <span class="prem-tag">프리미엄</span></div>
+            <div class="template-bar" id="template-bar">
+              <div class="template-bar-left"><div class="template-bar-title">저장된 설정을 적용하면 상세 설정값이 모두 적용됩니다.</div></div>
+              <select class="template-sel"><option>템플릿 없음</option><option>수능 대비반 기본</option><option>내신 집중반</option></select>
+            </div>
+            <div class="prem-lock-notice hidden" id="template-lock">🔒 라이트 버전에서는 저장된 템플릿을 사용할 수 없어요. <span style="text-decoration:underline;cursor:pointer;margin-left:auto">프리미엄 업그레이드 →</span></div>
+          </div>
+          <hr class="s2-divider">
+          <div class="s2-section">
+            <div class="s2-row-label">내용 구성 <span class="req">*</span> <span class="prem-tag">프리미엄</span>
+              <span id="period-indicator" style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:6px;background:#dcfce7;color:#16a34a">월간 기준</span>
+            </div>
+            <div class="ctype-btns" id="ctype-btns">
+              <div class="ctype-btn on" onclick="nr_setCtype(this)">상세형</div>
+              <div class="ctype-btn" onclick="nr_setCtype(this)">요약형</div>
+            </div>
+            <div class="prem-lock-notice hidden" id="nr-content-lock">🔒 라이트 버전은 상세형, 요약형 전체 구성으로 고정됩니다. <span style="text-decoration:underline;cursor:pointer;margin-left:auto">프리미엄 업그레이드 →</span></div>
+            <div id="content-wrap">
+              <div class="content-cks">
+                <div class="ck-item checked" onclick="nr_toggleCk(this)"><input type="checkbox" checked> 표지</div>
+                <div class="ck-item checked" onclick="nr_toggleCk(this)"><input type="checkbox" checked> 학습 요약</div>
+                <div class="ck-item checked" onclick="nr_toggleCk(this)"><input type="checkbox" checked> 학습 활동</div>
+                <div class="ck-item checked" onclick="nr_toggleCk(this)"><input type="checkbox" checked> 성취도 분석</div>
+                <div class="ck-item checked" onclick="nr_toggleCk(this)"><input type="checkbox" checked> 유형 이해도</div>
+                <div class="ck-item checked" onclick="nr_toggleCk(this)"><input type="checkbox" checked> 취약 학습 성과</div>
+                <div class="ck-item checked" onclick="nr_toggleCk(this)"><input type="checkbox" checked> 학습 내역</div>
+              </div>
+            </div>
+          </div>
+          <hr class="s2-divider">
+          <div class="s2-section">
+            <div class="s2-row-label">선생님 총평 <span class="req">*</span></div>
+            <div class="radio-row" style="margin-bottom:12px">
+              <label class="r-item"><input type="radio" name="cm" checked> AI 코멘트 사용하기</label>
+              <label class="r-item"><input type="radio" name="cm"> 직접 입력하기</label>
+              <label class="r-item"><input type="radio" name="cm"> 사용하지 않기</label>
+            </div>
+            <div style="font-size:11px;color:#9ca3af;margin-bottom:12px">※ [직접 입력하기]는 수동 발송에서만 제공됩니다.</div>
+            <div class="sub-lbl" style="margin-top:0">AI 코멘트 어조</div>
+            <div class="radio-row" style="margin-bottom:10px">
+              <label class="r-item"><input type="radio" name="tone" checked> 다정한 어조</label>
+              <label class="r-item"><input type="radio" name="tone"> 직설적 어조</label>
+            </div>
+            <div class="sub-lbl">맞춤형 지침 (전체 공통)</div>
+            <select class="sel-input" style="margin-bottom:8px"><option>지침 1</option><option>지침 2 — 수능 대비반</option></select>
+            <div class="sub-lbl">총평 입력 영역</div>
+            <div class="radio-row">
+              <label class="r-item"><input type="radio" name="pos" checked> 내용(학습 요약)에 포함하기</label>
+              <label class="r-item"><input type="radio" name="pos"> 표지에 포함하기</label>
+            </div>
+          </div>
+          <hr class="s2-divider">
+          <div class="s2-section">
+            <div class="s2-row-label">보고서 테마 <span style="font-size:12px;color:#9ca3af;font-weight:400">(선택)</span> <span class="prem-tag">프리미엄</span></div>
+            <div style="font-size:11px;color:#9ca3af;margin-bottom:12px">※ 테마를 선택하지 않으면 기본 디자인이 적용됩니다.</div>
+            <div id="theme-wrap">
+              <div class="theme-row">
+                <div class="th-card on" onclick="nr_selectTheme(this)"><div class="th-thumb t1"></div><div class="th-name">기본</div></div>
+                <div class="th-card" onclick="nr_selectTheme(this)"><div class="th-thumb t2"></div><div class="th-name">심플</div></div>
+                <div class="th-card" onclick="nr_selectTheme(this)"><div class="th-thumb t3"></div><div class="th-name">도형</div></div>
+                <div class="th-card" onclick="nr_selectTheme(this)"><div class="th-thumb t4"></div><div class="th-name">그래프</div></div>
+              </div>
+            </div>
+            <div class="prem-lock-notice hidden" id="nr-theme-lock">🔒 라이트 버전은 기본 테마만 사용 가능합니다.</div>
+          </div>
+          <hr class="s2-divider">
+          <div class="s2-section">
+            <div class="s2-row-label">학원 로고 <span class="req">*</span></div>
+            <div class="radio-row">
+              <label class="r-item"><input type="radio" name="logo" checked> 넣기</label>
+              <label class="r-item"><input type="radio" name="logo"> 넣지 않기</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- S3 AI 코멘트 -->
+        <div class="scr" id="s3">
+          <div class="s3-wrap">
+            <!-- Header bar -->
+            <div class="s3-hdr">
+              <div class="s3-sel-info">
+                <input type="checkbox" id="ail-sel-all" onchange="ailToggleAll(this.checked)" checked style="cursor:pointer;width:15px;height:15px">
+                전체 <span id="ail-count">0</span>명 중 <span id="ail-sel-count">0</span>명 선택됨
+              </div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <span id="ail-done-count" style="font-size:11px;color:#10b981;font-weight:600"></span>
+                <div class="s3-view-btns">
+                  <button class="s3-vbtn on" title="목록 보기">☰</button>
+                  <button class="s3-vbtn" title="그리드 보기">⊞</button>
+                </div>
+              </div>
+            </div>
+            <!-- Column headers -->
+            <div class="s3-col s3-th">
+              <div></div>
+              <div>학생</div>
+              <div>학습량</div>
+              <div>정답률</div>
+              <div>이해도</div>
+              <div>AI 코멘트</div>
+              <div>과정</div>
+              <div id="s3-th-last">상태</div>
+            </div>
+            <!-- Rows -->
+            <div class="s3-tbody" id="ail-student-list"></div>
+            <!-- Popup layer -->
+            <div class="s3-popup-layer hidden" id="ail-popup-layer" onclick="if(event.target===this)ailCloseEdit()">
+              <div class="s3-popup">
+                <div class="s3-popup-hdr">
+                  <span class="s3-popup-ico">AI</span>
+                  <span class="s3-popup-title">AI 코멘트 수정 &nbsp;<span id="ail-edit-name" style="color:#1a3a8f"></span></span>
+                </div>
+                <div class="s3-popup-body">
+                  <div class="ail-field">
+                    <div class="ail-field-lbl">AI 코멘트 어조</div>
+                    <div class="ail-radios">
+                      <label class="ail-ra"><input type="radio" name="ail-tone" checked> 다정한 어조</label>
+                      <label class="ail-ra"><input type="radio" name="ail-tone"> 직설적 어조</label>
+                    </div>
+                  </div>
+                  <div class="ail-field">
+                    <div class="ail-field-lbl">맞춤형 지침</div>
+                    <select class="sel-input" style="max-width:100%"><option>지침 1 (기본)</option><option>지침 2 — 수능 대비반</option></select>
+                  </div>
+                  <div class="ail-field">
+                    <div class="ail-field-lbl">학생별 메모 <span style="font-size:11px;color:#9ca3af;font-weight:400">(이 학생에게만 적용)</span></div>
+                    <textarea class="ail-memo" id="ail-memo" placeholder="학생에 대해 AI가 참고할 내용을 입력하세요. ex) 수업에 태도가 좋음. 계산 실수가 잦음."></textarea>
+                    <div style="font-size:11px;color:#9ca3af;margin-top:4px;text-align:right"><span id="ail-memo-cnt">0</span>/300자</div>
+                  </div>
+                  <div class="ail-field">
+                    <div class="ail-field-lbl">미리보기</div>
+                    <div class="ail-preview" id="ail-preview"></div>
+                  </div>
+                </div>
+                <div class="s3-popup-ftr">
+                  <button class="ail-regen" onclick="nr_ailRegen()">↻ AI 코멘트 재생성</button>
+                  <div style="display:flex;gap:8px">
+                    <button class="btn btn-ghost" style="padding:7px 16px;font-size:13px" onclick="nr_ailCancel()">취소</button>
+                    <button class="btn btn-primary" style="padding:7px 16px;font-size:13px" onclick="nr_ailSave()">저장하기</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- S4 미리보기 & 편집 -->
+        <div class="scr" id="s4">
+          <div class="s4-layout">
+            <div class="s4-left">
+              <div class="s4l-hdr">학생 <span id="s4-stu-count">0</span>명</div>
+              <div id="s4-stu-list"></div>
+            </div>
+            <div class="s4-center">
+              <div class="s4c-toolbar">
+                <span class="s4c-title" id="cur-stu">학생을 선택하세요</span>
+                <span class="s4-page-badge">1/12 페이지</span>
+                <div class="ver-toggle">
+                  <button class="vt-btn" onclick="nr_setVer('print',this)">🖨 프린트</button>
+                  <button class="vt-btn on" onclick="nr_setVer('mobile',this)">📱 모바일</button>
+                </div>
+                <div class="s4-zoom">
+                  <button class="s4-zoom-btn">−</button>
+                  <span class="s4-zoom-val">100%</span>
+                  <button class="s4-zoom-btn">+</button>
+                </div>
+              </div>
+              <div class="s4c-pv">
+                <div class="report-card mobile" id="report-card">
+                  <div class="rc-logo">매쓰홀릭</div>
+                  <div class="rc-title">학습 보고서</div>
+                  <div class="rc-sub">2026.01.27 ~ 2026.03.16</div>
+                  <div class="rc-sec">
+                    <div class="rc-sec-t">학습 요약</div>
+                    <div style="height:7px;background:#f3f4f6;border-radius:4px;margin-bottom:5px"></div>
+                    <div style="height:7px;background:#f3f4f6;border-radius:4px;width:75%;margin-bottom:5px"></div>
+                    <div style="height:7px;background:#f3f4f6;border-radius:4px;width:88%"></div>
+                  </div>
+                  <div class="rc-sec">
+                    <div class="rc-sec-t">성취도 분석</div>
+                    <div class="rc-bar"><div class="rc-fill" style="width:82%;background:#1a3a8f"></div></div>
+                    <div class="rc-bar"><div class="rc-fill" style="width:65%;background:#f97316"></div></div>
+                    <div class="rc-bar"><div class="rc-fill" style="width:90%;background:#1a3a8f"></div></div>
+                  </div>
+                  <div class="rc-sec">
+                    <div class="rc-sec-t">선생님 총평</div>
+                    <div class="rc-comment" id="preview-comment">학생을 선택하면 내용이 표시됩니다.</div>
+                  </div>
+                  <div style="margin-top:18px;text-align:right;font-size:9px;color:#9ca3af">매쓰홀릭반</div>
+                </div>
+              </div>
+              <div class="s4c-footer" style="justify-content:flex-start">
+                <button class="s4-tmpl-btn" id="s4-tmpl-btn" onclick="if(!isLight)alert('템플릿이 저장되었습니다.')">📋 템플릿 저장하기</button>
+                <div class="s4-tmpl-lock hidden" id="s4-tmpl-lock">🔒 템플릿 저장하기 <span class="prem-tag">프리미엄</span></div>
+              </div>
+            </div>
+            <div class="s4-right">
+              <div class="s4r-hdr">
+                <span class="s4r-hdr-title">페이지 <span id="page-action-label">수정/삭제</span></span>
+                <label class="s4r-toggle"><input type="checkbox"> 내용 모아 찍기</label>
+              </div>
+              <div class="page-lock" id="page-lock">🔒 페이지 편집·삭제는<br>프리미엄 전용입니다</div>
+              <div id="page-thumbs" class="pg-grid">
+                <div class="pg-thumb act" onclick="nr_selectPage(this)"><div class="pg-img">표지</div><div class="pg-num">1</div><div class="pg-actions"><button class="pg-action">수정</button><button class="pg-action" style="color:#ef4444">삭제</button></div></div>
+                <div class="pg-thumb" onclick="nr_selectPage(this)"><div class="pg-img">학습 요약</div><div class="pg-num">2</div><div class="pg-actions"><button class="pg-action">수정</button><button class="pg-action" style="color:#ef4444">삭제</button></div></div>
+                <div class="pg-thumb" onclick="nr_selectPage(this)"><div class="pg-img">학습 활동</div><div class="pg-num">3</div><div class="pg-actions"><button class="pg-action">수정</button><button class="pg-action" style="color:#ef4444">삭제</button></div></div>
+                <div class="pg-thumb" onclick="nr_selectPage(this)"><div class="pg-img">성취도 분석</div><div class="pg-num">4</div><div class="pg-actions"><button class="pg-action">수정</button><button class="pg-action" style="color:#ef4444">삭제</button></div></div>
+                <div class="pg-thumb" onclick="nr_selectPage(this)"><div class="pg-img">유형 이해도</div><div class="pg-num">5</div><div class="pg-actions"><button class="pg-action">수정</button><button class="pg-action" style="color:#ef4444">삭제</button></div></div>
+              </div>
+              <div class="s4r-footer">
+                <button class="btn btn-primary" style="width:100%;padding:9px;font-size:13px" onclick="nr_goNext()">발송 설정 →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- S5 생성하기 -->
+        <div class="scr" id="s5">
+          <div class="generate-wrap">
+            <!-- 통합 보고서용 발송 요약 -->
+            <div class="gen-summary" id="gen-combined-summary">
+              <div class="gen-sum-title">발송 설정 요약</div>
+              <div class="gen-sum-row"><span class="gen-sum-lbl">보고서 종류</span><span class="gen-sum-val" id="g-type">통합 보고서</span></div>
+              <div class="gen-sum-row"><span class="gen-sum-lbl">발송 채널</span><span class="gen-sum-val" id="g-channel">알림톡</span></div>
+              <div class="gen-sum-row"><span class="gen-sum-lbl">발송 버전</span><span class="gen-sum-val" id="g-ver">모바일</span></div>
+              <div class="gen-sum-row"><span class="gen-sum-lbl">대상 학생</span><span class="gen-sum-val" id="g-stu">0명</span></div>
+              <div class="gen-sum-row"><span class="gen-sum-lbl">기간</span><span class="gen-sum-val">2026.01.27 ~ 03.16</span></div>
+            </div>
+            <!-- 수업 보고서용 발송 설정 선택 -->
+            <div id="gen-class-settings" style="display:none;width:100%;max-width:560px">
+              <div class="gen-sum-title" style="margin-bottom:16px">발송 설정</div>
+              <div style="margin-bottom:18px">
+                <div style="font-size:12px;font-weight:600;color:#6b7280;margin-bottom:8px">발송 버전</div>
+                <div style="display:flex;gap:8px">
+                  <button class="gen-opt-btn on" id="go-mobile" onclick="nr_genOptSelect('ver',this,'모바일')">📱 모바일</button>
+                  <button class="gen-opt-btn" id="go-print" onclick="nr_genOptSelect('ver',this,'출력')">🖨 출력하기</button>
+                </div>
+              </div>
+              <div style="margin-bottom:20px">
+                <div style="font-size:12px;font-weight:600;color:#6b7280;margin-bottom:8px">발송 채널</div>
+                <div style="display:flex;gap:8px">
+                  <button class="gen-opt-btn on" id="go-alimtalk" onclick="nr_genOptSelect('ch',this,'알림톡')">알림톡</button>
+                  <button class="gen-opt-btn" id="go-sms" onclick="nr_genOptSelect('ch',this,'SMS')">SMS</button>
+                  <button class="gen-opt-btn" id="go-kakao" onclick="nr_genOptSelect('ch',this,'카카오톡')">카카오톡</button>
+                </div>
+              </div>
+              <div style="font-size:13px;color:#6b7280">대상 학생 <b id="g-stu-class" style="color:#111827">0명</b></div>
+            </div>
+            <div class="gen-btn-area">
+              <button class="btn-generate" id="btn-generate" onclick="nr_doGenerate()">📄 생성하기</button>
+              <div class="gen-result" id="gen-result">
+                <div class="gen-result-ico">✅</div>
+                <div class="gen-result-msg">보고서 생성이 완료되었습니다!</div>
+                <div class="gen-result-sub" id="gen-result-sub"></div>
+                <div class="gen-send-btns" id="gen-send-btns"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /modal-body -->
+      <div class="modal-ftr">
+        <button class="btn btn-ghost" id="btn-back" onclick="nr_goBack()">← 종류 변경</button>
+        <div id="ftr-right" style="display:flex;gap:8px">
+          <button class="btn btn-ghost" onclick="if(confirm('초기화하시겠습니까?')){}">↺ 초기화</button>
+          <button class="btn btn-primary" id="btn-next" onclick="nr_goNext()">다음 단계 →</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<!-- 발송 설정 모달 -->
+<div class="dispatch-overlay hidden" id="dispatch-overlay">
+  <div class="dispatch-card">
+    <div class="dispatch-hdr"><h3>발송 설정</h3><button class="close-x" onclick="nr_closeDispatch()">✕</button></div>
+    <div class="dispatch-body">
+      <div class="dispatch-sec">
+        <div class="dispatch-lbl">발송 채널 <span class="req">*</span></div>
+        <div class="dispatch-ch">
+          <div class="d-ch-opt on" onclick="nr_selectDCh(this,'알림톡')"><div class="d-ch-ico" style="background:#fff8e1">🔔</div><div><div class="d-ch-name">알림톡</div><div class="d-ch-desc">카카오 채널 알림톡으로 발송</div></div></div>
+          <div class="d-ch-opt" onclick="nr_selectDCh(this,'카카오톡')"><div class="d-ch-ico" style="background:#fffde7">💬</div><div><div class="d-ch-name">카카오톡</div><div class="d-ch-desc">카카오톡 메시지로 발송</div></div></div>
+          <div class="d-ch-opt" onclick="nr_selectDCh(this,'문자(SMS)')"><div class="d-ch-ico" style="background:#f0fdf4">📩</div><div><div class="d-ch-name">문자(SMS)</div><div class="d-ch-desc">링크 포함 문자 메시지 발송</div></div></div>
+        </div>
+      </div>
+
+    </div>
+    <div class="dispatch-ftr">
+      <button class="btn btn-ghost" onclick="nr_closeDispatch()">취소</button>
+      <button class="btn btn-primary" onclick="nr_confirmDispatch()">다음 단계 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- Report Viewer Overlay -->
+<div class="rv-overlay hidden" id="rv-overlay">
+  <div class="rv-hdr">
+    <span class="rv-hdr-title" id="rv-title">학생 보고서</span>
+    <div class="rv-hdr-right">
+      <div class="rv-zoom">
+        <button class="rv-zoom-btn" onclick="nr_rvZoom(-10)">−</button>
+        <span class="rv-zoom-val" id="rv-zoom-val">100%</span>
+        <button class="rv-zoom-btn" onclick="nr_rvZoom(10)">+</button>
+      </div>
+      <button class="btn btn-primary" style="padding:6px 14px;font-size:13px;display:flex;align-items:center;gap:5px" onclick="alert('공유하기')">📤 공유하기</button>
+      <button class="btn btn-primary" style="padding:6px 14px;font-size:13px;display:flex;align-items:center;gap:5px" onclick="alert('출력하기')">🖨 출력하기</button>
+      <button class="close-x" onclick="nr_closeRv()">✕</button>
+    </div>
+  </div>
+  <div class="rv-body">
+    <div class="rv-left">
+      <div class="rv-left-hdr">학생 <span id="rv-stu-count"></span></div>
+      <div id="rv-stu-list"></div>
+    </div>
+    <div class="rv-center">
+      <div class="rv-page-badge">1/12 페이지</div>
+      <div class="rv-report-wrap" id="rv-report-wrap">
+        <div class="rv-card">
+          <div class="rv-card-brand">매쓰홀릭</div>
+          <div class="rv-card-eyebrow">눈으로 보이는 실력 향상</div>
+          <div class="rv-card-h1">학습 보고서</div>
+          <div class="rv-card-date">2026.01.27 ~ 2026.03.16</div>
+          <div class="rv-card-sec">
+            <div class="rv-card-sec-t">학습 요약</div>
+            <div style="height:7px;background:#f3f4f6;border-radius:4px;margin-bottom:5px"></div>
+            <div style="height:7px;background:#f3f4f6;border-radius:4px;width:78%;margin-bottom:5px"></div>
+            <div style="height:7px;background:#f3f4f6;border-radius:4px;width:90%"></div>
+          </div>
+          <div class="rv-card-sec">
+            <div class="rv-card-sec-t">성취도 분석</div>
+            <div class="rv-card-bar-row">
+              <div class="rv-card-bar"><div class="rv-card-fill" style="width:82%;background:#1a3a8f"></div></div>
+              <div class="rv-card-bar"><div class="rv-card-fill" style="width:65%;background:#f97316"></div></div>
+              <div class="rv-card-bar"><div class="rv-card-fill" style="width:90%;background:#10b981"></div></div>
+            </div>
+          </div>
+          <div class="rv-card-sec">
+            <div class="rv-card-sec-t">선생님 총평</div>
+            <div class="rv-card-comment" id="rv-comment">학생을 선택하면 코멘트가 표시됩니다.</div>
+          </div>
+          <div class="rv-card-footer">
+            <span id="rv-stu-grade">매쓰홀릭반</span>
+            <span id="rv-stu-name-bot" style="font-weight:700;color:#374151"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script id="nr-scripts">
+(function() {
+
+let isLight=true,selectedStudents=[],curStep=0,dispatchChannel='알림톡',dispatchVersion='모바일',ailActiveStu=null,curReportType='combined',curPeriodType='월간';
+const studentData={'초등학교 1학년':['김민준','이서연','박지호','최수아','정도윤','한아름','이현수'],'초등학교 2학년':['박서진','김도영','최지우','이준서'],'중학교 1학년':['홍길동','김미미','신지수','이도윤','이현민','강동원','정수아']};
+const aiTexts={'김미미':'김미미 학생은 지난 5주간 정답률을 79%까지 꾸준히 끌어올리며 학습 이해도를 크게 향상시켰습니다. 특히 심화 난이도의 약수와 배수, 소인수분해 유형에서 보완이 필요했던 부분을 완벽하게 이해로 전환한 점이 매우 고무적입니다.','강동원':'강동원 학생은 이번 달 학습량이 크게 증가했으며, 고등 확률과 통계 과정의 기본 개념을 탄탄히 다졌습니다. 꾸준한 노력이 성취로 이어지고 있으니 이 흐름을 이어나가길 바랍니다.','박지호':'박지호 학생은 개념 이해도가 뛰어나지만 실력·심화 단계에서 아직 보완이 필요합니다. 틀린 문제를 꼼꼼히 복습하는 습관을 만들면 더 큰 성과를 기대할 수 있습니다.','신아수':'신아수 학생의 이번 달 학습 데이터를 분석 중입니다. AI 코멘트가 곧 준비됩니다.','정수아':'정수아 학생은 이번 달 정답률 85%를 기록하며 매우 우수한 성취를 보였습니다. 특히 서술형 문제에서 두드러진 향상이 있었습니다.'};
+const ailStatus={};
+const stuCourses={'김민준':'중등 1-1 외 2개','이서연':'고등 확률과 통계','박지호':'중등 1-1 외 2개','최수아':'중등 1-1 외 2개','정도윤':'고등 확률과 통계','한아름':'중등 1-1 외 2개','이현수':'중등 1-1 외 2개','박서진':'고등 확률과 통계','김도영':'중등 2-1 외 1개','최지우':'고등 확률과 통계','이준서':'중등 1-1 외 2개','홍길동':'고등 확률과 통계','김미미':'고등 확률과 통계 외 1개','신지수':'중등 3-1 외 2개','이도윤':'중등 3-1 외 2개','이현민':'고등 확률과 통계','강동원':'고등 확률과 통계 외 1개','정수아':'고등 확률과 통계 외 1개'};
+
+function nr_setVersion(v){
+  isLight=v==='light';
+  document.getElementById('vs-light').classList.toggle('on',isLight);
+  document.getElementById('vs-prem').classList.toggle('on',!isLight);
+  const cc=document.getElementById('type-class');
+  cc.classList.toggle('locked',isLight);
+  document.getElementById('class-prem-badge').style.display=isLight?'':'none';
+  document.getElementById('class-icon').style.filter=isLight?'grayscale(1)':'';
+  if(!isLight)cc.onclick=()=>nr_selectType(cc);
+  else{cc.onclick=null;if(cc.classList.contains('sel')){cc.classList.remove('sel');document.querySelector('.type-card[data-type="combined"]').classList.add('sel');}}
+  document.getElementById('light-note').style.display=isLight?'':'none';
+  if(curReportType!=='class') document.getElementById('tab-class').className=isLight?'s-tab locked':'s-tab';
+  if(curReportType!=='class'){
+    document.getElementById('class-group').style.opacity=isLight?'.45':'';
+    document.getElementById('class-group').style.pointerEvents=isLight?'none':'';
+  }
+  applyS2Locks();applyS4Locks();
+  document.getElementById('s2-hint').style.display=isLight?'':'none';
+  if(curReportType!=='class') document.getElementById('s1-hint').style.display=isLight?'':'none';
+}
+function applyS2Locks(){
+  const tBar=document.getElementById('template-bar'),tLock=document.getElementById('template-lock');
+  tBar.classList.toggle('locked',isLight);tLock.classList.toggle('hidden',!isLight);
+  const cWrap=document.getElementById('content-wrap'),cLock=document.getElementById('nr-content-lock');
+  cWrap.querySelectorAll('input').forEach(el=>{el.disabled=isLight;});
+  cWrap.style.opacity=isLight?'.45':'';cLock.classList.toggle('hidden',!isLight);
+  const thWrap=document.getElementById('theme-wrap'),thLock=document.getElementById('nr-theme-lock');
+  thWrap.style.opacity=isLight?'.45':'';thWrap.style.pointerEvents=isLight?'none':'';thLock.classList.toggle('hidden',!isLight);
+}
+function applyS4Locks(){
+  const pageLock=document.getElementById('page-lock'),pageLabel=document.getElementById('page-action-label');
+  if(isLight){pageLock.style.display='block';document.querySelectorAll('#page-thumbs .pg-actions').forEach(a=>a.style.display='none');pageLabel.textContent='(프리미엄 전용)';}
+  else{pageLock.style.display='none';document.querySelectorAll('#page-thumbs .pg-actions').forEach(a=>a.style.display='');pageLabel.textContent='수정/삭제';}
+  const tmplBtn=document.getElementById('s4-tmpl-btn'),tmplLock=document.getElementById('s4-tmpl-lock');
+  if(tmplBtn)tmplBtn.classList.toggle('hidden',isLight);
+  if(tmplLock)tmplLock.classList.toggle('hidden',!isLight);
+}
+// Student modal
+function nr_openStudentModal(){nr_renderStudentGroups();nr_renderSelected();document.getElementById('nr-backdrop').classList.remove('hidden');document.getElementById('nr-stu-modal').classList.remove('hidden');document.getElementById('nr-main-modal').classList.add('hidden');}
+function nr_renderStudentGroups(){const c=document.getElementById('stu-groups');c.innerHTML='';for(const[g,ns]of Object.entries(studentData)){const d=document.createElement('div');d.className='stu-group';d.innerHTML=`<div class="stu-group-hdr"><span class="stu-grade">${g}</span><button class="stu-all-btn" onclick="nr_selectAllGrade('${g}')">전체선택</button></div><div class="stu-grid">${ns.map(n=>`<div class="stu-btn${selectedStudents.includes(n)?' checked':''}" onclick="nr_toggleStudent(this,'${n}')">${n} <span>${selectedStudents.includes(n)?'✓':'+'}</span></div>`).join('')}</div>`;c.appendChild(d);}}
+function nr_renderSelected(){const chips=document.getElementById('nr-sel-chips'),empty=document.getElementById('nr-sel-empty');document.getElementById('nr-sel-count').textContent=selectedStudents.length;document.getElementById('btn-stu-done').disabled=selectedStudents.length===0;empty.style.display=selectedStudents.length===0?'':'none';chips.querySelectorAll('.sel-chip').forEach(c=>c.remove());selectedStudents.forEach(n=>{const d=document.createElement('div');d.className='sel-chip';d.innerHTML=`${n} <span onclick="nr_removeStudent('${n}')">×</span>`;chips.insertBefore(d,empty);});}
+function nr_toggleStudent(btn,name){const i=selectedStudents.indexOf(name);if(i===-1){selectedStudents.push(name);btn.classList.add('checked');btn.querySelector('span').textContent='✓';}else{selectedStudents.splice(i,1);btn.classList.remove('checked');btn.querySelector('span').textContent='+';}nr_renderSelected();}
+function nr_removeStudent(name){selectedStudents=selectedStudents.filter(n=>n!==name);nr_renderStudentGroups();nr_renderSelected();}
+function nr_selectAllGrade(g){studentData[g].forEach(n=>{if(!selectedStudents.includes(n))selectedStudents.push(n);});nr_renderStudentGroups();nr_renderSelected();}
+function nr_resetStudents(){selectedStudents=[];nr_renderStudentGroups();nr_renderSelected();}
+function nr_setStuTab(tab){tab.closest('.stu-tabs').querySelectorAll('.stu-tab').forEach(t=>t.classList.remove('on'));tab.classList.add('on');}
+function nr_backToStudents(){nr_renderStudentGroups();nr_renderSelected();document.getElementById('nr-main-modal').classList.add('hidden');document.getElementById('nr-stu-modal').classList.remove('hidden');}
+// Type
+function nr_goToType(){const chips=document.getElementById('type-stu-chips');chips.innerHTML=selectedStudents.slice(0,3).map(n=>`<span class="stu-chip-mini">${n}</span>`).join('');if(selectedStudents.length>3)chips.innerHTML+=`<span class="stu-chip-mini">+${selectedStudents.length-3}명</span>`;document.getElementById('g-stu').textContent=selectedStudents.length+'명';document.getElementById('nr-stu-modal').classList.add('hidden');document.getElementById('nr-main-modal').classList.remove('hidden');showPhase('type');}
+function nr_selectType(card){
+  if(card.classList.contains('locked'))return;
+  document.querySelectorAll('.type-card:not(.locked)').forEach(c=>c.classList.remove('sel'));
+  card.classList.add('sel');
+  const label=card.dataset.label||'통합 보고서';
+  document.getElementById('type-chip').textContent=label;
+  document.getElementById('g-type').textContent=label;
+  curReportType=card.dataset.type||'combined';
+  applyTypeToStep1(curReportType);
+  applyContentSections();
+}
+function applyTypeToStep1(type){
+  const classTab=document.getElementById('tab-class');
+  const hint=document.getElementById('s1-hint');
+  const allTabs=document.querySelectorAll('.scope-tabs .s-tab');
+  const cg=document.getElementById('class-group');
+  const lockedHead=document.getElementById('class-locked-head');
+  const activeContent=document.getElementById('class-active-content');
+
+  if(type==='class'){
+    // 탭: 수업만 활성화
+    allTabs.forEach(t=>{
+      if(t!==classTab){
+        t.classList.remove('on');
+        t.classList.add('locked');
+        t.dataset.savedClick=t.getAttribute('onclick')||'';
+        t.removeAttribute('onclick');
+      }
+    });
+    classTab.className='s-tab on';
+    classTab.textContent='수업';
+    if(hint){hint.innerHTML='💡 <b>수업 보고서</b>는 수업 학습 데이터만 포함합니다.';hint.style.display='';}
+    // 수업 그룹 활성화
+    cg.style.opacity='';cg.style.pointerEvents='';
+    if(lockedHead)lockedHead.style.display='none';
+    if(activeContent)activeContent.style.display='';
+    // 다른 그룹 비활성화
+    document.querySelectorAll('.other-group').forEach(g=>{
+      g.style.opacity='.35';g.style.pointerEvents='none';
+      g.querySelectorAll('input[type=checkbox]').forEach(cb=>cb.disabled=true);
+    });
+    // 스텝 레이블 변경 (수업 보고서)
+    document.getElementById('st3').innerHTML='<div class="st-n">3</div>프리뷰';
+    document.getElementById('st4').style.display='none';
+    document.getElementById('st-sep-4').style.display='none';
+    document.getElementById('st5').innerHTML='<div class="st-n">4</div>생성하기';
+  } else {
+    // 탭 원상복원
+    allTabs.forEach(t=>{
+      if(t!==classTab){
+        t.classList.remove('locked');
+        if(t.dataset.savedClick){t.setAttribute('onclick',t.dataset.savedClick);delete t.dataset.savedClick;}
+      }
+    });
+    classTab.className=isLight?'s-tab locked':'s-tab';
+    classTab.innerHTML=isLight?'🔒 수업':'수업';
+    allTabs.forEach(t=>t.classList.remove('on'));
+    const allTab=Array.from(allTabs).find(t=>t.textContent.trim()==='전체');
+    if(allTab)allTab.classList.add('on');
+    if(hint){hint.innerHTML='💡 <b>통합 보고서</b> 기준으로 학습 범위가 구성됩니다. 라이트 버전에서는 수업 데이터를 포함할 수 없어요.';hint.style.display=isLight?'':'none';}
+    // 수업 그룹 잠금 복원
+    cg.style.opacity=isLight?'.45':'';cg.style.pointerEvents=isLight?'none':'';
+    if(lockedHead)lockedHead.style.display='';
+    if(activeContent)activeContent.style.display='none';
+    // 다른 그룹 복원
+    document.querySelectorAll('.other-group').forEach(g=>{
+      g.style.opacity='';g.style.pointerEvents='';
+      g.querySelectorAll('input[type=checkbox]').forEach(cb=>cb.disabled=false);
+    });
+    // 스텝 레이블 복원
+    document.getElementById('st3').innerHTML='<div class="st-n">3</div>AI 코멘트';
+    document.getElementById('st4').style.display='';
+    document.getElementById('st-sep-4').style.display='';
+    document.getElementById('st5').innerHTML='<div class="st-n">5</div>생성하기';
+  }
+}
+function applyContentSections(){
+  const wrap=document.getElementById('content-wrap');
+  if(!wrap)return;
+  const activeBtn=document.querySelector('.ctype-btn.on');
+  const ctype=activeBtn?activeBtn.textContent.trim():'상세형';
+  if(curReportType==='class'){
+    const classPeriodSecs={
+      '일간':[
+        {name:'표지 + 선생님 코멘트',on:true,extra:false},
+        {name:'오늘의 수업 현황',on:true,extra:false},
+        {name:'유형 이해도 현황',on:true,extra:false},
+      ],
+      '주간':[
+        {name:'표지 + 선생님 코멘트',on:true,extra:false},
+        {name:'수업 요약',on:true,extra:false},
+        {name:'수업 진도',on:true,extra:false},
+        {name:'유형 이해도 현황',on:true,extra:false},
+        {name:'단원별 성취도',on:ctype==='상세형',extra:true},
+      ],
+      '월간':[
+        {name:'표지 + 선생님 코멘트',on:true,extra:false},
+        {name:'수업 요약',on:true,extra:false},
+        {name:'수업 진도',on:true,extra:false},
+        {name:'주간 학습 현황/달력',on:ctype==='상세형',extra:true},
+        {name:'난이도별·행동영역별 분석',on:ctype==='상세형',extra:true},
+        {name:'단원별 성취도',on:true,extra:false},
+        {name:'유형 이해도 현황',on:true,extra:false},
+      ]
+    };
+    const secs=classPeriodSecs[curPeriodType]||classPeriodSecs['월간'];
+    wrap.innerHTML='<div class="content-cks">'+secs.map(s=>
+      `<div class="ck-item${s.on?' checked':''}" style="${!s.on?'opacity:.4;pointer-events:none':''}" onclick="${s.on?'nr_toggleCk(this)':''}">
+        <input type="checkbox" ${s.on?'checked':'disabled'}>
+        ${s.name}${s.extra?` <span style="font-size:10px;font-weight:700;margin-left:3px;color:${s.on?'#16a34a':'#9ca3af'}">${ctype==='상세형'?'●':'○'}</span>`:''}
+      </div>`
+    ).join('')+'</div>';
+  } else {
+    // 기간별 내용 구성 (사용자 확정 데이터)
+    const isDetail=ctype==='상세형';
+    const periodSecs={
+      '월간':[
+        {name:'표지',on:true,extra:false},
+        {name:'학습 요약',on:true,extra:false},
+        {name:'학습 활동',on:true,extra:false},
+        {name:'성취도 분석',on:true,extra:false},
+        {name:'유형 이해도 분석',on:isDetail,extra:true},
+        {name:'취약 학습 성과',on:isDetail,extra:true},
+        {name:'학습 내역',on:true,extra:false},
+      ],
+      '주간':[
+        {name:'표지',on:true,extra:false},
+        {name:'학습 요약',on:true,extra:false},
+        {name:'학습 활동',on:true,extra:false},
+        {name:'성취도 분석',on:true,extra:false},
+        {name:'유형 이해도 분석',on:isDetail,extra:true},
+        {name:'취약 학습 성과',on:isDetail,extra:true},
+        {name:'학습 내역',on:true,extra:false},
+      ],
+      '일간':[
+        {name:'학습 요약',on:true,extra:false},
+        {name:'취약 학습 관리',on:true,extra:false},
+        {name:'학습 내역',on:isDetail,extra:true},
+      ]
+    };
+    const secs=periodSecs[curPeriodType]||periodSecs['월간'];
+    wrap.innerHTML='<div class="content-cks">'+secs.map(s=>
+      `<div class="ck-item${s.on?' checked':''}" style="${!s.on?'opacity:.4;pointer-events:none':''}" onclick="${s.on?'nr_toggleCk(this)':''}">
+        <input type="checkbox" ${s.on?'checked':'disabled'}>
+        ${s.name}${s.extra?` <span style="font-size:10px;font-weight:700;margin-left:3px;color:${s.on?'#1d4ed8':'#9ca3af'}">${ctype==='상세형'?'●':'○'}</span>`:''}
+      </div>`
+    ).join('')+'</div>';
+  }
+}
+function onDateChange(){
+  const s=document.getElementById('date-start');
+  const e=document.getElementById('date-end');
+  if(!s||!e)return;
+  const d1=new Date(s.value),d2=new Date(e.value);
+  if(isNaN(d1)||isNaN(d2))return;
+  const days=Math.max(1,Math.round((d2-d1)/86400000)+1);
+  const badge=document.getElementById('period-badge');
+  const ind=document.getElementById('period-indicator');
+  if(days<=1){
+    curPeriodType='일간';
+    if(badge){badge.textContent='일간 보고서 자동 감지';badge.className='period-badge daily';}
+    if(ind){ind.textContent='일간 기준';ind.style.background='#fef3c7';ind.style.color='#d97706';}
+  }else if(days<=7){
+    curPeriodType='주간';
+    if(badge){badge.textContent='주간 보고서 자동 감지';badge.className='period-badge weekly';}
+    if(ind){ind.textContent='주간 기준';ind.style.background='#dbeafe';ind.style.color='#1d4ed8';}
+  }else{
+    curPeriodType='월간';
+    if(badge){badge.textContent='월간 보고서 자동 감지';badge.className='period-badge monthly';}
+    if(ind){ind.textContent='월간 기준';ind.style.background='#dcfce7';ind.style.color='#16a34a';}
+  }
+  applyContentSections();
+}
+function nr_startSteps(){curStep=1;showPhase('steps');nr_updateStepUI();}
+// (제거: onDateChange();...)
+// Navigation
+function nr_goNext(){if(curStep===4){nr_openDispatch();return;}if(curReportType==='class'&&curStep===3){curStep=5;nr_updateStepUI();return;}if(curStep<5){curStep++;nr_updateStepUI();}}
+function nr_goBack(){if(curReportType==='class'&&curStep===5){curStep=3;nr_updateStepUI();return;}if(curStep>1){curStep--;nr_updateStepUI();}else{showPhase('type');curStep=0;}}
+function nr_updateStepUI(){
+  ['s1','s2','s3','s4','s5'].forEach((id,i)=>document.getElementById(id).classList.toggle('on',i+1===curStep));
+  ['st1','st2','st3','st4','st5'].forEach((id,i)=>{const el=document.getElementById(id);el.className='st';if(i+1===curStep)el.classList.add('active');else if(i+1<curStep)el.classList.add('done');});
+  document.getElementById('btn-back').textContent=curStep===1?'← 종류 변경':'← 이전 단계';
+  const fr=document.getElementById('ftr-right');
+  if(curStep===5){fr.innerHTML='';}
+  else if(curStep===4){fr.innerHTML=`<button class="btn btn-ghost" onclick="if(confirm('초기화?')){}">↺ 초기화</button><button class="btn btn-primary" onclick="nr_goNext()">발송 설정 →</button>`;}
+  else{fr.innerHTML=`<button class="btn btn-ghost" onclick="if(confirm('초기화?')){}">↺ 초기화</button><button class="btn btn-primary" onclick="nr_goNext()">다음 단계 →</button>`;}
+  if(curStep===2){applyS2Locks();applyContentSections();}
+  if(curStep===3){renderAilStep();}
+  if(curStep===4){renderS4StuList();applyS4Locks();}
+  if(curStep===5)updateGenStep();
+  document.getElementById('modal-body').scrollTop=0;
+}
+function showPhase(p){document.getElementById('phase-type').classList.toggle('on',p==='type');const sw=document.getElementById('phase-steps');if(p==='steps'){sw.style.display='flex';sw.classList.add('on');}else{sw.style.display='none';sw.classList.remove('on');}}
+function nr_closeAll(){document.getElementById('nr-backdrop').classList.add('hidden');selectedStudents=[];curStep=0;}
+// Step 1
+function setTab(tab){tab.closest('.scope-tabs').querySelectorAll('.s-tab:not(.locked)').forEach(t=>t.classList.remove('on'));tab.classList.add('on');}
+function nr_toggleGroup(head){const body=head.nextElementSibling;if(!body||!body.classList.contains('lg-body'))return;const open=body.offsetHeight>0&&body.style.display!=='none';body.style.display=open?'none':'';head.querySelector('.arrow').textContent=open?'▼':'▲';}
+// Step 2
+function nr_setCtype(btn){btn.closest('.ctype-btns').querySelectorAll('.ctype-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');applyContentSections();}
+function nr_toggleCk(item){if(isLight)return;item.classList.toggle('checked');item.querySelector('input').checked=item.classList.contains('checked');}
+function nr_selectTheme(card){if(isLight)return;card.closest('.theme-row').querySelectorAll('.th-card').forEach(c=>c.classList.remove('on'));card.classList.add('on');}
+// Step 3: AI 코멘트
+const ailChecked={};
+function getStudentGrade(name){for(const[g,ns]of Object.entries(studentData)){if(ns.includes(name))return g;}return '';}
+function renderAilStep(){
+  if(!selectedStudents.length)return;
+  selectedStudents.forEach(n=>{
+    if(!ailStatus[n])ailStatus[n]='pending';
+    if(ailChecked[n]===undefined)ailChecked[n]=true;
+  });
+  renderS3Table();
+}
+function renderS3Table(){
+  const tbody=document.getElementById('ail-student-list');tbody.innerHTML='';
+  const total=selectedStudents.length;
+  const sel=selectedStudents.filter(n=>ailChecked[n]).length;
+  const done=selectedStudents.filter(n=>ailStatus[n]==='done').length;
+  document.getElementById('ail-count').textContent=total;
+  document.getElementById('ail-sel-count').textContent=sel;
+  const dc=document.getElementById('ail-done-count');if(dc)dc.textContent=done?done+'명 완료':'';
+  const allCk=document.getElementById('ail-sel-all');if(allCk)allCk.checked=sel===total&&total>0;
+  selectedStudents.forEach(n=>{
+    const st=ailStatus[n]||'pending';
+    const stLabel=st==='done'?'완료':st==='editing'?'편집중':'미편집';
+    const stCls=st==='done'?'done':st==='editing'?'editing':'pending';
+    const grade=getStudentGrade(n);
+    const ck=ailChecked[n];
+    const div=document.createElement('div');
+    div.className='s3-col s3-tr'+(ck?'':' unc');
+    div.innerHTML=
+      `<div><input type="checkbox" ${ck?'checked':''} onclick="event.stopPropagation();ailToggleOne('${n}',this.checked)" style="cursor:pointer;width:15px;height:15px"></div>`+
+      `<div class="s3-stu-cell"><div class="s3-stu-name">${n}</div><div class="s3-stu-meta">${grade}</div></div>`+
+      `<div class="s3-amount">540개<br><span style="font-size:11px;color:#9ca3af">정답 396개</span></div>`+
+      `<div class="s3-pct">73.4%</div>`+
+      `<div class="s3-pct">25%</div>`+
+      `<div><button class="s3-ai-btn" onclick="event.stopPropagation();ailOpenEdit('${n}')" title="AI 코멘트 편집">✏️</button></div>`+
+      `<div class="s3-course">${stuCourses[n]||'중등 1-1'}</div>`+
+      (curReportType==='class'
+        ?`<div style="display:flex;align-items:center;justify-content:flex-end;padding-right:4px"><button onclick="event.stopPropagation();openReportPreview('${n}')" style="font-size:11px;padding:4px 11px;background:#1a3a8f;color:white;border:none;border-radius:6px;cursor:pointer;white-space:nowrap">미리보기</button></div>`
+        :`<div class="s3-status ${stCls}">${stLabel}</div>`);
+    const _th=document.getElementById('s3-th-last');
+    if(_th)_th.textContent=curReportType==='class'?'미리보기':'상태';
+    tbody.appendChild(div);
+  });
+}
+function ailOpenEdit(name){
+  ailActiveStu=name;
+  document.getElementById('ail-edit-name').textContent=name;
+  document.getElementById('ail-preview').textContent=aiTexts[name]||'AI 코멘트를 생성 중입니다...';
+  document.getElementById('ail-memo').value='';
+  document.getElementById('ail-memo-cnt').textContent='0';
+  if(ailStatus[name]==='pending')ailStatus[name]='editing';
+  document.getElementById('ail-popup-layer').classList.remove('hidden');
+  renderS3Table();
+}
+function ailCloseEdit(){document.getElementById('ail-popup-layer').classList.add('hidden');ailActiveStu=null;}
+function ailToggleOne(name,checked){ailChecked[name]=checked;renderS3Table();}
+function ailToggleAll(checked){selectedStudents.forEach(n=>ailChecked[n]=checked);renderS3Table();}
+function nr_ailSave(){if(ailActiveStu){ailStatus[ailActiveStu]='done';renderS3Table();ailCloseEdit();}}
+function nr_ailCancel(){if(ailActiveStu&&ailStatus[ailActiveStu]==='editing'){ailStatus[ailActiveStu]='pending';}ailCloseEdit();renderS3Table();}
+function openReportPreview(name){
+  window.open('수업_보고서_프로토타입.html','_blank');
+}
+function nr_ailRegen(){const n=ailActiveStu;if(!n)return;document.getElementById('ail-preview').textContent='재생성 중...';setTimeout(()=>{document.getElementById('ail-preview').textContent=(aiTexts[n]||'')+'(재생성됨)';},800);}
+// (제거: document.getElementById('ail-memo').addE...)
+// Step 4
+function renderS4StuList(){
+  const list=document.getElementById('s4-stu-list');list.innerHTML='';
+  document.getElementById('s4-stu-count').textContent=selectedStudents.length;
+  selectedStudents.forEach((n,i)=>{
+    const grade=getStudentGrade(n);
+    const div=document.createElement('div');
+    div.className='pv-stu'+(i===0?' act':'');
+    div.innerHTML=`<input type="checkbox" checked onclick="event.stopPropagation()" style="cursor:pointer;flex-shrink:0"><div class="pv-stu-info"><div class="pv-stu-name">${n}</div><div class="pv-stu-meta">${grade}</div></div>`;
+    div.onclick=()=>selectStu(div,n);
+    list.appendChild(div);
+  });
+  if(selectedStudents.length)selectStu(list.firstChild,selectedStudents[0]);
+}
+function selectStu(el,name){document.querySelectorAll('.pv-stu').forEach(s=>s.classList.remove('act'));el.classList.add('act');document.getElementById('cur-stu').textContent=name+' 학생';document.getElementById('preview-comment').textContent=(aiTexts[name]||'').substring(0,60)+'...';}
+function nr_setVer(ver,btn){document.querySelectorAll('.s4c-toolbar .vt-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');document.getElementById('report-card').className=ver==='mobile'?'report-card mobile':'report-card print';dispatchVersion=ver==='print'?'프린트':'모바일';}
+function nr_selectPage(thumb){thumb.closest('.s4-right').querySelectorAll('.pg-thumb').forEach(t=>t.classList.remove('act'));thumb.classList.add('act');}
+// Step 5
+function updateGenStep(){
+  const isClass=curReportType==='class';
+  const sumEl=document.getElementById('gen-combined-summary');
+  const setEl=document.getElementById('gen-class-settings');
+  if(sumEl)sumEl.style.display=isClass?'none':'';
+  if(setEl)setEl.style.display=isClass?'':'none';
+  if(!isClass){
+    document.getElementById('g-channel').textContent=dispatchChannel;
+    document.getElementById('g-ver').textContent=dispatchVersion;
+    document.getElementById('g-stu').textContent=selectedStudents.length+'명';
+    document.getElementById('g-type').textContent=document.getElementById('type-chip').textContent;
+  }else{
+    const gsc=document.getElementById('g-stu-class');
+    if(gsc)gsc.textContent=selectedStudents.length+'명';
+  }
+  document.getElementById('btn-generate').style.display='flex';
+  document.getElementById('btn-generate').textContent='📄 생성하기';
+  document.getElementById('btn-generate').disabled=false;
+  document.getElementById('gen-result').style.display='none';
+}
+function nr_genOptSelect(type,btn,val){
+  const grp=btn.parentElement;
+  grp.querySelectorAll('.gen-opt-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  if(type==='ch')dispatchChannel=val;
+  else dispatchVersion=val;
+}
+function nr_doGenerate(){
+  const btn=document.getElementById('btn-generate');
+  btn.textContent='⏳ 생성 중...';btn.disabled=true;
+  setTimeout(()=>{openReportViewer();},1200);
+}
+let rvZoomLevel=100;
+function openReportViewer(){
+  const list=document.getElementById('rv-stu-list');list.innerHTML='';
+  selectedStudents.forEach((n,i)=>{
+    const div=document.createElement('div');
+    div.className='rv-stu-row'+(i===0?' act':'');
+    div.onclick=()=>rvSelectStu(div,n);
+    div.innerHTML=`<div class="rv-stu-name">${n}</div><div class="rv-stu-acts"><button class="rv-act-btn" onclick="event.stopPropagation();alert('${n} 보고서를 공유합니다.')">📤 공유</button><button class="rv-act-btn" onclick="event.stopPropagation();alert('${n} 보고서를 출력합니다.')">🖨 출력</button></div>`;
+    list.appendChild(div);
+  });
+  if(selectedStudents.length)rvSelectStu(list.firstChild,selectedStudents[0]);
+  document.getElementById('rv-overlay').classList.remove('hidden');
+}
+function rvSelectStu(el,name){
+  document.querySelectorAll('.rv-stu-row').forEach(r=>r.classList.remove('act'));
+  el.classList.add('act');
+  document.getElementById('rv-title').textContent=name+' 학생 보고서';
+  const grade=getStudentGrade(name);
+  document.getElementById('rv-stu-grade').textContent=grade+' / 매쓰홀릭반';
+  document.getElementById('rv-stu-name-bot').textContent=name;
+  const t=aiTexts[name]||'AI 코멘트가 여기에 표시됩니다.';
+  document.getElementById('rv-comment').textContent=t;
+  rvZoomLevel=100;document.getElementById('rv-zoom-val').textContent='100%';
+  document.getElementById('rv-report-wrap').style.transform='scale(1)';
+}
+function nr_rvZoom(delta){
+  rvZoomLevel=Math.max(50,Math.min(200,rvZoomLevel+delta));
+  document.getElementById('rv-zoom-val').textContent=rvZoomLevel+'%';
+  document.getElementById('rv-report-wrap').style.transform=`scale(${rvZoomLevel/100})`;
+}
+function nr_closeRv(){
+  document.getElementById('rv-overlay').classList.add('hidden');
+  const btn=document.getElementById('btn-generate');
+  btn.textContent='📄 생성하기';btn.disabled=false;btn.style.display='flex';
+}
+// Dispatch
+function nr_openDispatch(){document.getElementById('dispatch-overlay').classList.remove('hidden');}
+function nr_closeDispatch(){document.getElementById('dispatch-overlay').classList.add('hidden');}
+function nr_selectDCh(el,name){document.querySelectorAll('.d-ch-opt').forEach(c=>c.classList.remove('on'));el.classList.add('on');dispatchChannel=name;}
+function nr_selectDVer(el,ver){document.querySelectorAll('.d-ver-card').forEach(c=>c.classList.remove('on'));el.classList.add('on');dispatchVersion=ver;}
+function nr_confirmDispatch(){nr_closeDispatch();curStep=5;nr_updateStepUI();}
+// (제거: // Init (nr_setVersion 제거: 주입된 컨텍스트에서 불필...)
+
+// 전역 노출
+  window.nr_openStudentModal = nr_openStudentModal;
+  window.nr_closeAll = nr_closeAll;
+  window.nr_closeDispatch = nr_closeDispatch;
+  window.nr_openDispatch = nr_openDispatch;
+  window.nr_toggleStudent = nr_toggleStudent;
+  window.nr_removeStudent = nr_removeStudent;
+  window.nr_resetStudents = nr_resetStudents;
+  window.nr_renderStudentGroups = nr_renderStudentGroups;
+  window.nr_renderSelected = nr_renderSelected;
+  window.nr_selectType = nr_selectType;
+  window.nr_setVer = nr_setVer;
+  window.nr_setVersion = nr_setVersion;
+  window.nr_startSteps = nr_startSteps;
+  window.nr_goNext = nr_goNext;
+  window.nr_goBack = nr_goBack;
+  window.nr_backToStudents = nr_backToStudents;
+  window.nr_doGenerate = nr_doGenerate;
+  window.nr_selectTheme = nr_selectTheme;
+  window.nr_genOptSelect = nr_genOptSelect;
+  window.nr_setCtype = nr_setCtype;
+  window.nr_setStuTab = nr_setStuTab;
+  window.nr_selectDCh = nr_selectDCh;
+  window.nr_selectDVer = nr_selectDVer;
+  window.nr_selectAllGrade = nr_selectAllGrade;
+  window.nr_toggleGroup = nr_toggleGroup;
+  window.nr_toggleCk = nr_toggleCk;
+  window.nr_goToType = nr_goToType;
+  window.nr_selectPage = nr_selectPage;
+  window.nr_confirmDispatch = nr_confirmDispatch;
+  window.nr_ailRegen = nr_ailRegen;
+  window.nr_ailSave = nr_ailSave;
+  window.nr_ailCancel = nr_ailCancel;
+  window.nr_closeRv = nr_closeRv;
+  window.nr_rvZoom = nr_rvZoom;
+  window.nr_updateStepUI = nr_updateStepUI;
+})();
+</script>
 </body>
 </html>
