@@ -62,6 +62,48 @@ body{font-family:-apple-system,'Malgun Gothic','Apple SD Gothic Neo',sans-serif;
 .auto-tabs{display:flex;border-bottom:1px solid #e5e7eb;margin-bottom:24px;gap:0}
 .auto-tab{padding:10px 20px;font-size:14px;font-weight:600;color:#9ca3af;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
 .auto-tab.on{color:#1a3a8f;border-bottom-color:#1a3a8f}
+/* ── 기본 설정 탭 ── */
+.default-overview{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+.do-card{background:white;border:1.5px solid #e5e7eb;border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:8px;transition:box-shadow .15s}
+.do-card:hover{box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.do-card-top{display:flex;align-items:center;gap:8px}
+.do-period-pill{font-size:11px;font-weight:700;padding:2px 10px;border-radius:20px}
+.do-period-pill.daily{background:#fef3c7;color:#d97706}
+.do-period-pill.weekly{background:#dbeafe;color:#1d4ed8}
+.do-period-pill.monthly{background:#dcfce7;color:#16a34a}
+.do-name{font-size:14px;font-weight:700;color:#111827;flex:1}
+.do-meta{font-size:12px;color:#9ca3af}
+.do-toggle-row{display:flex;align-items:center;justify-content:space-between;margin-top:4px}
+.do-toggle-label{font-size:12px;font-weight:600}
+.do-toggle-label.on{color:#16a34a}
+.do-toggle-label.off{color:#9ca3af}
+.sw{width:40px;height:22px;border-radius:11px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0}
+.sw.on{background:#1a3a8f}
+.sw.off{background:#d1d5db}
+.sw::after{content:'';position:absolute;top:3px;width:16px;height:16px;border-radius:50%;background:white;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:left .2s}
+.sw.on::after{left:21px}
+.sw.off::after{left:3px}
+/* Period sub-tabs */
+.def-period-tabs{display:flex;gap:0;margin-bottom:0;border-bottom:1px solid #e5e7eb}
+.def-ptab{padding:8px 22px;font-size:14px;font-weight:600;color:#9ca3af;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s}
+.def-ptab.on{color:#1a3a8f;border-bottom-color:#1a3a8f}
+.defcontent{background:white;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px;padding:24px}
+.defcontent.hidden{display:none}
+.def-section{margin-bottom:22px}
+.def-section-title{font-size:13px;font-weight:700;color:#374151;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.def-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.def-field{display:flex;flex-direction:column;gap:6px}
+.def-field label{font-size:12px;font-weight:600;color:#6b7280}
+.def-ch-btns{display:flex;gap:8px;flex-wrap:wrap}
+.def-ch-btn{padding:6px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;color:#374151;background:white;transition:all .15s}
+.def-ch-btn.on{background:#1a3a8f;color:white;border-color:#1a3a8f;font-weight:700}
+.ai-comment-box{background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:12px}
+.ai-comment-textarea{width:100%;min-height:100px;border:1.5px solid #e5e7eb;border-radius:8px;padding:10px 14px;font-size:13px;color:#374151;resize:vertical;font-family:inherit;outline:none;background:white;box-sizing:border-box}
+.ai-comment-textarea:focus{border-color:#1a3a8f}
+.ai-regen-btn{padding:6px 14px;border:1.5px solid #d1d5db;border-radius:7px;background:white;font-size:12px;font-weight:600;cursor:pointer;color:#374151;display:inline-flex;align-items:center;gap:5px}
+.ai-regen-btn:hover{background:#f9fafb}
+.def-info-row{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#9ca3af}
+.def-disabled-overlay{opacity:.4;pointer-events:none;user-select:none}
 
 /* Rule cards */
 .rule-cards{display:flex;flex-direction:column;gap:12px}
@@ -81,6 +123,18 @@ body{font-family:-apple-system,'Malgun Gothic','Apple SD Gothic Neo',sans-serif;
 .empty-state .es-icon{font-size:48px;margin-bottom:16px}
 .empty-state h3{font-size:16px;font-weight:700;color:#6b7280;margin-bottom:8px}
 .empty-state p{font-size:13px;line-height:1.7}
+
+/* 기본 설정 카드 */
+.default-card{background:white;border:1.5px solid #c7d2fe;border-radius:12px;padding:18px 20px;display:flex;align-items:flex-start;gap:16px;margin-bottom:20px;box-shadow:0 1px 4px rgba(99,102,241,.08)}
+.dc-left{flex:1}
+.dc-header-row{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.dc-title-icon{font-size:16px}
+.dc-title-text{font-size:15px;font-weight:800;color:#111827}
+.dc-desc-badge{font-size:11px;color:#6366f1;background:#eef2ff;padding:2px 9px;border-radius:10px;font-weight:600}
+.dc-periods{display:flex;flex-direction:column;gap:8px}
+.dc-period-row{display:flex;align-items:center;gap:10px;padding:9px 14px;background:#f9fafb;border-radius:8px;border:1px solid #f3f4f6}
+.dc-period-meta{font-size:12px;color:#6b7280;flex:1}
+.dc-right{flex-shrink:0;padding-top:4px}
 
 /* 발송 대기 관리 */
 .pending-group{background:white;border:1.5px solid #e5e7eb;border-radius:12px;overflow:hidden;margin-bottom:14px}
@@ -358,14 +412,49 @@ input[type=checkbox],input[type=radio]{accent-color:#1a3a8f;cursor:pointer;flex-
       <h2>자동 발송 설정</h2>
       <button class="btn btn-primary" onclick="openStudentModal()">+ 새 자동 발송 설정 만들기</button>
     </div>
+    <!-- 기본 설정 카드 (항상 표시) -->
+    <div class="default-card" id="default-card">
+      <div class="dc-left">
+        <div class="dc-header-row">
+          <span class="dc-title-icon">⚙️</span>
+          <span class="dc-title-text">기본 설정</span>
+          <span class="dc-desc-badge">개별 설정이 없는 학생에게 자동 적용</span>
+        </div>
+        <div class="dc-periods">
+          <div class="dc-period-row">
+            <span class="do-period-pill daily">일간</span>
+            <span class="dc-period-meta" id="dc-meta-daily">매일 오후 5:00 · 알림톡 · 요약형</span>
+            <span class="do-toggle-label off" id="dc-lbl-daily">꺼짐</span>
+            <div class="sw off" id="dc-sw-daily" onclick="toggleDefaultCard('daily')"></div>
+          </div>
+          <div class="dc-period-row">
+            <span class="do-period-pill weekly">주간</span>
+            <span class="dc-period-meta" id="dc-meta-weekly">매주 금요일 오후 6:00 · 알림톡 · 상세형</span>
+            <span class="do-toggle-label on" id="dc-lbl-weekly">켜짐</span>
+            <div class="sw on" id="dc-sw-weekly" onclick="toggleDefaultCard('weekly')"></div>
+          </div>
+          <div class="dc-period-row">
+            <span class="do-period-pill monthly">월간</span>
+            <span class="dc-period-meta" id="dc-meta-monthly">매월 마지막 금요일 오후 6:00 · 알림톡 · 상세형</span>
+            <span class="do-toggle-label on" id="dc-lbl-monthly">켜짐</span>
+            <div class="sw on" id="dc-sw-monthly" onclick="toggleDefaultCard('monthly')"></div>
+          </div>
+        </div>
+      </div>
+      <div class="dc-right">
+        <button class="btn btn-outline-blue btn-sm" onclick="openDefaultEdit()">편집하기</button>
+      </div>
+    </div>
+
     <div class="auto-tabs">
-      <div class="auto-tab on" onclick="switchAutoTab(this,'tab-rules')">생성된 보고서 설정</div>
+      <div class="auto-tab on" onclick="switchAutoTab(this,'tab-rules')">학원별 설정</div>
       <div class="auto-tab" onclick="switchAutoTab(this,'tab-pending')">발송 대기 학생 관리</div>
       <div class="auto-tab" onclick="switchAutoTab(this,'tab-history')">과거 발송 이력</div>
     </div>
 
-    <!-- Tab: 생성된 보고서 설정 -->
+    <!-- Tab: 학원별 설정 -->
     <div id="tab-rules">
+
       <div class="rule-cards" id="rule-cards-list">
         <!-- Cards injected by JS -->
       </div>
@@ -606,8 +695,8 @@ input[type=checkbox],input[type=radio]{accent-color:#1a3a8f;cursor:pointer;flex-
   <div class="wizard-shell">
     <div class="wizard-hdr">
       <div class="wizard-hdr-row">
-        <button class="back-btn" onclick="showPage('pg-step1')">‹</button>
-        <h2>새 자동 발송 설정 만들기</h2>
+        <button class="back-btn" onclick="goBackFromStep2()">‹</button>
+        <h2 id="wiz-step2-title">새 자동 발송 설정 만들기</h2>
         <span id="wiz-stu-chip2" style="background:#eff6ff;color:#1d4ed8;font-size:12px;font-weight:700;padding:3px 11px;border-radius:20px"></span>
       </div>
       <div class="wiz-stepper">
@@ -679,7 +768,7 @@ input[type=checkbox],input[type=radio]{accent-color:#1a3a8f;cursor:pointer;flex-
       </div>
 
       <!-- 내용 구성 -->
-      <div class="sec">
+      <div class="sec" id="sec-content-config">
         <div class="lbl">내용 구성</div>
         <div class="type-select-btns" style="margin-bottom:12px">
           <button class="type-sel-btn on" onclick="selectType(this,'summary')">상세형</button>
@@ -728,7 +817,7 @@ input[type=checkbox],input[type=radio]{accent-color:#1a3a8f;cursor:pointer;flex-
       </div>
 
       <!-- 보고서 테마 (premium) -->
-      <div class="sec">
+      <div class="sec" id="sec-theme">
         <div class="lbl">보고서 테마 <span class="prem-tag" id="theme-lock">프리미엄</span></div>
         <div id="theme-prem-block" class="prem-block">
           <span style="font-size:20px">🔒</span>
@@ -742,7 +831,7 @@ input[type=checkbox],input[type=radio]{accent-color:#1a3a8f;cursor:pointer;flex-
       </div>
 
       <!-- 학원 로고 -->
-      <div class="sec">
+      <div class="sec" id="sec-logo">
         <div class="lbl">학원 로고</div>
         <div class="logo-upload" onclick="alert('이미지 업로드')">
           📁 클릭하여 로고 이미지를 업로드하세요<br>
@@ -774,8 +863,8 @@ input[type=checkbox],input[type=radio]{accent-color:#1a3a8f;cursor:pointer;flex-
 
     </div>
     <div class="wizard-ftr">
-      <button class="btn btn-ghost" onclick="showPage('pg-step1')">← 학생 선택</button>
-      <button class="btn btn-primary" onclick="saveRule()">규칙 저장</button>
+      <button class="btn btn-ghost" id="step2-back-btn" onclick="goBackFromStep2()">← 학생 선택</button>
+      <button class="btn btn-primary" id="step2-save-btn" onclick="saveRule()">규칙 저장</button>
     </div>
   </div>
 </div>
@@ -961,6 +1050,7 @@ input[type=checkbox],input[type=radio]{accent-color:#1a3a8f;cursor:pointer;flex-
 let isLight = true;
 let selectedStudents = [];
 let ruleCount = 0;
+let wizardMode = 'custom'; // 'custom' | 'default'
 
 const STUDENTS = {
   '중1 1반': ['홍길동','김미미','강동원'],
@@ -1101,6 +1191,8 @@ function renderRuleCards() {
 }
 
 function editRule(i) {
+  wizardMode = 'custom';
+  applyWizardMode();
   showPage('pg-step2');
   document.getElementById('rule-name').value = EXISTING_RULES[i].name;
 }
@@ -1230,9 +1322,11 @@ function toggleLT(el, chkId) {
 }
 
 function gotoStep2() {
+  wizardMode = 'custom';
   const chip2 = document.getElementById('wiz-stu-chip2');
   chip2.textContent = selectedStudents.length + '명 선택됨';
   applyPremLocks();
+  applyWizardMode();
   showPage('pg-step2');
 }
 
@@ -1311,6 +1405,55 @@ function closePreview() {
 // ── Init ────────────────────────────────────
 renderRuleCards();
 applyPremLocks();
+
+// ── 기본 설정 카드 ────────────────────────────────────────────
+const defState = {daily:false, weekly:true, monthly:true};
+function toggleDefaultCard(period){
+  defState[period] = !defState[period];
+  const sw = document.getElementById('dc-sw-'+period);
+  const lbl = document.getElementById('dc-lbl-'+period);
+  if(sw) sw.className = 'sw ' + (defState[period]?'on':'off');
+  if(lbl){ lbl.textContent = defState[period]?'켜짐':'꺼짐'; lbl.className = 'do-toggle-label '+(defState[period]?'on':'off'); }
+}
+
+// ── Wizard mode ──────────────────────────────────────────────────
+function openDefaultEdit(){
+  wizardMode = 'default';
+  applyPremLocks();
+  applyWizardMode();
+  showPage('pg-step2');
+}
+function goBackFromStep2(){
+  if(wizardMode==='default') showPage('pg-auto');
+  else showPage('pg-step1');
+}
+function applyWizardMode(){
+  const isDefault = wizardMode === 'default';
+  // 스테퍼: default 모드에선 step1 done + separator 숨김
+  const s1done = document.querySelector('#pg-step2 .wst.done');
+  const sep = document.querySelector('#pg-step2 .wst-sep');
+  if(s1done) s1done.style.display = isDefault ? 'none' : '';
+  if(sep) sep.style.display = isDefault ? 'none' : '';
+  // 타이틀
+  const title = document.getElementById('wiz-step2-title');
+  if(title) title.textContent = isDefault ? '기본 설정 편집' : '새 자동 발송 설정 만들기';
+  // 학생 칩
+  const chip2 = document.getElementById('wiz-stu-chip2');
+  if(chip2) chip2.style.display = isDefault ? 'none' : '';
+  // 섹션 토글
+  const secContent = document.getElementById('sec-content-config');
+  const secTheme = document.getElementById('sec-theme');
+  const secLogo = document.getElementById('sec-logo');
+  if(secContent) secContent.classList.toggle('hidden', isDefault);
+  if(secTheme) secTheme.classList.toggle('hidden', isDefault);
+  if(secLogo) secLogo.classList.toggle('hidden', isDefault);
+  // 뒤로 버튼 텍스트
+  const backBtn = document.getElementById('step2-back-btn');
+  if(backBtn) backBtn.textContent = isDefault ? '취소' : '← 학생 선택';
+  // 저장 버튼 텍스트
+  const saveBtn = document.getElementById('step2-save-btn');
+  if(saveBtn) saveBtn.textContent = isDefault ? '기본 설정 저장' : '규칙 저장';
+}
 </script>
 </body>
 </html>
