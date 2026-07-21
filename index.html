@@ -125,16 +125,12 @@ body{font-family:-apple-system,'Malgun Gothic','Apple SD Gothic Neo',sans-serif;
 .empty-state p{font-size:13px;line-height:1.7}
 
 /* 기본 설정 카드 */
-.default-card{background:white;border:1.5px solid #c7d2fe;border-radius:12px;padding:18px 20px;display:flex;align-items:flex-start;gap:16px;margin-bottom:20px;box-shadow:0 1px 4px rgba(99,102,241,.08)}
-.dc-left{flex:1}
-.dc-header-row{display:flex;align-items:center;gap:8px;margin-bottom:14px}
-.dc-title-icon{font-size:16px}
+.default-card{background:white;border:1.5px solid #c7d2fe;border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:16px;margin-bottom:20px;box-shadow:0 1px 4px rgba(99,102,241,.08)}
+.dc-left{flex:1;display:flex;align-items:center;gap:8px}
+.dc-title-icon{font-size:16px;flex-shrink:0}
 .dc-title-text{font-size:15px;font-weight:800;color:#111827}
 .dc-desc-badge{font-size:11px;color:#6366f1;background:#eef2ff;padding:2px 9px;border-radius:10px;font-weight:600}
-.dc-periods{display:flex;flex-direction:column;gap:8px}
-.dc-period-row{display:flex;align-items:center;gap:10px;padding:9px 14px;background:#f9fafb;border-radius:8px;border:1px solid #f3f4f6}
-.dc-period-meta{font-size:12px;color:#6b7280;flex:1}
-.dc-right{flex-shrink:0;padding-top:4px}
+.dc-right{flex-shrink:0;display:flex;align-items:center;gap:12px}
 
 /* 발송 대기 관리 */
 .pending-group{background:white;border:1.5px solid #e5e7eb;border-radius:12px;overflow:hidden;margin-bottom:14px}
@@ -282,6 +278,18 @@ input[type=checkbox],input[type=radio]{accent-color:#1a3a8f;cursor:pointer;flex-
 .type-sel-btn{border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 20px;font-size:13px;font-weight:600;cursor:pointer;color:#374151;background:white;transition:all .1s}
 .type-sel-btn.on{border-color:#1a3a8f;background:#eff6ff;color:#1a3a8f}
 .type-sel-btn:hover{border-color:#93c5fd}
+.period-badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap}
+.period-badge.daily{background:#fef3c7;color:#d97706}
+.period-badge.weekly{background:#dbeafe;color:#1d4ed8}
+.period-badge.monthly{background:#dcfce7;color:#16a34a}
+.content-cks{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:6px}
+.ck-item{display:flex;align-items:center;gap:7px;font-size:13px;color:#374151;border:1.5px solid #e5e7eb;border-radius:8px;padding:10px 12px;cursor:pointer;transition:all .1s}
+.ck-item.checked{border-color:#1a3a8f;background:#eff6ff}
+.ctype-btns{display:flex;gap:8px;margin-bottom:14px}
+.ctype-btn{padding:6px 18px;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;border:1.5px solid #e5e7eb;background:white;color:#374151;transition:all .1s}
+.ctype-btn.on{background:#1a3a8f;color:white;border-color:#1a3a8f}
+.ctype-btn:hover:not(.on){border-color:#93c5fd}
+.prem-lock-notice{display:flex;align-items:center;gap:6px;font-size:12px;color:#b45309;background:#fef3c7;padding:8px 12px;border-radius:7px;margin-bottom:8px}
 .textarea-el{border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 14px;font-size:13px;color:#374151;outline:none;background:white;width:100%;resize:vertical;min-height:60px;font-family:inherit}
 .textarea-el:focus{border-color:#93c5fd}
 
@@ -291,6 +299,25 @@ input[type=checkbox],input[type=radio]{accent-color:#1a3a8f;cursor:pointer;flex-
 .sa-title{font-size:17px;font-weight:800;color:#111827;text-align:center;margin-bottom:8px}
 .sa-msg{font-size:13px;color:#6b7280;text-align:center;line-height:1.7;margin-bottom:20px}
 .sa-info{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px 14px;font-size:12px;color:#1e40af;line-height:1.7;margin-bottom:20px}
+
+/* AI 코멘트 수정 모달 */
+.ai-dialog{background:white;border-radius:14px;width:580px;max-width:96vw;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.25)}
+.ai-dlg-hdr{padding:18px 22px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.ai-dlg-hdr h3{font-size:16px;font-weight:800;color:#111827}
+.ai-dlg-body{flex:1;overflow-y:auto;padding:20px 22px;display:flex;flex-direction:column;gap:16px}
+.ai-dlg-ftr{padding:14px 22px;border-top:1px solid #e5e7eb;display:flex;justify-content:flex-end;gap:8px;flex-shrink:0}
+.ai-info-banner{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 14px;font-size:12px;color:#1e40af;line-height:1.7}
+.ai-period-bar{display:flex;background:#f3f4f6;border-radius:8px;padding:3px;width:fit-content}
+.ai-period-item{padding:7px 22px;border-radius:6px;font-size:13px;font-weight:600;color:#6b7280;cursor:pointer;transition:all .15s;user-select:none}
+.ai-period-item.on{background:white;color:#1a3a8f;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.ai-sec{display:flex;flex-direction:column;gap:6px}
+.ai-sec-lbl{font-size:13px;font-weight:700;color:#374151}
+.ai-memo-area{width:100%;min-height:68px;border:1.5px solid #e5e7eb;border-radius:8px;padding:10px 14px;font-size:13px;color:#374151;resize:none;font-family:inherit;outline:none;box-sizing:border-box}
+.ai-memo-area:focus{border-color:#93c5fd}
+.ai-preview-area{width:100%;min-height:120px;border:1.5px solid #e5e7eb;border-radius:8px;padding:12px 14px;font-size:13px;color:#374151;resize:vertical;font-family:inherit;line-height:1.75;outline:none;background:#f9fafb;box-sizing:border-box}
+.ai-preview-area:focus{border-color:#93c5fd;background:white}
+.pg-badge.ai-badge-warn{background:#fef2f2;border-color:#fca5a5;color:#dc2626}
+.pg-badge.ai-badge-progress{background:#f0f9ff;border-color:#7dd3fc;color:#0369a1}
 
 /* Preview (미리보기) */
 .preview-overlay{position:fixed;inset:0;background:white;z-index:200;display:flex;flex-direction:column}
@@ -415,34 +442,14 @@ input[type=checkbox],input[type=radio]{accent-color:#1a3a8f;cursor:pointer;flex-
     <!-- 기본 설정 카드 (항상 표시) -->
     <div class="default-card" id="default-card">
       <div class="dc-left">
-        <div class="dc-header-row">
-          <span class="dc-title-icon">⚙️</span>
-          <span class="dc-title-text">기본 설정</span>
-          <span class="dc-desc-badge">개별 설정이 없는 학생에게 자동 적용</span>
-        </div>
-        <div class="dc-periods">
-          <div class="dc-period-row">
-            <span class="do-period-pill daily">일간</span>
-            <span class="dc-period-meta" id="dc-meta-daily">매일 오후 5:00 · 알림톡 · 요약형</span>
-            <span class="do-toggle-label off" id="dc-lbl-daily">꺼짐</span>
-            <div class="sw off" id="dc-sw-daily" onclick="toggleDefaultCard('daily')"></div>
-          </div>
-          <div class="dc-period-row">
-            <span class="do-period-pill weekly">주간</span>
-            <span class="dc-period-meta" id="dc-meta-weekly">매주 금요일 오후 6:00 · 알림톡 · 상세형</span>
-            <span class="do-toggle-label on" id="dc-lbl-weekly">켜짐</span>
-            <div class="sw on" id="dc-sw-weekly" onclick="toggleDefaultCard('weekly')"></div>
-          </div>
-          <div class="dc-period-row">
-            <span class="do-period-pill monthly">월간</span>
-            <span class="dc-period-meta" id="dc-meta-monthly">매월 마지막 금요일 오후 6:00 · 알림톡 · 상세형</span>
-            <span class="do-toggle-label on" id="dc-lbl-monthly">켜짐</span>
-            <div class="sw on" id="dc-sw-monthly" onclick="toggleDefaultCard('monthly')"></div>
-          </div>
-        </div>
+        <span class="dc-title-icon">⚙️</span>
+        <span class="dc-title-text">기본 설정</span>
+        <span class="dc-desc-badge">개별 설정이 없는 학생에게 자동 적용</span>
       </div>
       <div class="dc-right">
-        <button class="btn btn-outline-blue btn-sm" onclick="openDefaultEdit()">편집하기</button>
+        <span class="do-toggle-label on" id="dc-lbl-global">켜짐</span>
+        <div class="sw on" id="dc-sw-global" onclick="toggleDefaultGlobal()"></div>
+        <button class="btn btn-outline-blue btn-sm" onclick="openDefaultEdit()" style="white-space:nowrap;margin-left:4px">편집하기</button>
       </div>
     </div>
 
@@ -481,10 +488,10 @@ input[type=checkbox],input[type=radio]{accent-color:#1a3a8f;cursor:pointer;flex-
         <div class="pg-row">
           <div><div class="pg-stu-name">홍길동</div><div class="pg-stu-sub">중1 · 1반</div></div>
           <div class="pg-date">2025.07.18 발송 예정</div>
-          <div></div>
+          <div><span class="pg-badge ai-badge-progress">AI 코멘트 수정중</span></div>
           <div class="pg-acts">
             <div class="pg-act" title="미리보기" onclick="showPreview()">👁</div>
-            <div class="pg-act" title="AI 코멘트 수정">✏️</div>
+            <div class="pg-act" title="AI 코멘트 수정" onclick="openAIModal(this)">✏️</div>
             <div class="pg-act" title="발송">📤</div>
             <div class="pg-act danger" title="삭제">🗑</div>
           </div>
@@ -495,7 +502,7 @@ input[type=checkbox],input[type=radio]{accent-color:#1a3a8f;cursor:pointer;flex-
           <div><span class="pg-badge">AI 코멘트 수정됨</span></div>
           <div class="pg-acts">
             <div class="pg-act" title="미리보기" onclick="showPreview()">👁</div>
-            <div class="pg-act" title="AI 코멘트 수정">✏️</div>
+            <div class="pg-act" title="AI 코멘트 수정" onclick="openAIModal(this)">✏️</div>
             <div class="pg-act" title="발송">📤</div>
             <div class="pg-act danger" title="삭제">🗑</div>
           </div>
@@ -503,10 +510,10 @@ input[type=checkbox],input[type=radio]{accent-color:#1a3a8f;cursor:pointer;flex-
         <div class="pg-row">
           <div><div class="pg-stu-name">신지수</div><div class="pg-stu-sub">중1 · 2반</div></div>
           <div><div class="pg-warn">⚠️ 확인 필요</div><div style="font-size:11px;color:#9ca3af;margin-top:2px">학습 데이터 부족</div></div>
-          <div></div>
+          <div><span class="pg-badge ai-badge-warn">AI 코멘트 미편집</span></div>
           <div class="pg-acts">
             <div class="pg-act" title="미리보기" onclick="showPreview()">👁</div>
-            <div class="pg-act" title="AI 코멘트 수정">✏️</div>
+            <div class="pg-act" title="AI 코멘트 수정" onclick="openAIModal(this)">✏️</div>
             <div class="pg-act" title="발송">📤</div>
             <div class="pg-act danger" title="삭제">🗑</div>
           </div>
@@ -514,10 +521,10 @@ input[type=checkbox],input[type=radio]{accent-color:#1a3a8f;cursor:pointer;flex-
         <div class="pg-row">
           <div><div class="pg-stu-name">이도윤</div><div class="pg-stu-sub">중1 · 2반</div></div>
           <div><div class="pg-warn">⚠️ 확인 필요</div><div style="font-size:11px;color:#9ca3af;margin-top:2px">연락처 미등록</div></div>
-          <div></div>
+          <div><span class="pg-badge ai-badge-warn">AI 코멘트 미편집</span></div>
           <div class="pg-acts">
             <div class="pg-act" title="미리보기" onclick="showPreview()">👁</div>
-            <div class="pg-act" title="AI 코멘트 수정">✏️</div>
+            <div class="pg-act" title="AI 코멘트 수정" onclick="openAIModal(this)">✏️</div>
             <div class="pg-act" title="발송">📤</div>
             <div class="pg-act danger" title="삭제">🗑</div>
           </div>
@@ -537,10 +544,10 @@ input[type=checkbox],input[type=radio]{accent-color:#1a3a8f;cursor:pointer;flex-
         <div class="pg-row">
           <div><div class="pg-stu-name">홍길동</div><div class="pg-stu-sub">중1 · 1반</div></div>
           <div class="pg-date">2025.07.31 발송 예정</div>
-          <div></div>
+          <div><span class="pg-badge ai-badge-warn">AI 코멘트 미편집</span></div>
           <div class="pg-acts">
             <div class="pg-act" title="미리보기" onclick="showPreview()">👁</div>
-            <div class="pg-act" title="AI 코멘트 수정">✏️</div>
+            <div class="pg-act" title="AI 코멘트 수정" onclick="openAIModal(this)">✏️</div>
             <div class="pg-act" title="발송">📤</div>
             <div class="pg-act danger" title="삭제">🗑</div>
           </div>
@@ -548,10 +555,10 @@ input[type=checkbox],input[type=radio]{accent-color:#1a3a8f;cursor:pointer;flex-
         <div class="pg-row">
           <div><div class="pg-stu-name">김미미</div><div class="pg-stu-sub">중1 · 1반</div></div>
           <div class="pg-date">2025.07.31 발송 예정</div>
-          <div></div>
+          <div><span class="pg-badge ai-badge-warn">AI 코멘트 미편집</span></div>
           <div class="pg-acts">
             <div class="pg-act" title="미리보기" onclick="showPreview()">👁</div>
-            <div class="pg-act" title="AI 코멘트 수정">✏️</div>
+            <div class="pg-act" title="AI 코멘트 수정" onclick="openAIModal(this)">✏️</div>
             <div class="pg-act" title="발송">📤</div>
             <div class="pg-act danger" title="삭제">🗑</div>
           </div>
@@ -769,25 +776,17 @@ input[type=checkbox],input[type=radio]{accent-color:#1a3a8f;cursor:pointer;flex-
 
       <!-- 내용 구성 -->
       <div class="sec" id="sec-content-config">
-        <div class="lbl">내용 구성</div>
-        <div class="type-select-btns" style="margin-bottom:12px">
-          <button class="type-sel-btn on" onclick="selectType(this,'summary')">상세형</button>
-          <button class="type-sel-btn" onclick="selectType(this,'detail')">요약형</button>
+        <div class="lbl">내용 구성 <span class="req">*</span> <span class="prem-tag" id="content-prem-tag">프리미엄</span>
+          <span id="content-period-indicator" class="period-badge monthly" style="margin-left:4px">월간 기준</span>
         </div>
-        <div id="content-detail-section" style="position:relative">
-          <div id="content-lock-overlay" class="lock-overlay" onclick="void 0">
-            <span class="prem-tag" style="font-size:12px;padding:4px 12px">🔒 프리미엄 전용</span>
-          </div>
-          <div class="locked-section" id="content-checkboxes">
-            <div style="display:flex;flex-direction:column;gap:8px;padding:4px 0">
-              <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151"><input type="checkbox" checked> 대표 교재 학습 현황</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151"><input type="checkbox" checked> 정답률 추이</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151"><input type="checkbox"> 취약 단원 분석</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151"><input type="checkbox"> 학습 시간 통계</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#374151"><input type="checkbox"> 오답 유형 분석</label>
-            </div>
-          </div>
+        <div class="ctype-btns">
+          <div class="ctype-btn on" id="ctype-btn-detail" onclick="selectContentType(this,'detail')">상세형</div>
+          <div class="ctype-btn" id="ctype-btn-summary" onclick="selectContentType(this,'summary')">요약형</div>
         </div>
+        <div class="prem-lock-notice hidden" id="content-lock">
+          🔒 개별 섹션 선택은 프리미엄 플랜에서 이용할 수 있어요.
+        </div>
+        <div id="content-sections-list"><!-- JS renders --></div>
       </div>
 
       <!-- 선생님 총평 -->
@@ -1124,11 +1123,8 @@ function applyPremLocks() {
       tmplSel.classList.remove('hidden');
     }
   }
-  // Step 2: 내용 구성 (lock overlay)
-  const contentLock = document.getElementById('content-lock-overlay');
-  if (contentLock) {
-    contentLock.style.display = isLight ? 'flex' : 'none';
-  }
+  // Step 2: 내용 구성 (lock)
+  applyContentLock();
   // Step 2: 보고서 테마
   const themeLock = document.getElementById('theme-lock');
   const themePrem = document.getElementById('theme-prem-block');
@@ -1323,28 +1319,109 @@ function toggleLT(el, chkId) {
 
 function gotoStep2() {
   wizardMode = 'custom';
+  contentType = 'detail';
   const chip2 = document.getElementById('wiz-stu-chip2');
   chip2.textContent = selectedStudents.length + '명 선택됨';
   applyPremLocks();
   applyWizardMode();
+  renderContentSections();
   showPage('pg-step2');
 }
 
 // ── Step 2 UI ──────────────────────────────
+let contentType = 'detail'; // 'detail' | 'summary'
+
+const CONTENT_SECTIONS = {
+  weekly:  [
+    {name:'표지',extra:false},{name:'학습 요약',extra:false},{name:'학습 활동',extra:false},{name:'성취도 분석',extra:false},
+    {name:'유형 이해도 분석',extra:true},{name:'취약 학습 성과',extra:true},{name:'학습 내역',extra:false}
+  ],
+  monthly: [
+    {name:'표지',extra:false},{name:'학습 요약',extra:false},{name:'학습 활동',extra:false},{name:'성취도 분석',extra:false},
+    {name:'유형 이해도 분석',extra:true},{name:'취약 학습 성과',extra:true},{name:'학습 내역',extra:false}
+  ],
+  daily: [
+    {name:'학습 요약',extra:false},{name:'취약 학습 관리',extra:false},{name:'학습 내역',extra:true}
+  ]
+};
+
+function renderContentSections() {
+  const el = document.getElementById('content-sections-list');
+  if (!el) return;
+  const cycleEl = document.querySelector('input[name="cycle"]:checked');
+  const cycle = cycleEl ? cycleEl.value : 'weekly';
+  const isDetail = contentType === 'detail';
+
+  // period indicator 갱신
+  const ind = document.getElementById('content-period-indicator');
+  if (ind) {
+    const lbls = {daily:'일간 기준', weekly:'주간 기준', monthly:'월간 기준'};
+    const cls  = {daily:'period-badge daily', weekly:'period-badge weekly', monthly:'period-badge monthly'};
+    ind.textContent = lbls[cycle] || '월간 기준';
+    ind.className   = (cls[cycle] || 'period-badge monthly') + ' ' + 'period-badge';
+    ind.className   = cls[cycle] || 'period-badge monthly';
+  }
+
+  const secs = CONTENT_SECTIONS[cycle] || CONTENT_SECTIONS.weekly;
+  const items = secs.map(s => {
+    const on = !s.extra || isDetail;
+    const style = on ? '' : 'opacity:.4;pointer-events:none';
+    const dot = (s.extra && on)
+      ? `<span style="width:7px;height:7px;border-radius:50%;background:#1d4ed8;display:inline-block;margin-left:3px;flex-shrink:0"></span>`
+      : '';
+    return `<div class="ck-item${on ? ' checked' : ''}" style="${style}" onclick="toggleWizCk(this)">
+      <input type="checkbox" ${on ? 'checked' : 'disabled'}> ${s.name}${dot}
+    </div>`;
+  });
+  el.innerHTML = `<div class="content-cks">${items.join('')}</div>`;
+  applyContentLock();
+}
+
+function applyContentLock() {
+  const wrap = document.getElementById('content-sections-list');
+  const lock = document.getElementById('content-lock');
+  if (!wrap) return;
+  if (isLight) {
+    wrap.querySelectorAll('input').forEach(el => el.disabled = true);
+    wrap.style.opacity = '.45';
+    wrap.style.pointerEvents = 'none';
+    if (lock) lock.classList.remove('hidden');
+  } else {
+    // opacity:.4 아이템(꺼진 extra)은 유지
+    wrap.querySelectorAll('.ck-item').forEach(item => {
+      if (!item.style.opacity) item.querySelector('input').disabled = false;
+    });
+    wrap.style.opacity = '';
+    wrap.style.pointerEvents = '';
+    if (lock) lock.classList.add('hidden');
+  }
+}
+
+function toggleWizCk(item) {
+  if (isLight) return;
+  if (item.style.opacity) return; // dimmed extra
+  item.classList.toggle('checked');
+  item.querySelector('input').checked = item.classList.contains('checked');
+}
+
 function updateCycleUI() {
   const val = document.querySelector('input[name="cycle"]:checked').value;
   document.getElementById('weekly-opts').classList.toggle('hidden', val!=='weekly');
   document.getElementById('monthly-opts').classList.toggle('hidden', val!=='monthly');
+  renderContentSections();
 }
 function updateCommentUI() {
   const val = document.querySelector('input[name="comment-type"]:checked').value;
   document.getElementById('comment-ai-opts').classList.toggle('hidden', val!=='ai');
   document.getElementById('comment-manual-opts').classList.toggle('hidden', val!=='manual');
 }
-function selectType(el, type) {
+function selectContentType(el, type) {
   document.querySelectorAll('.type-sel-btn').forEach(b=>b.classList.remove('on'));
   el.classList.add('on');
+  contentType = type;
+  renderContentSections();
 }
+function selectType(el, type) { selectContentType(el, type); } // backward compat
 function toggleCh(el) {
   document.querySelectorAll('.ch-btn').forEach(b=>b.classList.remove('on'));
   el.classList.add('on');
@@ -1407,13 +1484,13 @@ renderRuleCards();
 applyPremLocks();
 
 // ── 기본 설정 카드 ────────────────────────────────────────────
-const defState = {daily:false, weekly:true, monthly:true};
-function toggleDefaultCard(period){
-  defState[period] = !defState[period];
-  const sw = document.getElementById('dc-sw-'+period);
-  const lbl = document.getElementById('dc-lbl-'+period);
-  if(sw) sw.className = 'sw ' + (defState[period]?'on':'off');
-  if(lbl){ lbl.textContent = defState[period]?'켜짐':'꺼짐'; lbl.className = 'do-toggle-label '+(defState[period]?'on':'off'); }
+let defGlobalOn = true;
+function toggleDefaultGlobal(){
+  defGlobalOn = !defGlobalOn;
+  const sw = document.getElementById('dc-sw-global');
+  const lbl = document.getElementById('dc-lbl-global');
+  if(sw) sw.className = 'sw ' + (defGlobalOn ? 'on' : 'off');
+  if(lbl){ lbl.textContent = defGlobalOn ? '켜짐' : '꺼짐'; lbl.className = 'do-toggle-label ' + (defGlobalOn ? 'on' : 'off'); }
 }
 
 // ── Wizard mode ──────────────────────────────────────────────────
@@ -1454,6 +1531,129 @@ function applyWizardMode(){
   const saveBtn = document.getElementById('step2-save-btn');
   if(saveBtn) saveBtn.textContent = isDefault ? '기본 설정 저장' : '규칙 저장';
 }
+
+// ── AI 코멘트 수정 모달 ─────────────────────────────────────────
+const AI_SAMPLE_COMMENTS = {
+  daily:   '오늘 학습을 잘 마쳤네요! 꾸준히 학습하는 습관이 큰 힘이 됩니다. 오늘 틀린 문제를 다시 한 번 확인해 보세요.',
+  weekly:  '이번 주도 꾸준히 학습을 진행했어요. 주간 학습량과 정답률을 함께 확인해 보시고, 특히 어려웠던 유형을 집중적으로 복습해 보세요.',
+  monthly: '이번 달 학습을 성실하게 마쳤어요! 월간 학습 결과를 통해 강점과 보완이 필요한 부분을 함께 확인해 보시고, 다음 달에도 꾸준히 이어나가 주세요.'
+};
+let curAIPeriod = 'weekly';
+let curAIRow = null;
+
+function openAIModal(btn) {
+  curAIRow = btn.closest('.pg-row');
+  const name = curAIRow.querySelector('.pg-stu-name').textContent;
+  document.getElementById('ai-modal-name').textContent = name;
+  curAIPeriod = 'weekly';
+  document.querySelectorAll('.ai-period-item').forEach(el => el.classList.toggle('on', el.dataset.period === 'weekly'));
+  document.getElementById('ai-preview-text').value = AI_SAMPLE_COMMENTS[curAIPeriod];
+  document.getElementById('ai-memo').value = '';
+  document.getElementById('ai-memo-count').textContent = '0';
+  document.querySelector('input[name="ai-tone"][value="friendly"]').checked = true;
+  document.getElementById('ai-modal').classList.remove('hidden');
+}
+function closeAIModal() {
+  document.getElementById('ai-modal').classList.add('hidden');
+  curAIRow = null;
+}
+function switchAIPeriod(period) {
+  curAIPeriod = period;
+  document.querySelectorAll('.ai-period-item').forEach(el => el.classList.toggle('on', el.dataset.period === period));
+  document.getElementById('ai-preview-text').value = AI_SAMPLE_COMMENTS[period];
+}
+function regenAIModalComment() {
+  const ta = document.getElementById('ai-preview-text');
+  ta.value = '⏳ AI 코멘트 생성 중...';
+  ta.disabled = true;
+  setTimeout(() => {
+    ta.value = AI_SAMPLE_COMMENTS[curAIPeriod];
+    ta.disabled = false;
+  }, 1000);
+}
+function saveAIComment() {
+  if (!curAIRow) { closeAIModal(); return; }
+  // 3번째 컬럼 배지 업데이트
+  const badgeCol = curAIRow.children[2];
+  const warnBadge = badgeCol.querySelector('.ai-badge-warn');
+  if (warnBadge) warnBadge.remove();
+  if (!badgeCol.querySelector('.pg-badge')) {
+    const badge = document.createElement('span');
+    badge.className = 'pg-badge';
+    badge.textContent = 'AI 코멘트 수정됨';
+    badgeCol.appendChild(badge);
+  }
+  closeAIModal();
+}
 </script>
+
+<!-- ═══════════════════════════════════════════
+     OVERLAY: AI 코멘트 수정
+════════════════════════════════════════════ -->
+<div class="backdrop hidden" id="ai-modal">
+  <div class="ai-dialog">
+    <div class="ai-dlg-hdr">
+      <h3>AI 코멘트 수정 <span id="ai-modal-name" style="color:#1a3a8f"></span></h3>
+      <button class="close-x" onclick="closeAIModal()">✕</button>
+    </div>
+    <div class="ai-dlg-body">
+      <!-- 안내 배너 -->
+      <div class="ai-info-banner">
+        📌 보고서 본문은 발송 24시간 전 초안으로 확정됩니다. 그대로 발송됩니다. 여기서는 AI 코멘트만 미리 조정할 수 있어요.
+      </div>
+
+      <!-- 기간 선택 -->
+      <div>
+        <div class="ai-period-bar">
+          <div class="ai-period-item" data-period="daily" onclick="switchAIPeriod('daily')">일간</div>
+          <div class="ai-period-item on" data-period="weekly" onclick="switchAIPeriod('weekly')">주간</div>
+          <div class="ai-period-item" data-period="monthly" onclick="switchAIPeriod('monthly')">월간</div>
+        </div>
+      </div>
+
+      <!-- AI 코멘트 어조 -->
+      <div class="ai-sec">
+        <div class="ai-sec-lbl">AI 코멘트 어조</div>
+        <div class="radio-row">
+          <label class="radio-item"><input type="radio" name="ai-tone" value="friendly" checked> 다정한 어조</label>
+          <label class="radio-item"><input type="radio" name="ai-tone" value="direct"> 직설적 어조</label>
+        </div>
+      </div>
+
+      <!-- 맞춤형 지침 -->
+      <div class="ai-sec">
+        <div class="ai-sec-lbl">맞춤형 지침</div>
+        <select style="max-width:260px">
+          <option>지침 1 (기본)</option>
+          <option>지침 2 — 수능 대비반</option>
+          <option>직접 입력</option>
+        </select>
+      </div>
+
+      <!-- 학생별 메모 -->
+      <div class="ai-sec">
+        <div class="ai-sec-lbl">학생별 메모 <span style="font-size:11px;color:#9ca3af;font-weight:400">(이 학생에게만 적용)</span></div>
+        <textarea class="ai-memo-area" id="ai-memo" maxlength="300"
+          placeholder="학생에 대해 선생님 참고할 내용을 입력하세요. ex) 수업에 태도가 좋음, 계산 실수가 잦음, 숙제 잘 안냄."
+          oninput="document.getElementById('ai-memo-count').textContent=this.value.length"></textarea>
+        <div style="text-align:right;font-size:11px;color:#9ca3af"><span id="ai-memo-count">0</span>/300자</div>
+      </div>
+
+      <!-- 미리보기 -->
+      <div class="ai-sec">
+        <div class="ai-sec-lbl">미리보기</div>
+        <textarea class="ai-preview-area" id="ai-preview-text"></textarea>
+        <div style="margin-top:8px">
+          <button class="ai-regen-btn" onclick="regenAIModalComment()">↺ AI 코멘트 재생성</button>
+        </div>
+      </div>
+    </div>
+    <div class="ai-dlg-ftr">
+      <button class="btn btn-ghost" onclick="closeAIModal()">취소</button>
+      <button class="btn btn-primary" onclick="saveAIComment()">저장하기</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
